@@ -8,4 +8,4 @@
  - Danny Pan ([dannypan@usc.edu](mailto:dannypan@usc.edu))
  - Brian Yan ([brianyan@usc.edu](mailto:brianyan@usc.edu))
 
-##### Tuesdays after 10pm
+##### Tuesdays after 10pm <sup><sub>[[WhenIsGood](http://whenisgood.net/jk27zpz/results/sf3x4eg)]</sub></sup>
