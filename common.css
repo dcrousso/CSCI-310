@@ -1,0 +1,58 @@
+:root {
+	--main-padding-x: 5vw;
+	--main-padding-y: 5vh;
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	display: flex;
+	justify-content: center;
+	min-height: 100vh;
+	margin: 0;
+	font-size: 16px;
+	background-color: gray;
+}
+
+h1 {
+	margin: 0;
+	text-align: center;
+}
+
+nav {
+	position: absolute;
+	top: calc(var(--main-padding-y) + 12px);
+	left: calc(var(--main-padding-x) + 12px);
+}
+
+main {
+	padding: var(--main-padding-y) var(--main-padding-x);
+}
+
+form > div {
+	margin: 4px 0;
+}
+
+button {
+	padding: 2px 4px;
+	font-size: 1em;
+	background-color: purple;
+	border: none;
+	outline: none;
+	-webkit-appearance: none;
+}
+
+input {
+	padding: 2px 4px;
+	font-size: 1em;
+	background-color: white;
+	border: 2px solid purple;
+	outline: none;
+	-webkit-appearance: none;
+}
+
+img {
+	width: 50%;
+}
