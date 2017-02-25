@@ -19,8 +19,10 @@
 
 
 #### SETUP:
-	- sudo apt install git
-	- cd /var/www/html
-	- sudo git clone https://github.com/dcrousso/CSCI-310.git
-	- sudo apachectl start
-	- firefox localhost/CSCI-310/
+```Shell
+sudo apt install git
+cd /var/www/html
+sudo git clone https://github.com/dcrousso/CSCI-310.git
+sudo apachectl start
+firefox localhost/CSCI-310/
+```
