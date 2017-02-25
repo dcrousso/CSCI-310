@@ -16,3 +16,11 @@
    - Design- 2/15* </br>
    - Implementation- 2/27* </br>
    - Testing and delivery- 3/8* </br>
+
+
+#### SETUP:
+	- sudo apt install git
+	- cd /var/www/html
+	- sudo git clone https://github.com/dcrousso/CSCI-310.git
+	- sudo apachectl start
+	- firefox localhost/CSCI-310/
