@@ -1,7 +1,5 @@
 <?php
 
-require_once("Util.php");
-
 class API {
 	private static $KEY = "1f872ee1d20914aa4b34bdafa8f425c6";
 
@@ -25,7 +23,7 @@ class API {
 		$response = file_get_contents("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=" . API::$KEY . "&track_id=" . $trackID);
 		$json = json_decode($response, true)["message"]["body"];
 
-		$lyrics = $json["lyrics"]["lyrics_body"]);
+		$lyrics = $json["lyrics"]["lyrics_body"];
 		return substr($lyrics, 0, strpos($lyrics, "\n\n...\n\n******* This Lyrics is NOT for Commercial use *******"));
 	}
 
