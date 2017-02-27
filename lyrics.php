@@ -11,7 +11,7 @@ $lyrics = preg_replace("/\b(" . $_GET["w"] . ")\b/i", "<mark>$1</mark>", $lyrics
 <html>
 	<head>
 		<link rel="stylesheet" href="common.css">
-		<title><?php echo $_GET["s"]; ?></title>
+		<title>by <?php echo $_GET["s"]; ?></title>
 	</head>
 	<body>
 		<main>
