@@ -62,36 +62,36 @@ button.share {
 
 "use strict";
 
-var WORDS = [
+const WORDS = [
 <?php foreach (array_keys($words) as $word) { ?>
 	{text: "<?php echo $word; ?>", count: <?php echo $words[$word]; ?>}<?php echo $word === key(array_slice($words, -1, 1, TRUE)) ? "\n" : ",\n"; ?>
 <?php } ?>
 ];
 
-var cloudContainer = d3.select("#wordcloud");
-var cloudSize = [parseInt(cloudContainer.attr("width").slice(0, -2)), parseInt(cloudContainer.attr("height").slice(0, -2))];
-var scale = d3.scaleLog().range([8, 80]).domain([WORDS[WORDS.length - 1].count, WORDS[0].count]);
+const cloudContainer = d3.select("#wordcloud");
+const cloudSize = [parseInt(cloudContainer.attr("width").slice(0, -2)), parseInt(cloudContainer.attr("height").slice(0, -2))];
+const scale = d3.scaleLog().range([8, 80]).domain([WORDS[WORDS.length - 1].count, WORDS[0].count]);
 
 d3.layout.cloud()
 	.size(cloudSize)
 	.words(WORDS)
 	.padding(5)
-	.rotate((function() { return 0; }))
-	.fontSize(function(d) { return scale(d.count); })
-	.on("end", function(data) {
+	.rotate(() => 0)
+	.fontSize(d => scale(d.count))
+	.on("end", data => {
 		cloudContainer
 		.append("g")
-			.attr("transform", "translate(" + cloudSize[0] / 2 + "," + cloudSize[1] / 2 + ")")
+			.attr("transform", `translate(${cloudSize[0] / 2}, ${cloudSize[1] / 2})`)
 		.selectAll()
 		.data(data)
 		.enter()
 		.append("a")
-			.attr("href", function(d) { return "word.php?a=<?php echo $_GET["a"]; ?>&w=" + d.text; })
+			.attr("href", d => `word.php?a=<?php echo $_GET["a"]; ?>&w=${d.text}`)
 		.append("text")
-			.style("font-size", function(d) { return d.size + "px"; })
+			.style("font-size", d => `${d.size}px`)
 			.attr("text-anchor", "middle")
-			.attr("transform", function(d) { return "translate(" + [d.x, d.y] + ")"; })
-			.text(function(d) { return d.text; });
+			.attr("transform", d => `translate(${d.x}, ${d.y})`)
+			.text(d => d.text);
 	})
 	.start();
 
