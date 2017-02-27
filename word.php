@@ -8,12 +8,15 @@ $lyrics = API::getTrackLyricsGet(array_map(function($track) {
 	return $track["track_id"];
 }, $tracks));
 
+$word = strtolower($_GET["w"]);
+
 $songs = array();
 for ($i = 0; $i < count($tracks); ++$i) {
-	if (strpos($lyrics[$i]["lyrics"], $_GET["w"]) === FALSE)
+	$lowercase = strtolower($lyrics[$i]["lyrics"]);
+	if (strpos($lowercase, $word) === FALSE)
 		continue;
 
-	$count = preg_match_all("/\b" . $_GET["w"] . "\b/", $lyrics[$i]["lyrics"]);
+	$count = preg_match_all("/\b" . $word . "\b/", $lowercase);
 	if (!$count)
 		continue;
 
@@ -23,7 +26,7 @@ for ($i = 0; $i < count($tracks); ++$i) {
 }
 
 usort($songs, function($a, $b) {
-	return $a["occurrence_count"] - $b["occurrence_count"];
+	return $b["occurrence_count"] - $a["occurrence_count"];
 });
 
 ?>
@@ -41,7 +44,7 @@ usort($songs, function($a, $b) {
 <?php foreach ($songs as $song) { ?>
 					<tr>
 						<td><?php echo $song["occurrence_count"]; ?></td>
-						<td><a href="lyrics.php?a=<?php echo $song["artist_name"]; ?>&s=<?php echo $song["track_name"]; ?>&w=<?php echo $_GET["w"]; ?>&id=<?php echo $song["track_id"]; ?>"><?php echo $song["track_name"]; ?></a></td>
+						<td><a href="lyrics.php?a=<?php echo $song["artist_name"]; ?>&s=<?php echo $song["track_name"]; ?>&w=<?php echo $word; ?>&id=<?php echo $song["track_id"]; ?>"><?php echo $song["track_name"]; ?></a></td>
 						<td><?php echo $song["artist_name"]; ?></td>
 					</tr>
 <?php } ?>
