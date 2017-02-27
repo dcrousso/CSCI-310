@@ -1,6 +1,24 @@
 <?php
 
 require_once("API.php");
+require_once("Util.php");
+
+$tracks = API::getTrackSearch($_GET["a"]);
+
+$lyrics = API::getTrackLyricsGet(array_map(function($track) {
+	return $track["track_id"];
+}, $tracks));
+
+$words = array();
+foreach ($lyrics as $lyric) {
+	$counts = Util::splitWords($lyric["lyrics"]);
+	foreach (array_keys($counts) as $word) {
+		if (!array_key_exists($word, $words))
+			$words[$word] = 0;
+
+		$words[$word] += $counts[$word];
+	}
+}
 
 ?>
 <!DOCTYPE html>
@@ -42,27 +60,10 @@ button.share {
 
 "use strict";
 
-var STRING = "Work it.\nMake it\nDo it\nMake us\nHarder\nBetter\nFaster\nStronger\nMore than\nHour\nOur\nNever\nEver\nAfter\nWork is\nOver\nWork it\nMake it\nDo it\nMake us\nHarder\nBetter\nFaster\nStronger\nWork it harder\nMake it better\nDo it faster\nMakes us stronger\nMore than ever\nHour after\nOur work is\nNever over\nWork it harder\nMake it better\nDo it faster\nMakes us stronger\nWork it harder\nMake it better\nDo it faster\nMakes us stronger\nWork it harder\nMake it better\nDo it faster\nMakes us stronger\nWork it harder\nMake it better\nDo it faster\nMakes us stronger\nWork it harder\nMake it better\nDo it faster\nMakes us stronger\nWork it harder\nMake it better\nDo it faster\nMakes us stronger\nWork it harder make it\nDo it faster makes us\nMore than ever hour\nOur work is\nWork it harder make it\nDo it faster makes us\nMore than ever hour\nOur work is never over\nWork it harder\nMake it better\nDo it faster\nMakes us stronger\nWork it harder make it\nDo it faster makes us\nMore than ever hour\nOur work is\nWork it harder make it\nDo it faster makes us\nMore than ever hour\nOur work is never over\nWork it harder\nMake it better\nDo it faster\nMakes us stronger\nWork it harder\nDo it faster\nMore than ever\nOur work is never over\nWork it harder\nMake it better\nDo it faster\nMakes us stronger";
-
 var WORDS = [
-	{text: "after", count: 2},
-	{text: "better", count: 12},
-	{text: "do", count: 17},
-	{text: "ever", count: 7},
-	{text: "faster", count: 17},
-	{text: "harder", count: 17},
-	{text: "hour", count: 6},
-	{text: "is", count: 57},
-	{text: "make", count: 18},
-	{text: "makes", count: 14},
-	{text: "more", count: 7},
-	{text: "never", count: 5},
-	{text: "our", count: 7},
-	{text: "over", count: 5},
-	{text: "stronger", count: 12},
-	{text: "than", count: 7},
-	{text: "us", count: 16},
-	{text: "work", count: 24},
+<?php foreach (array_keys($words) as $word) { ?>
+	{text: "<?php echo $word; ?>", count: <?php echo $words[$word]; ?>}<?php echo $word === key(array_slice($words, -1, 1, TRUE)) ? "\n" : ",\n"; ?>
+<?php } ?>
 ];
 
 var cloudContainer = d3.select("#wordcloud");
