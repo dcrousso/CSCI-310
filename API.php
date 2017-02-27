@@ -23,8 +23,11 @@ class API {
 		$response = file_get_contents("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=" . API::$KEY . "&track_id=" . $trackID);
 		$json = json_decode($response, true)["message"]["body"];
 
-		$lyrics = $json["lyrics"]["lyrics_body"];
-		return substr($lyrics, 0, strpos($lyrics, "\n\n...\n\n******* This Lyrics is NOT for Commercial use *******"));
+		$result = $json["lyrics"];
+		return array(
+			"lyrics"              => substr($result["lyrics_body"], 0, strpos($result["lyrics_body"], "\n\n...\n\n******* This Lyrics is NOT for Commercial use *******")),
+			"script_tracking_url" => $result["script_tracking_url"]
+		);
 	}
 
 	public static function getArtistSearch($artist) {
