@@ -2,7 +2,7 @@
 
 require_once("API.php");
 
-$data = API::getTrackLyricsGet($_GET["id"]);
+$data = API::getTrackLyricsGet([$_GET["id"]])[0];
 $lyrics = str_replace("\n", "<br>", $data["lyrics"]);
 $lyrics = preg_replace("/\b(" . $_GET["w"] . ")\b/i", "<mark>$1</mark>", $lyrics); 
 

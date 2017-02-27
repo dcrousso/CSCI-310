@@ -2,6 +2,20 @@
 
 require_once("API.php");
 
+$tracks = API::getTrackSearch($_GET["a"]);
+
+$lyrics = API::getTrackLyricsGet(array_map(function($track) {
+	return $track["track_id"];
+}, $tracks));
+
+$songs = array();
+for ($i = 0; $i < count($tracks); ++$i) {
+	if (strpos($lyrics[$i]["lyrics"], $_GET["w"]) === FALSE)
+		continue;
+
+	array_push($songs, $tracks[$i]);
+}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -14,16 +28,13 @@ require_once("API.php");
 			<h1><?php echo $_GET["w"]; ?></h1>
 			<table>
 				<tbody>
+<?php foreach ($songs as $song) { ?>
 					<tr>
-						<td>24</td>
-						<td><a href="lyrics.php?a=<?php echo $_GET["a"]; ?>&s=<?php echo "Harder Better Faster Stronger"; ?>&w=<?php echo $_GET["w"]; ?>&id=<?php echo "84534570"; ?>">Harder Better Faster Stronger</a></td>
-						<td><?php echo $_GET["a"]; ?></td>
+						<td><?php echo "24"; ?></td>
+						<td><a href="lyrics.php?a=<?php echo $song["artist_name"]; ?>&s=<?php echo $song["track_name"]; ?>&w=<?php echo $_GET["w"]; ?>&id=<?php echo $song["track_id"]; ?>"><?php echo $song["track_name"]; ?></a></td>
+						<td><?php echo $song["artist_name"]; ?></td>
 					</tr>
-					<tr>
-						<td>8</td>
-						<td><a href="lyrics.php?a=<?php echo $_GET["a"]; ?>&s=<?php "Technologic"; ?>&w=<?php echo $_GET["w"]; ?>&id=<?php echo "30604858"; ?>">Technologic</a></td>
-						<td><?php echo $_GET["a"]; ?></td>
-					</tr>
+<?php } ?>
 				</tbody>
 			</table>
 		</main>
