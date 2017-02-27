@@ -20,6 +20,8 @@ foreach ($lyrics as $lyric) {
 	}
 }
 
+arsort($words);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -42,7 +44,7 @@ button.share {
 	<body>
 		<main>
 			<h1><?php echo $_GET["a"]; ?></h1>
-			<svg id="wordcloud" width="500px" height="500px"></svg>
+			<svg id="wordcloud" width="900px" height="500px"></svg>
 			<form action="artist.php">
 				<div>
 					<input type="search" placeholder="Enter Artist">
@@ -68,13 +70,14 @@ var WORDS = [
 
 var cloudContainer = d3.select("#wordcloud");
 var cloudSize = [parseInt(cloudContainer.attr("width").slice(0, -2)), parseInt(cloudContainer.attr("height").slice(0, -2))];
+var scale = d3.scaleLog().range([8, 80]).domain([WORDS[WORDS.length - 1].count, WORDS[0].count]);
 
 d3.layout.cloud()
 	.size(cloudSize)
 	.words(WORDS)
 	.padding(5)
 	.rotate((function() { return 0; }))
-	.fontSize(function(d) { return 8 + (d.count * 2); })
+	.fontSize(function(d) { return scale(d.count); })
 	.on("end", function(data) {
 		cloudContainer
 		.append("g")
