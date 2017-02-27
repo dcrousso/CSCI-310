@@ -4,7 +4,7 @@ class API {
 	private static $KEY = "1f872ee1d20914aa4b34bdafa8f425c6";
 
 	public static function getTrackSearch($artist) {
-		$response = file_get_contents("https://api.musixmatch.com/ws/1.1/track.search?apikey=" . API::$KEY . "&q_artist=" . urlencode($artist) . "&page_size=100");
+		$response = file_get_contents("https://api.musixmatch.com/ws/1.1/track.search?apikey=" . API::$KEY . "&q_artist=" . urlencode($artist));
 		$json = json_decode($response, true)["message"]["body"];
 
 		$result = array();
@@ -53,7 +53,7 @@ class API {
 	}
 
 	public static function getArtistSearch($artist) {
-		$response = file_get_contents("https://api.musixmatch.com/ws/1.1/artist.search?apikey=" . API::$KEY . "&q_artist=" . urlencode($artist) . "&page_size=100");
+		$response = file_get_contents("https://api.musixmatch.com/ws/1.1/artist.search?apikey=" . API::$KEY . "&q_artist=" . urlencode($artist));
 		$json = json_decode($response, true)["message"]["body"];
 
 		$result = array();
