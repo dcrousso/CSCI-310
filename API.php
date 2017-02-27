@@ -5,7 +5,7 @@ class API {
 
 	public static function getTrackSearch($artist) {
 		$response = file_get_contents("https://api.musixmatch.com/ws/1.1/track.search?apikey=" . API::$KEY . "&q_artist=" . urlencode($artist));
-		$json = json_decode($response, true)["message"]["body"];
+		$json = json_decode($response, TRUE)["message"]["body"];
 
 		$result = array();
 		foreach ($json["track_list"] as $item) {
@@ -24,7 +24,7 @@ class API {
 
 		$curls = array_map(function($trackID) use (&$multi) {
 			$curl = curl_init("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=" . API::$KEY . "&track_id=" . $trackID);
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 
 			curl_multi_add_handle($multi, $curl);
 
@@ -42,7 +42,7 @@ class API {
 		curl_multi_close($multi);
 
 		return array_map(function($curl) {
-			$json = json_decode(curl_multi_getcontent($curl), true)["message"]["body"];
+			$json = json_decode(curl_multi_getcontent($curl), TRUE)["message"]["body"];
 
 			$result = $json["lyrics"];
 			return array(
@@ -54,7 +54,7 @@ class API {
 
 	public static function getArtistSearch($artist) {
 		$response = file_get_contents("https://api.musixmatch.com/ws/1.1/artist.search?apikey=" . API::$KEY . "&q_artist=" . urlencode($artist));
-		$json = json_decode($response, true)["message"]["body"];
+		$json = json_decode($response, TRUE)["message"]["body"];
 
 		$result = array();
 		foreach ($json["artist_list"] as $item)

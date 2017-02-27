@@ -1,5 +1,7 @@
 <?php
 
+$time = microtime(TRUE);
+
 require_once("API.php");
 
 $tracks = API::getTrackSearch($_GET["a"]);
@@ -29,6 +31,8 @@ usort($songs, function($a, $b) {
 	return $b["occurrence_count"] - $a["occurrence_count"];
 });
 
+$time = microtime(TRUE) - $time;
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -50,6 +54,7 @@ usort($songs, function($a, $b) {
 <?php } ?>
 				</tbody>
 			</table>
+			<?php if ($_GET["debug"] === "true") echo $time . "s\n"; ?>
 		</main>
 		<nav>
 			<a href="artist.php?a=<?php echo $_GET["a"]; ?>"><button><?php echo $_GET["a"]; ?></button></a>

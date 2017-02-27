@@ -1,10 +1,14 @@
 <?php
 
+$time = microtime(TRUE);
+
 require_once("API.php");
 
 $data = API::getTrackLyricsGet([$_GET["id"]])[0];
 $lyrics = str_replace("\n", "<br>", $data["lyrics"]);
 $lyrics = preg_replace("/\b(" . $_GET["w"] . ")\b/i", "<mark>$1</mark>", $lyrics); 
+
+$time = microtime(TRUE) - $time;
 
 ?>
 <!DOCTYPE html>
@@ -20,6 +24,7 @@ $lyrics = preg_replace("/\b(" . $_GET["w"] . ")\b/i", "<mark>$1</mark>", $lyrics
 			<p>
 <?php echo $lyrics; ?>
 			</p>
+			<?php if ($_GET["debug"] === "true") echo $time . "s\n"; ?>
 		</main>
 		<nav>
 			<a href="artist.php?a=<?php echo $_GET["a"]; ?>"><button><?php echo $_GET["a"]; ?></button></a>

@@ -1,5 +1,7 @@
 <?php
 
+$time = microtime(TRUE);
+
 require_once("API.php");
 require_once("Util.php");
 
@@ -21,6 +23,8 @@ foreach ($lyrics as $lyric) {
 }
 
 arsort($words);
+
+$time = microtime(TRUE) - $time;
 
 ?>
 <!DOCTYPE html>
@@ -55,6 +59,7 @@ button.share {
 					<button type="button" class="share">Share</button>
 				</div>
 			</form>
+			<?php if ($_GET["debug"] === "true") echo $time . "s\n"; ?>
 		</main>
 		<script src="d3.min.js"></script>
 		<script src="d3.layout.cloud.js"></script>
