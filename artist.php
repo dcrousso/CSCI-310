@@ -47,7 +47,7 @@ button.share {
 			<svg id="wordcloud" width="900px" height="500px"></svg>
 			<form action="artist.php">
 				<div>
-					<input type="search" placeholder="Enter Artist">
+					<input name="a" type="search" placeholder="Enter Artist">
 				</div>
 				<div>
 					<button>Search</button>
