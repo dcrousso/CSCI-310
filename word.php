@@ -16,12 +16,12 @@ require_once("API.php");
 				<tbody>
 					<tr>
 						<td>24</td>
-						<td><a href="lyrics.php?a=<?php echo $_GET["a"]; ?>&s=Harder%2C%20Better%2C%20Faster%2C%20Stronger&w=<?php echo $_GET["w"]; ?>">Harder, Better, Faster, Stronger</a></td>
+						<td><a href="lyrics.php?a=<?php echo $_GET["a"]; ?>&s=<?php echo "Harder Better Faster Stronger"; ?>&w=<?php echo $_GET["w"]; ?>&id=<?php echo "84534570"; ?>">Harder Better Faster Stronger</a></td>
 						<td><?php echo $_GET["a"]; ?></td>
 					</tr>
 					<tr>
 						<td>8</td>
-						<td><a href="lyrics.php?a=<?php echo $_GET["a"]; ?>&s=Technologic&w=<?php echo $_GET["w"]; ?>">Technologic</a></td>
+						<td><a href="lyrics.php?a=<?php echo $_GET["a"]; ?>&s=<?php "Technologic"; ?>&w=<?php echo $_GET["w"]; ?>&id=<?php echo "30604858"; ?>">Technologic</a></td>
 						<td><?php echo $_GET["a"]; ?></td>
 					</tr>
 				</tbody>

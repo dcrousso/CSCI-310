@@ -25,7 +25,7 @@ class API {
 
 		$result = $json["lyrics"];
 		return array(
-			"lyrics"              => substr($result["lyrics_body"], 0, strpos($result["lyrics_body"], "\n\n...\n\n******* This Lyrics is NOT for Commercial use *******")),
+			"lyrics"              => substr($result["lyrics_body"], 0, strpos($result["lyrics_body"], "\n...\n\n******* This Lyrics is NOT for Commercial use *******")),
 			"script_tracking_url" => $result["script_tracking_url"]
 		);
 	}
