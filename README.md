@@ -21,6 +21,7 @@
 #### SETUP:
 ```Shell
 sudo apt install git
+sudo apt-get install php-curl
 cd /var/www/html
 sudo git clone https://github.com/dcrousso/CSCI-310.git
 sudo apachectl start

@@ -19,15 +19,37 @@ class API {
 		return $result;
 	}
 
-	public static function getTrackLyricsGet($trackID) {
-		$response = file_get_contents("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=" . API::$KEY . "&track_id=" . $trackID);
-		$json = json_decode($response, true)["message"]["body"];
+	public static function getTrackLyricsGet($trackIDs) {
+		$multi = curl_multi_init();
 
-		$result = $json["lyrics"];
-		return array(
-			"lyrics"              => substr($result["lyrics_body"], 0, strpos($result["lyrics_body"], "\n...\n\n******* This Lyrics is NOT for Commercial use *******")),
-			"script_tracking_url" => $result["script_tracking_url"]
-		);
+		$curls = array_map(function($trackID) use (&$multi) {
+			$curl = curl_init("https://api.musixmatch.com/ws/1.1/track.lyrics.get?apikey=" . API::$KEY . "&track_id=" . $trackID);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+			curl_multi_add_handle($multi, $curl);
+
+			return $curl;
+		}, $trackIDs);
+
+		$running = null;
+		do {
+			curl_multi_exec($multi, $running);
+		} while ($running);
+
+		foreach ($curls as $curl)
+			curl_multi_remove_handle($multi, $curl);
+
+		curl_multi_close($multi);
+
+		return array_map(function($curl) {
+			$json = json_decode(curl_multi_getcontent($curl), true)["message"]["body"];
+
+			$result = $json["lyrics"];
+			return array(
+				"lyrics"              => substr($result["lyrics_body"], 0, strpos($result["lyrics_body"], "\n...\n\n******* This Lyrics is NOT for Commercial use *******")),
+				"script_tracking_url" => $result["script_tracking_url"]
+			);
+		}, $curls);
 	}
 
 	public static function getArtistSearch($artist) {
