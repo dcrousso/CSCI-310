@@ -30,7 +30,14 @@ class API {
 	}
 
 	public static function getArtistSearch($artist) {
+		$response = file_get_contents("https://api.musixmatch.com/ws/1.1//artist.search?apikey=" . API::$KEY . "&q_artist=" . urlencode($artist) . "&page_size=100");
+		$json = json_decode($response, true)["message"]["body"];
 
+		$result = array();
+		foreach ($json["artist_list"] as $item)
+			array_push($result, $item["artist"]["artist_name"]);
+
+		return $result;
 	}
 }
 
