@@ -119,9 +119,9 @@ function decodeBase64(input) {
 
 	let bytes = (input.length / 4) * 3;
 	if (BASE64.indexOf(input.charAt(input.length - 1)) === 64)
-		bytes--;
+		--bytes;
 	if (BASE64.indexOf(input.charAt(input.length - 2)) === 64)
-		bytes--;
+		--bytes;
 
 	let ui8Array = new Uint8Array(bytes);
 
@@ -134,15 +134,11 @@ function decodeBase64(input) {
 		let enc3 = BASE64.indexOf(input.charAt(j++));
 		let enc4 = BASE64.indexOf(input.charAt(j++));
 
-		let chr1 = (enc1 << 2) | (enc2 >> 4);
-		let chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
-		let chr3 = ((enc3 & 3) << 6) | enc4;
-
-		ui8Array[i] = chr1;
+		ui8Array[i] = (enc1 << 2) | (enc2 >> 4);
 		if (enc3 !== 64)
-			ui8Array[i + 1] = chr2;
+			ui8Array[i + 1] = ((enc2 & 15) << 4) | (enc3 >> 2);
 		if (enc4 !== 64)
-			ui8Array[i + 2] = chr3;
+			ui8Array[i + 2] = ((enc3 & 3) << 6) | enc4;
 	}
 
 	return ui8Array;
@@ -152,22 +148,23 @@ function postImageToFacebook(authToken, filename, imageData) {
 	const boundary = "-----CloudifyFormBoundary-----";
 
 	let formData = ""
-	+ `--${boundary}\r\n`
-	+ `Content-Disposition: form-data; name="source"; filename="${filename}"\r\n`
-	+ "Content-Type: image/png\r\n\r\n"
-	+ imageData.reduce((accumulator, currentValue) => accumulator + String.fromCharCode(currentValue & 0xff), "")
-	+ "\r\n"
-	+ `--${boundary}\r\n`;
+	+ `--${boundary}\n`
+	+ `Content-Disposition: form-data; name="source"; filename="${filename}"\n`
+	+ "Content-Type: image/png\n\n"
+	+ imageData.reduce((accumulator, currentValue) => accumulator + String.fromCharCode(currentValue & 0xff), "") + "\n"
+	+ `--${boundary}\n`;
 
-	let xhr = new XMLHttpRequest;
-	xhr.open("POST", `https://graph.facebook.com/me/photos?access_token=${authToken}`, true);
-	xhr.setRequestHeader("Content-Type", `multipart/form-data; boundary=${boundary}`);
-
-	let ui8Data = new Uint8Array(formData.length);
+	let ui8Array = new Uint8Array(formData.length);
 	for (let i = 0; i < formData.length; ++i)
-		ui8Data[i] = formData.charCodeAt(i) & 0xff;
+		ui8Array[i] = formData.charCodeAt(i) & 0xff;
 
-	xhr.send(ui8Data);
+	fetch(`https://graph.facebook.com/me/photos?access_token=${authToken}`, {
+		method: "POST",
+		headers: new Headers({
+			"Content-Type": `multipart/form-data; boundary=${boundary}`,
+		}),
+		body: ui8Array,
+	});
 };
 
 Array.from(document.getElementsByClassName("share")).forEach(element => {
