@@ -5,7 +5,11 @@ $time = microtime(TRUE);
 require_once("API.php");
 require_once("Util.php");
 
-$tracks = API::getTrackSearch($_GET["a"]);
+$a =     isset($_GET["a"])     ? $_GET["a"]     : [];
+$w =     isset($_GET["w"])     ? $_GET["w"]     : "";
+$debug = isset($_GET["debug"]) ? $_GET["debug"] : "";
+
+$tracks = API::getTrackSearch($a);
 
 $lyrics = array_map(function($artist) {
 	return API::getTrackLyricsGet(array_map(function($track) {
@@ -13,7 +17,7 @@ $lyrics = array_map(function($artist) {
 	}, $artist));
 }, $tracks);
 
-$word = strtolower($_GET["w"]);
+$word = strtolower($w);
 
 $songs = array();
 for ($artist = 0; $artist < count($tracks); ++$artist) {
@@ -43,11 +47,11 @@ $time = microtime(TRUE) - $time;
 <html>
 	<head>
 		<link rel="stylesheet" href="common.css">
-		<title><?php echo $_GET["w"]; ?></title>
+		<title><?php echo $w; ?></title>
 	</head>
 	<body>
 		<main>
-			<h1><?php echo $_GET["w"]; ?></h1>
+			<h1><?php echo $w; ?></h1>
 			<table>
 				<tbody>
 <?php foreach ($songs as $song) { ?>
@@ -59,10 +63,10 @@ $time = microtime(TRUE) - $time;
 <?php } ?>
 				</tbody>
 			</table>
-			<?php if ($_GET["debug"] === "true") echo $time . "s\n"; ?>
+			<?php if ($debug === "true") echo $time . "s\n"; ?>
 		</main>
 		<nav>
-			<a href="artist.php?<?php echo Util::generateArtistsQuery($_GET["a"]); ?>"><button><?php echo implode(", ", $_GET["a"]); ?></button></a>
+			<a href="artist.php?<?php echo Util::generateArtistsQuery($a); ?>"><button><?php echo implode(", ", $a); ?></button></a>
 		</nav>
 	</body>
 </html>

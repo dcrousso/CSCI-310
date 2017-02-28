@@ -7,6 +7,9 @@ class API {
 	private static $KEY = "1f872ee1d20914aa4b34bdafa8f425c6";
 
 	public static function getTrackSearch($artists) {
+		if (!isset($artists) || !is_array($artists) || !count($artists))
+			return array();
+
 		$multi = curl_multi_init();
 
 		$curls = array_map(function($artist) use (&$multi) {
@@ -29,22 +32,21 @@ class API {
 		curl_multi_close($multi);
 
 		return array_map(function($curl) {
-			$json = json_decode(curl_multi_getcontent($curl), TRUE)["message"]["body"];
-
-			$result = array();
-			foreach ($json["track_list"] as $item) {
-				array_push($result, array(
-					"artist_name" => $item["track"]["artist_name"],
-					"track_id"    => $item["track"]["track_id"],
-					"track_name"  => $item["track"]["track_name"]
-				));
-			}
-
-			return $result;
+			$json = json_decode(curl_multi_getcontent($curl), TRUE)["message"]["body"]["track_list"];
+			return array_map(function($track) {
+				return array(
+					"artist_name" => $track["track"]["artist_name"],
+					"track_id"    => $track["track"]["track_id"],
+					"track_name"  => $track["track"]["track_name"]
+				);
+			}, $json);
 		}, $curls);
 	}
 
 	public static function getTrackLyricsGet($trackIDs) {
+		if (!isset($trackIDs) || !is_array($trackIDs) || !count($trackIDs))
+			return array();
+
 		$multi = curl_multi_init();
 
 		$curls = array_map(function($trackID) use (&$multi) {
@@ -67,25 +69,23 @@ class API {
 		curl_multi_close($multi);
 
 		return array_map(function($curl) {
-			$json = json_decode(curl_multi_getcontent($curl), TRUE)["message"]["body"];
-
-			$result = $json["lyrics"];
+			$json = json_decode(curl_multi_getcontent($curl), TRUE)["message"]["body"]["lyrics"];
 			return array(
-				"lyrics"              => substr($result["lyrics_body"], 0, strpos($result["lyrics_body"], "\n...\n\n******* This Lyrics is NOT for Commercial use *******")),
-				"script_tracking_url" => $result["script_tracking_url"]
+				"lyrics"              => substr($json["lyrics_body"], 0, strpos($json["lyrics_body"], "\n...\n\n******* This Lyrics is NOT for Commercial use *******")),
+				"script_tracking_url" => $json["script_tracking_url"]
 			);
 		}, $curls);
 	}
 
 	public static function getArtistSearch($artist) {
+		if (!isset($artist) || !is_string($artist))
+			return array();
+
 		$response = file_get_contents("https://api.musixmatch.com/ws/1.1/artist.search?apikey=" . API::$KEY . "&q_artist=" . urlencode($artist));
-		$json = json_decode($response, TRUE)["message"]["body"];
-
-		$result = array();
-		foreach ($json["artist_list"] as $item)
-			array_push($result, $item["artist"]["artist_name"]);
-
-		return $result;
+		$json = json_decode($response, TRUE)["message"]["body"]["artist_list"];
+		return array_map(function($artist) {
+			return $artist["artist"]["artist_name"];
+		}, $json);
 	}
 }
 

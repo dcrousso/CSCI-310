@@ -5,7 +5,10 @@ $time = microtime(TRUE);
 require_once("API.php");
 require_once("Util.php");
 
-$tracks = API::getTrackSearch($_GET["a"]);
+$a     = isset($_GET["a"])     ? $_GET["a"]     : [];
+$debug = isset($_GET["debug"]) ? $_GET["debug"] : "";
+
+$tracks = API::getTrackSearch($a);
 
 $lyrics = array_map(function($artist) {
 	return API::getTrackLyricsGet(array_map(function($track) {
@@ -42,11 +45,11 @@ button.share {
 	</head>
 	<body>
 		<main>
-			<h1><?php echo implode(", ", $_GET["a"]); ?></h1>
+			<h1><?php echo implode(", ", $a); ?></h1>
 			<svg id="wordcloud" width="900px" height="500px"></svg>
 			<form action="artist.php">
-<?php foreach ($_GET["a"] as $a) { ?>
-				<input name="a[]" type="hidden" value="<?php echo $a; ?>">
+<?php foreach ($a as $artist) { ?>
+				<input name="a[]" type="hidden" value="<?php echo $artist; ?>">
 <?php } ?>
 				<div>
 					<input name="a[]" type="search" placeholder="Enter Artist" autofocus>
@@ -57,7 +60,7 @@ button.share {
 					<button type="button" class="share">Share</button>
 				</div>
 			</form>
-			<?php if ($_GET["debug"] === "true") echo $time . "s\n"; ?>
+			<?php if ($debug === "true") echo $time . "s\n"; ?>
 		</main>
 		<script src="d3.min.js"></script>
 		<script src="d3.layout.cloud.js"></script>
@@ -90,7 +93,7 @@ d3.layout.cloud()
 		.data(data)
 		.enter()
 		.append("a")
-			.attr("href", d => `word.php?<?php echo Util::generateArtistsQuery($_GET["a"]); ?>&w=${d.text}`)
+			.attr("href", d => `word.php?<?php echo Util::generateArtistsQuery($a); ?>&w=${d.text}`)
 		.append("text")
 			.style("font-size", d => `${d.size}px`)
 			.attr("text-anchor", "middle")
