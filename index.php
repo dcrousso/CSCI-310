@@ -24,5 +24,6 @@ main {
 				</div>
 			</form>
 		</main>
+		<script src="common.js"></script>
 	</body>
 </html>

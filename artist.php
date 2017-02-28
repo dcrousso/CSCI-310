@@ -49,7 +49,7 @@ button.share {
 				<input name="a[]" type="hidden" value="<?php echo $a; ?>">
 <?php } ?>
 				<div>
-					<input name="a[]" type="search" placeholder="Enter Artist">
+					<input name="a[]" type="search" placeholder="Enter Artist" autofocus>
 				</div>
 				<div>
 					<button class="search">Search</button>
@@ -61,6 +61,7 @@ button.share {
 		</main>
 		<script src="d3.min.js"></script>
 		<script src="d3.layout.cloud.js"></script>
+		<script src="common.js"></script>
 		<script>
 
 "use strict";
