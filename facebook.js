@@ -2,15 +2,15 @@
 // Thanks so much :)
 
 if (!XMLHttpRequest.prototype.sendAsBinary) {
-  XMLHttpRequest.prototype.sendAsBinary = function (sData) {
-    var nBytes = sData.length, ui8Data = new Uint8Array(nBytes);
-    for (var nIdx = 0; nIdx < nBytes; nIdx++) {
-      ui8Data[nIdx] = sData.charCodeAt(nIdx) & 0xff;
-    }
-    /* send as ArrayBufferView...: */
-    this.send(ui8Data);
-    /* ...or as ArrayBuffer (legacy)...: this.send(ui8Data.buffer); */
-  };
+	XMLHttpRequest.prototype.sendAsBinary = function (sData) {
+		var nBytes = sData.length, ui8Data = new Uint8Array(nBytes);
+		for (var nIdx = 0; nIdx < nBytes; nIdx++) {
+			ui8Data[nIdx] = sData.charCodeAt(nIdx) & 0xff;
+		}
+		/* send as ArrayBufferView...: */
+		this.send(ui8Data);
+		/* ...or as ArrayBuffer (legacy)...: this.send(ui8Data.buffer); */
+	};
 }
 
 var Base64Binary = {
@@ -29,7 +29,7 @@ var Base64Binary = {
 		//get last chars to see if are valid
 		var lkey1 = this._keyStr.indexOf(input.charAt(input.length-1));		 
 		var lkey2 = this._keyStr.indexOf(input.charAt(input.length-2));		 
-	
+
 		var bytes = (input.length/4) * 3;
 		if (lkey1 == 64) bytes--; //padding chars, so skip
 		if (lkey2 == 64) bytes--; //padding chars, so skip
@@ -53,16 +53,16 @@ var Base64Binary = {
 			enc2 = this._keyStr.indexOf(input.charAt(j++));
 			enc3 = this._keyStr.indexOf(input.charAt(j++));
 			enc4 = this._keyStr.indexOf(input.charAt(j++));
-	
+
 			chr1 = (enc1 << 2) | (enc2 >> 4);
 			chr2 = ((enc2 & 15) << 4) | (enc3 >> 2);
 			chr3 = ((enc3 & 3) << 6) | enc4;
-	
+
 			uarray[i] = chr1;			
 			if (enc3 != 64) uarray[i+1] = chr2;
 			if (enc4 != 64) uarray[i+2] = chr3;
 		}
-	
+
 		return uarray;	
 	}
 }
@@ -77,7 +77,7 @@ function postImageToFacebook( authToken, filename, mimeType, imageData, message 
     formData += 'Content-Type: ' + mimeType + '\r\n\r\n';
     for ( var i = 0; i < imageData.length; ++i )
     {
-        formData += String.fromCharCode( imageData[ i ] & 0xff );
+    	formData += String.fromCharCode( imageData[ i ] & 0xff );
     }
     formData += '\r\n';
     formData += '--' + boundary + '\r\n';
@@ -88,7 +88,7 @@ function postImageToFacebook( authToken, filename, mimeType, imageData, message 
     var xhr = new XMLHttpRequest();
     xhr.open( 'POST', 'https://graph.facebook.com/me/photos?access_token=' + authToken, true );
     xhr.onload = xhr.onerror = function() {
-        console.log( xhr.responseText );
+    	console.log( xhr.responseText );
     };
     xhr.setRequestHeader( "Content-Type", "multipart/form-data; boundary=" + boundary );
     xhr.sendAsBinary( formData );
@@ -103,17 +103,19 @@ document.getElementById("shareButton").onclick = function() {
 	var decodedPng = Base64Binary.decode(encodedPng);
 
 	FB.getLoginStatus(function(response) {
-	  if (response.status === "connected") {
-		postImageToFacebook(response.authResponse.accessToken, "wordcloud", "image/png", decodedPng, "");
-	  } else if (response.status === "not_authorized") {
-		 FB.login(function(response) {
+		if (response.status === "connected") {
 			postImageToFacebook(response.authResponse.accessToken, "wordcloud", "image/png", decodedPng, "");
-		 }, {scope: "publish_actions"});
-	  } else {
-		 FB.login(function(response)  {
-			postImageToFacebook(response.authResponse.accessToken, "wordcloud", "image/png", decodedPng, "");
-		 }, {scope: "publish_actions"});
-	  }
-	 });
+		} else if (response.status === "not_authorized") {
+			FB.login(function(response) {
+				if(response.authResponse) {
+					postImageToFacebook(response.authResponse.accessToken, "wordcloud", "image/png", decodedPng, ""), 
+					{scope: "publish_actions"}}});
+		} else {
+			FB.login(function(response)  {
+				if(response.authResponse){
+					postImageToFacebook(response.authResponse.accessToken, "wordcloud", "image/png", decodedPng, ""), 
+					{scope: "publish_actions"}}});
+		}
+	});
 
 }
