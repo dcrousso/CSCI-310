@@ -52,8 +52,8 @@ button.share {
 					<input name="a[]" type="search" placeholder="Enter Artist">
 				</div>
 				<div>
-					<button>Search</button>
-					<button>Merge</button>
+					<button class="search">Search</button>
+					<button class="merge">Merge</button>
 					<button type="button" class="share">Share</button>
 				</div>
 			</form>
@@ -97,6 +97,15 @@ d3.layout.cloud()
 			.text(d => d.text);
 	})
 	.start();
+
+Array.from(document.getElementsByClassName("search")).forEach(element => {
+	element.addEventListener("click", event => {
+		Array.from(document.getElementsByTagName("input")).forEach(input => {
+			if (input.type === "hidden")
+				input.remove();
+		});
+	});
+})
 
 		</script>
 	</body>
