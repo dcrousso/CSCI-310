@@ -10,15 +10,36 @@
 
 ##### Tuesdays after 10pm <sup><sub>[[WhenIsGood](http://whenisgood.net/jk27zpz/results/sf3x4eg)]</sub></sup>
 
-#### Deliverable Due Dates:
-   - Software requirements- 1/30 </br>
-   - Project management plan- 2/6 </br>
-   - Design- 2/15* </br>
-   - Implementation- 2/27* </br>
-   - Testing and delivery- 3/8* </br>
+### Deliverable Due Dates
+<table>
+	<tbody>
+		<tr>
+			<td>Software requirements</td>
+			<td><date>01/30</date></td>
+		</tr>
+		<tr>
+			<td>Project management plan</td>
+			<td><date>02/06</date></td>
+		</tr>
+		<tr>
+			<td>Design</td>
+			<td><date>02/15</date></td>
+		</tr>
+		<tr>
+			<td>Implementation</td>
+			<td><date>02/27</date></td>
+		</tr>
+		<tr>
+			<td>Testing and delivery</td>
+			<td><date>03/08</date></td>
+		</tr>
+	</tbody>
+</table>
 
 
-#### SETUP:
+### Setup
+
+#### Apache
 ```Shell
 sudo apt install git
 sudo apt-get install php-curl
@@ -27,3 +48,17 @@ sudo git clone https://github.com/dcrousso/CSCI-310.git
 sudo apachectl start
 firefox localhost/CSCI-310/
 ```
+
+#### Facebook
+<table>
+	<tbody>
+		<tr>
+			<td>Username</td>
+			<td><code>unusedaux@gmail.com</code></td>
+		</tr>
+		<tr>
+			<td>Password</td>
+			<td><code>unusedaux</code></td>
+		</tr>
+	</tbody>
+</table>
