@@ -7,6 +7,10 @@ class Util {
 		arsort($words);
 		return $words;
 	}
+
+	public static function generateArtistsQuery($artists) {
+		return "a[]=" . implode("&a[]=", $artists);
+	}
 }
 
 ?>

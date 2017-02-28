@@ -7,13 +7,17 @@ require_once("Util.php");
 
 $tracks = API::getTrackSearch($_GET["a"]);
 
-$lyrics = API::getTrackLyricsGet(array_map(function($track) {
-	return $track["track_id"];
-}, $tracks));
+$lyrics = array_map(function($artist) {
+	return API::getTrackLyricsGet(array_map(function($track) {
+		return $track["track_id"];
+	}, $artist));
+}, $tracks);
 
-$words = Util::splitWords(array_reduce($lyrics, function($carry, $item) {
-	return $carry + $item["lyrics"] + " ";
-}, ""));
+$words = Util::splitWords(array_reduce($lyrics, function($carryTotal, $artist) {
+	return $carryTotal . " " . array_reduce($artist, function($carryArtist, $song) {
+		return $carryArtist . " " . $song["lyrics"];
+	}, " ");
+}, " "));
 
 $time = microtime(TRUE) - $time;
 
@@ -38,11 +42,14 @@ button.share {
 	</head>
 	<body>
 		<main>
-			<h1><?php echo $_GET["a"]; ?></h1>
+			<h1><?php echo implode(", ", $_GET["a"]); ?></h1>
 			<svg id="wordcloud" width="900px" height="500px"></svg>
 			<form action="artist.php">
+<?php foreach ($_GET["a"] as $a) { ?>
+				<input name="a[]" type="hidden" value="<?php echo $a; ?>">
+<?php } ?>
 				<div>
-					<input name="a" type="search" placeholder="Enter Artist">
+					<input name="a[]" type="search" placeholder="Enter Artist">
 				</div>
 				<div>
 					<button>Search</button>
@@ -82,7 +89,7 @@ d3.layout.cloud()
 		.data(data)
 		.enter()
 		.append("a")
-			.attr("href", d => `word.php?a=<?php echo $_GET["a"]; ?>&w=${d.text}`)
+			.attr("href", d => `word.php?<?php echo Util::generateArtistsQuery($_GET["a"]); ?>&w=${d.text}`)
 		.append("text")
 			.style("font-size", d => `${d.size}px`)
 			.attr("text-anchor", "middle")

@@ -3,28 +3,33 @@
 $time = microtime(TRUE);
 
 require_once("API.php");
+require_once("Util.php");
 
 $tracks = API::getTrackSearch($_GET["a"]);
 
-$lyrics = API::getTrackLyricsGet(array_map(function($track) {
-	return $track["track_id"];
-}, $tracks));
+$lyrics = array_map(function($artist) {
+	return API::getTrackLyricsGet(array_map(function($track) {
+		return $track["track_id"];
+	}, $artist));
+}, $tracks);
 
 $word = strtolower($_GET["w"]);
 
 $songs = array();
-for ($i = 0; $i < count($tracks); ++$i) {
-	$lowercase = strtolower($lyrics[$i]["lyrics"]);
-	if (strpos($lowercase, $word) === FALSE)
-		continue;
+for ($artist = 0; $artist < count($tracks); ++$artist) {
+	for ($song = 0; $song < count($tracks[$artist]); ++$song) {
+		$lowercase = strtolower($lyrics[$artist][$song]["lyrics"]);
+		if (strpos($lowercase, $word) === FALSE)
+			continue;
 
-	$count = preg_match_all("/\b" . $word . "\b/", $lowercase);
-	if (!$count)
-		continue;
+		$count = preg_match_all("/\b" . $word . "\b/", $lowercase);
+		if (!$count)
+			continue;
 
-	$tracks[$i]["occurrence_count"] = $count;
+		$tracks[$artist][$song]["occurrence_count"] = $count;
 
-	array_push($songs, $tracks[$i]);
+		array_push($songs, $tracks[$artist][$song]);
+	}
 }
 
 usort($songs, function($a, $b) {
@@ -48,7 +53,7 @@ $time = microtime(TRUE) - $time;
 <?php foreach ($songs as $song) { ?>
 					<tr>
 						<td><?php echo $song["occurrence_count"]; ?></td>
-						<td><a href="lyrics.php?a=<?php echo $song["artist_name"]; ?>&s=<?php echo $song["track_name"]; ?>&w=<?php echo $word; ?>&id=<?php echo $song["track_id"]; ?>"><?php echo $song["track_name"]; ?></a></td>
+						<td><a href="lyrics.php?a[]=<?php echo $song["artist_name"]; ?>&s=<?php echo $song["track_name"]; ?>&w=<?php echo $word; ?>&id=<?php echo $song["track_id"]; ?>"><?php echo $song["track_name"]; ?></a></td>
 						<td><?php echo $song["artist_name"]; ?></td>
 					</tr>
 <?php } ?>
@@ -57,7 +62,7 @@ $time = microtime(TRUE) - $time;
 			<?php if ($_GET["debug"] === "true") echo $time . "s\n"; ?>
 		</main>
 		<nav>
-			<a href="artist.php?a=<?php echo $_GET["a"]; ?>"><button><?php echo $_GET["a"]; ?></button></a>
+			<a href="artist.php?<?php echo Util::generateArtistsQuery($_GET["a"]); ?>"><button><?php echo implode(", ", $_GET["a"]); ?></button></a>
 		</nav>
 	</body>
 </html>

@@ -17,7 +17,7 @@ main {
 			<h1>Cloudify</h1>
 			<form action="artist.php">
 				<div>
-					<input name="a" type="search" placeholder="Enter Artist" autofocus required>
+					<input name="a[]" type="search" placeholder="Enter Artist" autofocus required>
 				</div>
 				<div>
 					<button>Search</button>
