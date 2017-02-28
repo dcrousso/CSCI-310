@@ -11,18 +11,9 @@ $lyrics = API::getTrackLyricsGet(array_map(function($track) {
 	return $track["track_id"];
 }, $tracks));
 
-$words = array();
-foreach ($lyrics as $lyric) {
-	$counts = Util::splitWords($lyric["lyrics"]);
-	foreach (array_keys($counts) as $word) {
-		if (!array_key_exists($word, $words))
-			$words[$word] = 0;
-
-		$words[$word] += $counts[$word];
-	}
-}
-
-arsort($words);
+$words = Util::splitWords(array_reduce($lyrics, function($carry, $item) {
+	return $carry + $item["lyrics"] + " ";
+}, ""));
 
 $time = microtime(TRUE) - $time;
 
