@@ -1,11 +1,14 @@
 Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).forEach(input => {
 	input.addEventListener("input", event => {
+		while (input.nextElementSibling)
+			input.nextElementSibling.remove();
+
+		if (!input.value)
+			return;
+
 		fetch(`API.php?a=${input.value}`)
 		.then(response => response.json())
 		.then(json => {
-			while (input.nextElementSibling)
-				input.nextElementSibling.remove();
-
 			let container = input.insertAdjacentElement("afterEnd", document.createElement("div"));
 			if (!json.length) {
 				container.textContent = "No Results";
