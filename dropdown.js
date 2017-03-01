@@ -7,6 +7,11 @@ Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).fo
 				input.nextElementSibling.remove();
 
 			let container = input.insertAdjacentElement("afterEnd", document.createElement("div"));
+			if (!json.length) {
+				container.textContent = "No Results";
+				return;
+			}
+
 			json.forEach(artist => {
 				let item = container.appendChild(document.createElement("div"));
 				item.addEventListener("click", event => {
