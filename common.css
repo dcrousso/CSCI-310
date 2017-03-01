@@ -1,6 +1,8 @@
 :root {
 	--main-padding-x: 5vw;
 	--main-padding-y: 5vh;
+
+	--input-border: 2px solid purple;
 }
 
 * {
@@ -47,8 +49,26 @@ input {
 	padding: 2px 4px;
 	font-size: 1em;
 	background-color: white;
-	border: 2px solid purple;
+	border: var(--input-border);
 	outline: none;
+}
+
+input[type="search"] ~ div {
+	width: -webkit-fit-content;
+	width:    -moz-fit-content;
+	width:         fit-content;
+	margin: 0 auto;
+	text-align: left;
+	border: var(--input-border);
+	cursor: pointer;
+}
+
+input[type="search"] ~ div > div {
+	padding: 0 2px;
+}
+
+input[type="search"] ~ div > div:hover {
+	background-color: white;
 }
 
 img {
