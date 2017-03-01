@@ -21,7 +21,7 @@ Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).fo
 
 				let image = item.appendChild(document.createElement("img"));
 				image.src = "artist_placeholder.png";
-				fetch(`https://www.googleapis.com/customsearch/v1?cx=016332437324068616925:stn7bqajpbc&key=AIzaSyA7CUZ9Lr8l7NS761Y2XUiWMCBxo5rCraM&q=${artist}`)
+				fetch(`https://www.googleapis.com/customsearch/v1?cx=011210812122224081716:7jq1q7stggg&key=AIzaSyDgFgO4JBA-O9yyGjlq0vcHVCOqlyP4BNk&q=${artist}`)
 				.then(response => response.json())
 				.then(json => {
 					image.src = json["items"][0]["pagemap"]["imageobject"][0]["url"];
