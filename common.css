@@ -71,6 +71,11 @@ input[type="search"] ~ div > div:hover {
 	background-color: white;
 }
 
+input[type="search"] ~ div > div > img {
+	width: 1em;
+	height: 1em;
+}
+
 img {
 	width: 50%;
 }
