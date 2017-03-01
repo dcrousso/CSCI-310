@@ -63,7 +63,6 @@ button.share {
 			<?php if ($debug === "true") echo $time . "s\n"; ?>
 		</main>
 		<div id="fb-root"></div>
-		<script async src="http://connect.facebook.net/en_US/all.js"></script>
 		<script src="d3.min.js"></script>
 		<script src="d3.layout.cloud.js"></script>
 		<script src="rgb-color.min.js"></script>
@@ -192,5 +191,6 @@ window.fbAsyncInit = function() {
 };
 		</script>
 		<script src="dropdown.js"></script>
+		<script src="http://connect.facebook.net/en_US/all.js"></script>
 	</body>
 </html>
