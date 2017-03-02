@@ -5,12 +5,15 @@ $time = microtime(TRUE);
 require_once("API.php");
 require_once("Util.php");
 
+// query parameter default settings
 $a =     isset($_GET["a"])     ? $_GET["a"]     : [];
 $w =     isset($_GET["w"])     ? $_GET["w"]     : "";
 $debug = isset($_GET["debug"]) ? $_GET["debug"] : "";
 
+// get tracks for artists $a
 $tracks = API::getTrackSearch($a);
 
+// return the lyrics for these artists and their tracks
 $lyrics = array_map(function($artist) {
 	return API::getTrackLyricsGet(array_map(function($track) {
 		return $track["track_id"];
@@ -19,6 +22,8 @@ $lyrics = array_map(function($artist) {
 
 $word = strtolower($w);
 
+// determine which songs have occurrences of the word we're querying for
+// keep a count for each occurrence
 $songs = array();
 for ($artist = 0; $artist < count($tracks); ++$artist) {
 	for ($song = 0; $song < count($tracks[$artist]); ++$song) {

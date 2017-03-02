@@ -8,14 +8,17 @@ require_once("Util.php");
 $a     = isset($_GET["a"])     ? $_GET["a"]     : [];
 $debug = isset($_GET["debug"]) ? $_GET["debug"] : "";
 
+// Search for the tracks by an artist $a
 $tracks = API::getTrackSearch($a);
 
+// Obtain lyrics for each of the artists' songs
 $lyrics = array_map(function($artist) {
 	return API::getTrackLyricsGet(array_map(function($track) {
 		return $track["track_id"];
 	}, $artist));
 }, $tracks);
 
+// Parse the lyrics and split the words/obtain frequencies
 $words = Util::splitWords(array_reduce($lyrics, function($carryTotal, $artist) {
 	return $carryTotal . " " . array_reduce($artist, function($carryArtist, $song) {
 		return $carryArtist . " " . $song["lyrics"];

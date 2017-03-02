@@ -5,15 +5,18 @@ $time = microtime(TRUE);
 require_once("API.php");
 require_once("Util.php");
 
+// Lots of ternary operators to see if various fields/query parameters have been set
 $a     = isset($_GET["a"])     ? $_GET["a"]     : [];
 $s     = isset($_GET["s"])     ? $_GET["s"]     : "";
 $w     = isset($_GET["w"])     ? $_GET["w"]     : "";
 $id    = isset($_GET["id"])    ? $_GET["id"]    : "";
 $debug = isset($_GET["debug"]) ? $_GET["debug"] : "";
 
+// implode search queries together
 $artistsQuery = Util::generateArtistsQuery($a);
 $artistsString = implode(", ", $a);
 
+// obtain lyrics from aritsts via API.php function calls
 $data = API::getTrackLyricsGet([$id])[0];
 $lyrics = str_replace("\n", "<br>", $data["lyrics"]);
 $lyrics = preg_replace("/\b(" . $w . ")\b/i", "<mark>$1</mark>", $lyrics); 
