@@ -58,7 +58,7 @@ button.share {
 					<input name="a[]" type="search" placeholder="Enter Artist" autofocus>
 				</div>
 				<div>
-					<button class="search" disabled>Search</button>
+					<button class="search" disabled>OK</button>
 					<button class="merge" disabled>Merge</button>
 					<button class="share" type="button">Share</button>
 				</div>
