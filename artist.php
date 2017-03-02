@@ -103,6 +103,7 @@ d3.layout.cloud()
 				.style("font-size", d => `${d.size}px`)
 				.attr("text-anchor", "middle")
 				.attr("transform", d => `translate(${d.x}, ${d.y})`)
+				.attr("fill", () => `hsl(${Math.floor(Math.random() * 360)}, 100%, 50%)`)
 				.text(d => d.text);
 })
 .start();
