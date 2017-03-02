@@ -1,6 +1,6 @@
 Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).forEach(input => {
 	input.addEventListener("input", event => {
-		while (input.nextElementSibling)
+    while (input.nextElementSibling)
 			input.nextElementSibling.remove();
 
 		if (!input.value)
