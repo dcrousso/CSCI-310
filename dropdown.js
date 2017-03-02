@@ -5,15 +5,20 @@ Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).fo
 		while (input.nextElementSibling)
 			input.nextElementSibling.remove();
 
-		if (!input.value)
+		if (!input.value || input.value.length < 3)
 			return;
 
+		let query = input.value;
+
 		resultsPromise
-		.then(() => fetch(`API.php?a=${input.value}`))
+		.then(() => fetch(`API.php?a=${query}`))
 		.then(response => response.json())
 		.then(json => new Promise((resolve, reject) => {
 			while (input.nextElementSibling)
 				input.nextElementSibling.remove();
+
+			if (input.value !== query)
+				return;
 
 			let container = input.insertAdjacentElement("afterEnd", document.createElement("div"));
 			if (!json.length) {
