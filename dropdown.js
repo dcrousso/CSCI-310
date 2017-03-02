@@ -1,17 +1,24 @@
+let resultsPromise = Promise.resolve();
+
 Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).forEach(input => {
 	input.addEventListener("input", event => {
-    while (input.nextElementSibling)
+		while (input.nextElementSibling)
 			input.nextElementSibling.remove();
 
 		if (!input.value)
 			return;
 
-		fetch(`API.php?a=${input.value}`)
+		resultsPromise
+		.then(() => fetch(`API.php?a=${input.value}`))
 		.then(response => response.json())
-		.then(json => {
+		.then(json => new Promise((resolve, reject) => {
+			while (input.nextElementSibling)
+				input.nextElementSibling.remove();
+
 			let container = input.insertAdjacentElement("afterEnd", document.createElement("div"));
 			if (!json.length) {
 				container.textContent = "No Results";
+				resolve();
 				return;
 			}
 
@@ -32,6 +39,8 @@ Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).fo
 
 				item.appendChild(document.createTextNode(artist));
 			});
-		});
+
+			resolve();
+		}));
 	});
 });
