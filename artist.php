@@ -155,6 +155,9 @@ function postImageToFacebook(authToken, filename, imageData) {
 	+ `Content-Disposition: form-data; name="source"; filename="${filename}"\n`
 	+ "Content-Type: image/png\n\n"
 	+ imageData.reduce((accumulator, currentValue) => accumulator + String.fromCharCode(currentValue & 0xff), "") + "\n"
+	+ `--${boundary}\n`
+	+ "Content-Disposition: form-data; name=\"message\"\n\n"
+	+ "<?php echo implode(", ", $a); ?>\n"
 	+ `--${boundary}\n`;
 
 	let ui8Array = new Uint8Array(formData.length);
