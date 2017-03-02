@@ -35,7 +35,7 @@ Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).fo
 				});
 
 				let image = item.appendChild(document.createElement("img"));
-				image.src = "artist_placeholder.png";
+				image.src = "placeholder.png";
 				fetch(`https://www.googleapis.com/customsearch/v1?cx=011210812122224081716:7jq1q7stggg&key=AIzaSyDgFgO4JBA-O9yyGjlq0vcHVCOqlyP4BNk&q=${artist}`)
 				.then(response => response.json())
 				.then(json => {
