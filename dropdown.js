@@ -34,7 +34,8 @@ Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).fo
 				fetch(`https://www.googleapis.com/customsearch/v1?cx=011210812122224081716:7jq1q7stggg&key=AIzaSyDgFgO4JBA-O9yyGjlq0vcHVCOqlyP4BNk&q=${artist}`)
 				.then(response => response.json())
 				.then(json => {
-					image.src = json["items"][0]["pagemap"]["imageobject"][0]["url"];
+					if (json["items"])
+						image.src = json["items"][0]["pagemap"]["imageobject"][0]["url"];
 				});
 
 				item.appendChild(document.createTextNode(artist));
