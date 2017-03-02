@@ -5,6 +5,13 @@ Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).fo
 		while (input.nextElementSibling)
 			input.nextElementSibling.remove();
 
+		Array.from(input.form.getElementsByTagName("button")).forEach(button => {
+			if (button.type === "button")
+				return;
+
+			button.disabled = !input.value;
+		});
+
 		if (!input.value || input.value.length < 3)
 			return;
 
