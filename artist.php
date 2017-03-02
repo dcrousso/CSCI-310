@@ -75,9 +75,9 @@ button.share {
 "use strict";
 
 const WORDS = [
-<?php foreach (array_keys($words) as $word) { ?>
-	{text: "<?php echo $word; ?>", count: <?php echo $words[$word]; ?>}<?php echo $word === key(array_slice($words, -1, 1, TRUE)) ? "\n" : ",\n"; ?>
-<?php } ?>
+<?php $i = 0; foreach (array_keys($words) as $word) { if ($i++ < 250) { ?>
+	{text: "<?php echo $word; ?>", count: <?php echo $words[$word]; ?>}<?php echo (($i === count($words) || $i === 250) ? "" : ",") . "\n"; ?>
+<?php } } ?>
 ];
 
 const cloudContainer = d3.select("#wordcloud");
