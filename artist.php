@@ -58,8 +58,8 @@ button.share {
 					<input name="a[]" type="search" placeholder="Enter Artist" autofocus>
 				</div>
 				<div>
-					<button class="search">Search</button>
-					<button class="merge">Merge</button>
+					<button class="search" disabled>OK</button>
+					<button class="merge" disabled>Merge</button>
 					<button class="share" type="button">Share</button>
 				</div>
 			</form>
@@ -155,6 +155,9 @@ function postImageToFacebook(authToken, filename, imageData) {
 	+ `Content-Disposition: form-data; name="source"; filename="${filename}"\n`
 	+ "Content-Type: image/png\n\n"
 	+ imageData.reduce((accumulator, currentValue) => accumulator + String.fromCharCode(currentValue & 0xff), "") + "\n"
+	+ `--${boundary}\n`
+	+ "Content-Disposition: form-data; name=\"message\"\n\n"
+	+ "<?php echo implode(", ", $a); ?>\n"
 	+ `--${boundary}\n`;
 
 	let ui8Array = new Uint8Array(formData.length);
