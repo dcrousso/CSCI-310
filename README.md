@@ -74,6 +74,11 @@ sudo apt-get install cucumber
 sudo apt-get install phpunit
 ```
 
+#### Include this in the PHP files!
+```
+require_once 'vendor/autoload.php';
+```
+
 #### Facebook
 <table>
 	<tbody>
