@@ -60,14 +60,16 @@ sudo mv composer.phar /usr/local/bin/composer
 
 #### Behat
 ```
-sudo echo "{
-    "require-dev": {
-        "behat/behat": "~2.5"
-    },
-    "config": {
-        "bin-dir": "bin/"
-    }
-}" > composer.json
+sudo git pull
+//make sure you have composer.json!
+sudo composer install
+sudo composer require --dev behat/mink-extension
+
+```
+#### Cucumber & phpUnit
+```
+sudo apt-get install cucumber
+sudo apt-get install phpunit
 ```
 
 #### Facebook
