@@ -62,8 +62,8 @@ sudo mv composer.phar /usr/local/bin/composer
 ```
 sudo git pull
 //make sure you have composer.json!
+sudo apt-get install php7.0-mbstring
 sudo composer install
-sudo composer require --dev behat/mink-extension
 
 ```
 #### Cucumber & phpUnit
