@@ -12,6 +12,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 0);
+
+		echo "testSplitWordsWithNULLShouldReturnEmptyArray" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testSplitWordsWithNonStringShouldReturnEmptyArray() {
@@ -19,6 +23,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 0);
+
+		echo "testSplitWordsWithNonStringShouldReturnEmptyArray" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testSplitWordsWithEmptyStringShouldReturnEmptyArray() {
@@ -26,6 +34,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 0);
+
+		echo "testSplitWordsWithEmptyStringShouldReturnEmptyArray" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testSplitWordsWithValidStringOfOneWordShouldReturnArrayOfSizeOne() {
@@ -34,6 +46,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 1);
 		$this->assertEquals($result["foo"], 1);
+
+		echo "testSplitWordsWithValidStringOfOneWordShouldReturnArrayOfSizeOne" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testSplitWordsWithValidStringOfOneWordTwiceShouldReturnArrayOfSizeOne() {
@@ -42,6 +58,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 1);
 		$this->assertEquals($result["foo"], 2);
+
+		echo "testSplitWordsWithValidStringOfOneWordTwiceShouldReturnArrayOfSizeOne" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testSplitWordsWithValidStringOfTwoWordsShouldReturnArrayOfSizeTwo() {
@@ -51,6 +71,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 		$this->assertEquals(count($result), 2);
 		$this->assertEquals($result["foo"], 1);
 		$this->assertEquals($result["bar"], 1);
+
+		echo "testSplitWordsWithValidStringOfTwoWordsShouldReturnArrayOfSizeTwo" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testSplitWordsWithValidStringOfOneIgnoredWordsShouldReturnEmptyArray() {
@@ -58,6 +82,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 0);
+
+		echo "testSplitWordsWithValidStringOfOneIgnoredWordsShouldReturnEmptyArray" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testSplitWordsWithValidStringOfOneWordAndOneIgnoredWordsShouldReturnArrayOfSizeOne() {
@@ -66,6 +94,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 1);
 		$this->assertEquals($result["foo"], 1);
+
+		echo "testSplitWordsWithValidStringOfOneWordAndOneIgnoredWordsShouldReturnArrayOfSizeOne" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	// Util::generateArtistsQuery
@@ -75,6 +107,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_string($result));
 		$this->assertEquals(strlen($result), 0);
+
+		echo "testGenerateArtistsQueryWithNULLShouldReturnEmptyString" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testGenerateArtistsQueryWithNonArrayShouldReturnEmptyString() {
@@ -82,6 +118,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_string($result));
 		$this->assertEquals(strlen($result), 0);
+
+		echo "testGenerateArtistsQueryWithNonArrayShouldReturnEmptyString" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testGenerateArtistsQueryWithEmptyArrayShouldReturnEmptyString() {
@@ -89,6 +129,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_string($result));
 		$this->assertEquals(strlen($result), 0);
+
+		echo "testGenerateArtistsQueryWithEmptyArrayShouldReturnEmptyString" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testGenerateArtistsQueryWithArrayOfSizeOneShouldReturnValidString() {
@@ -96,6 +140,10 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_string($result));
 		$this->assertEquals($result, "a[]=foo");
+
+		echo "testGenerateArtistsQueryWithArrayOfSizeOneShouldReturnValidString" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 
 	public function testGenerateArtistsQueryWithArrayOfSizeTwoShouldReturnValidString() {
@@ -103,5 +151,9 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_string($result));
 		$this->assertEquals($result, "a[]=foo&a[]=bar");
+
+		echo "testGenerateArtistsQueryWithArrayOfSizeTwoShouldReturnValidString" . "\n";
+		var_dump($result);
+		echo "\n\n";
 	}
 }
