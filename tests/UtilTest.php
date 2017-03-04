@@ -27,61 +27,61 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 		$result = Util::splitWords(NULL);
 
 		$this->assertTrue(is_array($result));
-		$this->assertEquals(count($result), 0);
+		$this->assertCount(0, $result);
 	}
 
 	public function testSplitWordsWithNonStringShouldReturnEmptyArray() {
 		$result = Util::splitWords(array());
 
 		$this->assertTrue(is_array($result));
-		$this->assertEquals(count($result), 0);
+		$this->assertCount(0, $result);
 	}
 
 	public function testSplitWordsWithEmptyStringShouldReturnEmptyArray() {
 		$result = Util::splitWords("");
 
 		$this->assertTrue(is_array($result));
-		$this->assertEquals(count($result), 0);
+		$this->assertCount(0, $result);
 	}
 
 	public function testSplitWordsWithValidStringOfOneWordShouldReturnArrayOfSizeOne() {
 		$result = Util::splitWords("foo");
 
 		$this->assertTrue(is_array($result));
-		$this->assertEquals(count($result), 1);
-		$this->assertEquals($result["foo"], 1);
+		$this->assertCount(1, $result);
+		$this->assertEquals(1, $result["foo"]);
 	}
 
 	public function testSplitWordsWithValidStringOfOneWordTwiceShouldReturnArrayOfSizeOne() {
 		$result = Util::splitWords("foo foo");
 
 		$this->assertTrue(is_array($result));
-		$this->assertEquals(count($result), 1);
-		$this->assertEquals($result["foo"], 2);
+		$this->assertCount(1, $result);
+		$this->assertEquals(2, $result["foo"]);
 	}
 
 	public function testSplitWordsWithValidStringOfTwoWordsShouldReturnArrayOfSizeTwo() {
 		$result = Util::splitWords("foo bar");
 
 		$this->assertTrue(is_array($result));
-		$this->assertEquals(count($result), 2);
-		$this->assertEquals($result["foo"], 1);
-		$this->assertEquals($result["bar"], 1);
+		$this->assertCount(2, $result);
+		$this->assertEquals(1, $result["foo"]);
+		$this->assertEquals(1, $result["bar"]);
 	}
 
 	public function testSplitWordsWithValidStringOfOneIgnoredWordsShouldReturnEmptyArray() {
 		$result = Util::splitWords("a");
 
 		$this->assertTrue(is_array($result));
-		$this->assertEquals(count($result), 0);
+		$this->assertCount(0, $result);
 	}
 
 	public function testSplitWordsWithValidStringOfOneWordAndOneIgnoredWordsShouldReturnArrayOfSizeOne() {
 		$result = Util::splitWords("foo a");
 
 		$this->assertTrue(is_array($result));
-		$this->assertEquals(count($result), 1);
-		$this->assertEquals($result["foo"], 1);
+		$this->assertCount(1, $result);
+		$this->assertEquals(1, $result["foo"]);
 	}
 
 	// Util::generateArtistsQuery
@@ -90,34 +90,34 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 		$result = Util::generateArtistsQuery(NULL);
 
 		$this->assertTrue(is_string($result));
-		$this->assertEquals(strlen($result), 0);
+		$this->assertEquals(0, strlen($result));
 	}
 
 	public function testGenerateArtistsQueryWithNonArrayShouldReturnEmptyString() {
 		$result = Util::generateArtistsQuery("");
 
 		$this->assertTrue(is_string($result));
-		$this->assertEquals(strlen($result), 0);
+		$this->assertEquals(0, strlen($result));
 	}
 
 	public function testGenerateArtistsQueryWithEmptyArrayShouldReturnEmptyString() {
 		$result = Util::generateArtistsQuery(array());
 
 		$this->assertTrue(is_string($result));
-		$this->assertEquals(strlen($result), 0);
+		$this->assertEquals(0, strlen($result));
 	}
 
 	public function testGenerateArtistsQueryWithArrayOfSizeOneShouldReturnValidString() {
 		$result = Util::generateArtistsQuery(array("foo"));
 
 		$this->assertTrue(is_string($result));
-		$this->assertEquals($result, "a[]=foo");
+		$this->assertEquals("a[]=foo", $result);
 	}
 
 	public function testGenerateArtistsQueryWithArrayOfSizeTwoShouldReturnValidString() {
 		$result = Util::generateArtistsQuery(array("foo", "bar"));
 
 		$this->assertTrue(is_string($result));
-		$this->assertEquals($result, "a[]=foo&a[]=bar");
+		$this->assertEquals("a[]=foo&a[]=bar", $result);
 	}
 }
