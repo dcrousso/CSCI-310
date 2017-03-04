@@ -198,4 +198,34 @@ class APITest extends PHPUnit\Framework\TestCase {
 		$this->assertTrue(strlen($result[1]["lyrics"]) > 0);
 		$this->assertTrue(strlen($result[1]["script_tracking_url"]) > 0);
 	}
+
+	// API::getArtistSearch
+
+	public function testGetArtistSearchWithNULLShouldReturnEmptyArray() {
+		$result = API::getArtistSearch(NULL);
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 0);
+	}
+
+	public function testGetArtistSearchWithNonStringShouldReturnEmptyArray() {
+		$result = API::getArtistSearch(array());
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 0);
+	}
+
+	public function testGetArtistSearchWithEmptyStringShouldReturnEmptyArray() {
+		$result = API::getArtistSearch("");
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 0);
+	}
+
+	public function testGetArtistSearchWithValidStringShouldReturnValidArray() {
+		$result = API::getArtistSearch("Daft Punk");
+
+		$this->assertTrue(is_array($result));
+		$this->assertTrue(count($result) > 0);
+	}
 }
