@@ -42,6 +42,7 @@
 #### Apache
 ```Shell
 sudo apt install git
+sudo apt-get update
 sudo apt-get install php-curl
 cd /var/www/html
 sudo git clone https://github.com/dcrousso/CSCI-310.git
@@ -58,15 +59,16 @@ php -r "unlink('composer-setup.php');"
 sudo mv composer.phar /usr/local/bin/composer
 ```
 
-#### Behat
+#### Behat - make sure you have composer.json!
 ```
 sudo git pull
-//make sure you have composer.json!
+sudo apt-get update
 sudo apt-get install php7.0-mbstring
 sudo composer install
+sudo composer update
 
 ```
-#### Cucumber & phpUnit
+#### Cucumber & PHPUnit
 ```
 sudo apt-get install cucumber
 sudo apt-get install phpunit
