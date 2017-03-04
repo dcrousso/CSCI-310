@@ -8,7 +8,7 @@ class Util {
 	 * Explodes $string and reformats/counts words to return a map of words to frequencies
 	 */
 	public static function splitWords($string) {
-		if (!is_string($string))
+		if (!is_string($string) || !strlen($string))
 			return array();
 
 		// lowercase all words in string, then split w RegEx, then filter out white spaces

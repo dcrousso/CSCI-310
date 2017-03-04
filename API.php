@@ -19,7 +19,7 @@ class API {
 	 */
 	public static function getTrackSearch($artists) {
 		// Input Validation
-		if (!isset($artists) || !is_array($artists) || !count($artists))
+		if (!is_array($artists) || !count($artists))
 			return array();
 
 		// Utilizing multi-curl requests for (essentially) async requests
@@ -34,7 +34,9 @@ class API {
 			curl_multi_add_handle($multi, $curl);
 
 			return $curl;
-		}, $artists);
+		}, array_filter($artists, function($artist) {
+			return is_string($artist) && strlen($artist);
+		}));
 
 		// do while loop to execute multi-curl till completion
 		$running = null;
@@ -68,8 +70,8 @@ class API {
 	 * Takes an array of trackIDs and returns their corresponding lyrics as an array_map
 	 */
 	public static function getTrackLyricsGet($trackIDs) {
-		// Validate input
-		if (!isset($trackIDs) || !is_array($trackIDs) || !count($trackIDs))
+		// Input Validation
+		if (!is_array($trackIDs) || !count($trackIDs))
 			return array();
 
 		// multi-curl request for async requests
@@ -83,7 +85,7 @@ class API {
 			curl_multi_add_handle($multi, $curl);
 
 			return $curl;
-		}, $trackIDs);
+		}, array_filter($trackIDs));
 
 		// do while loop to execute while running
 		$running = null;
@@ -114,8 +116,8 @@ class API {
 	 * Takes in an artist name query as input and returns an array of possible artists that would match that query
 	 */
 	public static function getArtistSearch($artist) {
-		// Validate input
-		if (!isset($artist) || !is_string($artist))
+		// Input Validation
+		if (!is_string($artist) || !strlen($artist))
 			return array();
 
 		// obtain the results of an api request and store it in response, return as a json

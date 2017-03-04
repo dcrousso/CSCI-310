@@ -99,3 +99,9 @@ sudo apt-get install phpunit
 ```PHP
 require_once("vendor/autoload.php");
 ```
+
+#### Running
+```Shell
+cd /var/www/html/CSCI-310/
+sudo bin/phpunit-randomizer --order rand tests/
+```
