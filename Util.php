@@ -8,6 +8,9 @@ class Util {
 	 * Explodes $string and reformats/counts words to return a map of words to frequencies
 	 */
 	public static function splitWords($string) {
+		if (!is_string($string))
+			return array();
+
 		// lowercase all words in string, then split w RegEx, then filter out white spaces
 		$words = array_filter(preg_split("/\W/", strtolower($string)), function($item) {
 			if (!$item || !strlen($item))
@@ -32,6 +35,9 @@ class Util {
 	 * Takes all the artists a user might search for and generates a query string for it
 	 */
 	public static function generateArtistsQuery($artists) {
+		if (!is_array($artists) || !count($artists))
+			return "";
+
 		return "a[]=" . implode("&a[]=", $artists);
 	}
 }
