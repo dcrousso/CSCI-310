@@ -49,6 +49,27 @@ sudo apachectl start
 firefox localhost/CSCI-310/
 ```
 
+#### Composer
+```Shell
+php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');"
+php -r "if (hash_file('SHA384', 'composer-setup.php') === '55d6ead61b29c7bdee5cccfb50076874187bd9f21f65d8991d46ec5cc90518f447387fb9f76ebae1fbbacf329e583e30') { echo 'Installer verified'; } else { echo 'Installer corrupt'; unlink('composer-setup.php'); } echo PHP_EOL;"
+sudo php composer-setup.php
+php -r "unlink('composer-setup.php');"
+sudo mv composer.phar /usr/local/bin/composer
+```
+
+#### Behat
+```
+sudo echo "{
+    "require-dev": {
+        "behat/behat": "~2.5"
+    },
+    "config": {
+        "bin-dir": "bin/"
+    }
+}" > composer.json
+```
+
 #### Facebook
 <table>
 	<tbody>
