@@ -5,6 +5,22 @@ require("vendor/autoload.php");
 require_once("API.php");
 
 class APITest extends PHPUnit\Framework\TestCase {
+	public static function setUpBeforeClass() {
+		echo "=== APITest ===" . "\n";
+	}
+
+	protected function setUp() {
+		echo $this->getName();
+	}
+
+	protected function tearDown() {
+		echo "\n";
+	}
+
+	public static function tearDownAfterClass() {
+		echo "=== APITest ===" . "\n\n";
+	}
+
 	// API::getTrackSearch
 
 	public function testGetTrackSearchWithNULLShouldReturnEmptyArray() {
@@ -12,10 +28,6 @@ class APITest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 0);
-
-		echo "testGetTrackSearchWithNULLShouldReturnEmptyArray" . "\n";
-		var_dump($result);
-		echo "\n\n";
 	}
 
 	public function testGetTrackSearchWithNonArrayShouldReturnEmptyArray() {
@@ -23,10 +35,6 @@ class APITest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 0);
-
-		echo "testGetTrackSearchWithNonArrayShouldReturnEmptyArray" . "\n";
-		var_dump($result);
-		echo "\n\n";
 	}
 
 	public function testGetTrackSearchWithEmptyArrayShouldReturnEmptyArray() {
@@ -34,10 +42,6 @@ class APITest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 0);
-
-		echo "testGetTrackSearchWithEmptyArrayShouldReturnEmptyArray" . "\n";
-		var_dump($result);
-		echo "\n\n";
 	}
 
 	public function testGetTrackSearchWithArrayOfSizeOneWithEmptyStringShouldReturnEmptyArray() {
@@ -45,10 +49,6 @@ class APITest extends PHPUnit\Framework\TestCase {
 
 		$this->assertTrue(is_array($result));
 		$this->assertEquals(count($result), 0);
-
-		echo "testGetTrackSearchWithArrayOfSizeOneWithEmptyStringShouldReturnEmptyArray" . "\n";
-		var_dump($result);
-		echo "\n\n";
 	}
 
 	public function testGetTrackSearchWithArrayOfSizeOneShouldReturnArrayOfSizeOne() {
@@ -61,13 +61,9 @@ class APITest extends PHPUnit\Framework\TestCase {
 		$this->assertTrue(strlen($result[0][0]["artist_name"]) > 0);
 		$this->assertTrue(strlen($result[0][0]["track_id"]) > 0);
 		$this->assertTrue(strlen($result[0][0]["track_name"]) > 0);
-
-		echo "testGetTrackSearchWithArrayOfSizeOneShouldReturnArrayOfSizeOne" . "\n";
-		var_dump($result);
-		echo "\n\n";
 	}
 
-		public function testGetTrackSearchWithArrayOfSizeTwoWithOneBeingNULLShouldReturnArrayOfSizeOne() {
+	public function testGetTrackSearchWithArrayOfSizeTwoWithOneBeingNULLShouldReturnArrayOfSizeOne() {
 		$result = API::getTrackSearch(array("Daft Punk", NULL));
 
 		$this->assertTrue(is_array($result));
@@ -77,10 +73,6 @@ class APITest extends PHPUnit\Framework\TestCase {
 		$this->assertTrue(strlen($result[0][0]["artist_name"]) > 0);
 		$this->assertTrue(strlen($result[0][0]["track_id"]) > 0);
 		$this->assertTrue(strlen($result[0][0]["track_name"]) > 0);
-
-		echo "testGetTrackSearchWithArrayOfSizeTwoWithOneBeingNULLShouldReturnArrayOfSizeOne" . "\n";
-		var_dump($result);
-		echo "\n\n";
 	}
 
 	public function testGetTrackSearchWithArrayOfSizeTwoWithOneBeingNonStringShouldReturnArrayOfSizeOne() {
@@ -93,10 +85,6 @@ class APITest extends PHPUnit\Framework\TestCase {
 		$this->assertTrue(strlen($result[0][0]["artist_name"]) > 0);
 		$this->assertTrue(strlen($result[0][0]["track_id"]) > 0);
 		$this->assertTrue(strlen($result[0][0]["track_name"]) > 0);
-
-		echo "testGetTrackSearchWithArrayOfSizeTwoWithOneBeingNonStringShouldReturnArrayOfSizeOne" . "\n";
-		var_dump($result);
-		echo "\n\n";
 	}
 
 	public function testGetTrackSearchWithArrayOfSizeTwoWithOneBeingEmptyShouldReturnArrayOfSizeOne() {
@@ -109,10 +97,6 @@ class APITest extends PHPUnit\Framework\TestCase {
 		$this->assertTrue(strlen($result[0][0]["artist_name"]) > 0);
 		$this->assertTrue(strlen($result[0][0]["track_id"]) > 0);
 		$this->assertTrue(strlen($result[0][0]["track_name"]) > 0);
-
-		echo "testGetTrackSearchWithArrayOfSizeTwoWithOneBeingEmptyShouldReturnArrayOfSizeOne" . "\n";
-		var_dump($result);
-		echo "\n\n";
 	}
 
 	public function testGetTrackSearchWithArrayOfSizeTwoShouldReturnArrayOfSizeTwo() {
@@ -130,9 +114,5 @@ class APITest extends PHPUnit\Framework\TestCase {
 		$this->assertTrue(strlen($result[1][0]["artist_name"]) > 0);
 		$this->assertTrue(strlen($result[1][0]["track_id"]) > 0);
 		$this->assertTrue(strlen($result[1][0]["track_name"]) > 0);
-
-		echo "testGetTrackSearchWithArrayOfSizeTwoShouldReturnArrayOfSizeTwo" . "\n";
-		var_dump($result);
-		echo "\n\n";
 	}
 }
