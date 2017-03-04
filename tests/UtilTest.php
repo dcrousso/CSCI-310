@@ -1,8 +1,10 @@
 <?php
 
+require("vendor/autoload.php");
+
 require_once("Util.php");
 
-class UtilTest extends PHPUnit_Framework_TestCase {
+class UtilTest extends PHPUnit\Framework\TestCase {
 	// Util::splitWords
 
 	public function testSplitWordsWithNULLShouldReturnEmptyArray() {
