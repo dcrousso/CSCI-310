@@ -115,4 +115,87 @@ class APITest extends PHPUnit\Framework\TestCase {
 		$this->assertTrue(strlen($result[1][0]["track_id"]) > 0);
 		$this->assertTrue(strlen($result[1][0]["track_name"]) > 0);
 	}
+
+	// API::getTrackLyricsGet
+
+	public function testGetTrackLyricsGetWithNULLShouldReturnEmptyArray() {
+		$result = API::getTrackLyricsGet(NULL);
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 0);
+	}
+
+	public function testGetTrackLyricsGetWithNonArrayShouldReturnEmptyArray() {
+		$result = API::getTrackLyricsGet("");
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 0);
+	}
+
+	public function testGetTrackLyricsGetWithEmptyArrayShouldReturnEmptyArray() {
+		$result = API::getTrackLyricsGet(array());
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 0);
+	}
+
+	public function testGetTrackLyricsGetWithArrayOfSizeOneWithEmptyStringShouldReturnEmptyArray() {
+		$result = API::getTrackLyricsGet(array(""));
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 0);
+	}
+
+	public function testGetTrackLyricsGetWithArrayOfSizeOneShouldReturnArrayOfSizeOne() {
+		$result = API::getTrackLyricsGet(array("31751188" /* One More Time */));
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 1);
+		$this->assertEquals(count($result[0]), 2);
+		$this->assertTrue(strlen($result[0]["lyrics"]) > 0);
+		$this->assertTrue(strlen($result[0]["script_tracking_url"]) > 0);
+	}
+
+	public function testGetTrackLyricsGetWithArrayOfSizeTwoWithOneBeingNULLShouldReturnArrayOfSizeOne() {
+		$result = API::getTrackLyricsGet(array("31751188" /* One More Time */, NULL));
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 1);
+		$this->assertEquals(count($result[0]), 2);
+		$this->assertTrue(strlen($result[0]["lyrics"]) > 0);
+		$this->assertTrue(strlen($result[0]["script_tracking_url"]) > 0);
+	}
+
+	public function testGetTrackLyricsGetWithArrayOfSizeTwoWithOneBeingNonStringShouldReturnArrayOfSizeOne() {
+		$result = API::getTrackLyricsGet(array("31751188" /* One More Time */, array()));
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 1);
+		$this->assertEquals(count($result[0]), 2);
+		$this->assertTrue(strlen($result[0]["lyrics"]) > 0);
+		$this->assertTrue(strlen($result[0]["script_tracking_url"]) > 0);
+	}
+
+	public function testGetTrackLyricsGetWithArrayOfSizeTwoWithOneBeingEmptyShouldReturnArrayOfSizeOne() {
+		$result = API::getTrackLyricsGet(array("31751188" /* One More Time */, ""));
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 1);
+		$this->assertEquals(count($result[0]), 2);
+		$this->assertTrue(strlen($result[0]["lyrics"]) > 0);
+		$this->assertTrue(strlen($result[0]["script_tracking_url"]) > 0);
+	}
+
+	public function testGetTrackLyricsGetWithArrayOfSizeTwoShouldReturnArrayOfSizeTwo() {
+		$result = API::getTrackLyricsGet(array("31751188" /* One More Time */, "19859892" /* Get Lucky */));
+
+		$this->assertTrue(is_array($result));
+		$this->assertEquals(count($result), 2);
+		$this->assertEquals(count($result[0]), 2);
+		$this->assertTrue(strlen($result[0]["lyrics"]) > 0);
+		$this->assertTrue(strlen($result[0]["script_tracking_url"]) > 0);
+		$this->assertEquals(count($result[1]), 2);
+		$this->assertTrue(strlen($result[1]["lyrics"]) > 0);
+		$this->assertTrue(strlen($result[1]["script_tracking_url"]) > 0);
+	}
 }

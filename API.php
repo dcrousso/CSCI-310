@@ -85,7 +85,9 @@ class API {
 			curl_multi_add_handle($multi, $curl);
 
 			return $curl;
-		}, array_filter($trackIDs));
+		}, array_filter($trackIDs, function($trackID) {
+			return is_string($trackID) && strlen($trackID);
+		}));
 
 		// do while loop to execute while running
 		$running = null;
