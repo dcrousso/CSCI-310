@@ -3,7 +3,8 @@ Feature: Artist search
   As a user
   I need to be able to search for artists
 
-  Scenario:
-    Given:
-    When:
-    Then:
+  Scenario: searchingForArtistRedirectsToArtistPage
+    Given: I am on "/index.php"
+    When: I enter "Drake" in "a[]"
+    And: I hit the search button
+    Then: I am redirected to "/artist.php" and "wordcloud" should contain the generated word cloud for Drake.
