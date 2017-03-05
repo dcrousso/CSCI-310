@@ -9,7 +9,7 @@ if ($_SERVER["SCRIPT_NAME"] === "/CSCI-310/API.php" && isset($_GET["a"]))
 class API {
 
 	// MusixMatch API Key
-	private static $KEY = "1f872ee1d20914aa4b34bdafa8f425c6";
+	private static $KEY = "c69357990af8a2f223bfe45ca47192c0";
 
 	/*
 	 * @param $artists : an array of all artists queried for song names
