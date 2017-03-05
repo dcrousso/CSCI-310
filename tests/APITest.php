@@ -23,15 +23,8 @@ class APITest extends PHPUnit\Framework\TestCase {
 
 	// API::getTrackSearch
 
-	public function testGetTrackSearchWithNULLShouldReturnEmptyArray() {
-		$result = API::getTrackSearch(NULL);
-
-		$this->assertTrue(is_array($result));
-		$this->assertCount(0, $result);
-	}
-
 	public function testGetTrackSearchWithNonArrayShouldReturnEmptyArray() {
-		$result = API::getTrackSearch("");
+		$result = API::getTrackSearch(NULL);
 
 		$this->assertTrue(is_array($result));
 		$this->assertCount(0, $result);
@@ -39,6 +32,13 @@ class APITest extends PHPUnit\Framework\TestCase {
 
 	public function testGetTrackSearchWithEmptyArrayShouldReturnEmptyArray() {
 		$result = API::getTrackSearch(array());
+
+		$this->assertTrue(is_array($result));
+		$this->assertCount(0, $result);
+	}
+
+	public function testGetTrackSearchWithArrayOfSizeOneWithInvalidItemShouldReturnEmptyArray() {
+		$result = API::getTrackSearch(array(NULL));
 
 		$this->assertTrue(is_array($result));
 		$this->assertCount(0, $result);
@@ -63,20 +63,8 @@ class APITest extends PHPUnit\Framework\TestCase {
 		$this->assertGreaterThan(0, strlen($result[0][0]["track_name"]));
 	}
 
-	public function testGetTrackSearchWithArrayOfSizeTwoWithOneBeingNULLShouldReturnArrayOfSizeOne() {
-		$result = API::getTrackSearch(array("Daft Punk", NULL));
-
-		$this->assertTrue(is_array($result));
-		$this->assertCount(1, $result);
-		$this->assertGreaterThan(0, count($result[0]));
-		$this->assertCount(3, $result[0][0]);
-		$this->assertGreaterThan(0, strlen($result[0][0]["artist_name"]));
-		$this->assertGreaterThan(0, strlen($result[0][0]["track_id"]));
-		$this->assertGreaterThan(0, strlen($result[0][0]["track_name"]));
-	}
-
 	public function testGetTrackSearchWithArrayOfSizeTwoWithOneBeingNonStringShouldReturnArrayOfSizeOne() {
-		$result = API::getTrackSearch(array("Daft Punk", array()));
+		$result = API::getTrackSearch(array("Daft Punk", NULL));
 
 		$this->assertTrue(is_array($result));
 		$this->assertCount(1, $result);
@@ -118,15 +106,8 @@ class APITest extends PHPUnit\Framework\TestCase {
 
 	// API::getTrackLyricsGet
 
-	public function testGetTrackLyricsGetWithNULLShouldReturnEmptyArray() {
-		$result = API::getTrackLyricsGet(NULL);
-
-		$this->assertTrue(is_array($result));
-		$this->assertCount(0, $result);
-	}
-
 	public function testGetTrackLyricsGetWithNonArrayShouldReturnEmptyArray() {
-		$result = API::getTrackLyricsGet("");
+		$result = API::getTrackLyricsGet(NULL);
 
 		$this->assertTrue(is_array($result));
 		$this->assertCount(0, $result);
@@ -139,15 +120,15 @@ class APITest extends PHPUnit\Framework\TestCase {
 		$this->assertCount(0, $result);
 	}
 
-	public function testGetTrackLyricsGetWithArrayOfSizeOneWithEmptyStringShouldReturnEmptyArray() {
-		$result = API::getTrackLyricsGet(array(""));
+	public function testGetTrackLyricsGetWithArrayOfSizeOneWithInvalidItemShouldReturnEmptyArray() {
+		$result = API::getTrackLyricsGet(array(NULL));
 
 		$this->assertTrue(is_array($result));
 		$this->assertCount(0, $result);
 	}
 
 	public function testGetTrackLyricsGetWithArrayOfSizeOneShouldReturnArrayOfSizeOne() {
-		$result = API::getTrackLyricsGet(array("31751188" /* One More Time */));
+		$result = API::getTrackLyricsGet(array(31751188 /* Daft Punk - One More Time */));
 
 		$this->assertTrue(is_array($result));
 		$this->assertCount(1, $result);
@@ -156,28 +137,8 @@ class APITest extends PHPUnit\Framework\TestCase {
 		$this->assertGreaterThan(0, strlen($result[0]["script_tracking_url"]));
 	}
 
-	public function testGetTrackLyricsGetWithArrayOfSizeTwoWithOneBeingNULLShouldReturnArrayOfSizeOne() {
-		$result = API::getTrackLyricsGet(array("31751188" /* One More Time */, NULL));
-
-		$this->assertTrue(is_array($result));
-		$this->assertCount(1, $result);
-		$this->assertCount(2, $result[0]);
-		$this->assertGreaterThan(0, strlen($result[0]["lyrics"]));
-		$this->assertGreaterThan(0, strlen($result[0]["script_tracking_url"]));
-	}
-
-	public function testGetTrackLyricsGetWithArrayOfSizeTwoWithOneBeingNonStringShouldReturnArrayOfSizeOne() {
-		$result = API::getTrackLyricsGet(array("31751188" /* One More Time */, array()));
-
-		$this->assertTrue(is_array($result));
-		$this->assertCount(1, $result);
-		$this->assertCount(2, $result[0]);
-		$this->assertGreaterThan(0, strlen($result[0]["lyrics"]));
-		$this->assertGreaterThan(0, strlen($result[0]["script_tracking_url"]));
-	}
-
-	public function testGetTrackLyricsGetWithArrayOfSizeTwoWithOneBeingEmptyShouldReturnArrayOfSizeOne() {
-		$result = API::getTrackLyricsGet(array("31751188" /* One More Time */, ""));
+	public function testGetTrackLyricsGetWithArrayOfSizeTwoWithOneBeingNonIntShouldReturnArrayOfSizeOne() {
+		$result = API::getTrackLyricsGet(array(31751188 /* Daft Punk - One More Time */, NULL));
 
 		$this->assertTrue(is_array($result));
 		$this->assertCount(1, $result);
@@ -187,7 +148,7 @@ class APITest extends PHPUnit\Framework\TestCase {
 	}
 
 	public function testGetTrackLyricsGetWithArrayOfSizeTwoShouldReturnArrayOfSizeTwo() {
-		$result = API::getTrackLyricsGet(array("31751188" /* One More Time */, "19859892" /* Get Lucky */));
+		$result = API::getTrackLyricsGet(array(31751188 /* Daft Punk - One More Time */, 19859892 /* Daft Punk - Get Lucky */));
 
 		$this->assertTrue(is_array($result));
 		$this->assertCount(2, $result);
@@ -201,15 +162,8 @@ class APITest extends PHPUnit\Framework\TestCase {
 
 	// API::getArtistSearch
 
-	public function testGetArtistSearchWithNULLShouldReturnEmptyArray() {
-		$result = API::getArtistSearch(NULL);
-
-		$this->assertTrue(is_array($result));
-		$this->assertCount(0, $result);
-	}
-
 	public function testGetArtistSearchWithNonStringShouldReturnEmptyArray() {
-		$result = API::getArtistSearch(array());
+		$result = API::getArtistSearch(NULL);
 
 		$this->assertTrue(is_array($result));
 		$this->assertCount(0, $result);
