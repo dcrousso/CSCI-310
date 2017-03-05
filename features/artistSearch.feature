@@ -3,6 +3,9 @@ Feature: Artist search
   As a user
   I need to be able to search for artists
 
+  Rules:
+  - "a[]" search bar should be empty on page load
+
   Scenario: searchingForArtistRedirectsToArtistPage
     Given: I am on "/index.php"
     When: I enter "Drake" in "a[]"
