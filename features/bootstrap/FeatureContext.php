@@ -14,7 +14,7 @@ use Behat\MinkExtension\Context\MinkContext;
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements MinkContext
+class FeatureContext extends MinkContext
 {
     /**
      * Initializes context.
