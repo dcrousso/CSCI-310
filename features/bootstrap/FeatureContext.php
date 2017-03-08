@@ -5,10 +5,12 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 
+use Behat\MinkExtension\Context\MinkContext;
+
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context
+class FeatureContext implements MinkContext
 {
     /**
      * Initializes context.
@@ -169,6 +171,86 @@ class FeatureContext implements Context
      * @Then the first column of the results table should contain decreasing numbers
      */
     public function theFirstColumnOfTheResultsTableShouldContainDecreasingNumbers()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given I am on :arg1 for a given song
+     */
+    public function iAmOnForAGivenSong($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the lyrics for the song should be displayed correctly
+     */
+    public function theLyricsForTheSongShouldBeDisplayedCorrectly()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the lyrics for the song should be displayed correcly and any occurence of the selected :arg1 should be highlighted
+     */
+    public function theLyricsForTheSongShouldBeDisplayedCorreclyAndAnyOccurenceOfTheSelectedShouldBeHighlighted($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I click on a :arg1 from the :arg2 table
+     */
+    public function iClickOnAFromTheTable($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then I am redirected to :arg1 for the selected :arg2
+     */
+    public function iAmRedirectedToForTheSelected($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given I am on :arg1 for a given :arg2
+     */
+    public function iAmOnForAGiven($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the artist column in the results table should somehow include the :arg1 as the writer or a collaborator
+     */
+    public function theArtistColumnInTheResultsTableShouldSomehowIncludeTheAsTheWriterOrACollaborator($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I click on the button with the :arg1 in it
+     */
+    public function iClickOnTheButtonWithTheInIt($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then I am redirected to :arg1 for the specified :arg2
+     */
+    public function iAmRedirectedToForTheSpecified($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the lyrics for the song should be displayed correctly and formatted correctly
+     */
+    public function theLyricsForTheSongShouldBeDisplayedCorrectlyAndFormattedCorrectly()
     {
         throw new PendingException();
     }
