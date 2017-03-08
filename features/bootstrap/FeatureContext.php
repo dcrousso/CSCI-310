@@ -92,4 +92,84 @@ class FeatureContext implements Context
     {
         throw new PendingException();
     }
+
+    /**
+     * @Then A :arg1 should appear
+     */
+    public function aShouldAppear($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then Artist names in that :arg1 should begin with :arg2
+     */
+    public function artistNamesInThatShouldBeginWith($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given the word cloud did load
+     */
+    public function theWordCloudDidLoad()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I click on a :arg1 from the word cloud
+     */
+    public function iClickOnAFromTheWordCloud($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then I should be on :arg1 for the selected :arg2
+     */
+    public function iShouldBeOnForTheSelected($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then A :arg1 with Facebook's sharing functionality should pop up
+     */
+    public function aWithFacebookSSharingFunctionalityShouldPopUp($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then Artist names in that :arg1 should begin with the :arg2
+     */
+    public function artistNamesInThatShouldBeginWithThe($arg1, $arg2)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given I am on :arg1 for a given :arg2 and :arg3
+     */
+    public function iAmOnForAGivenAnd($arg1, $arg2, $arg3)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the :arg1 should be a heading near the top of the page
+     */
+    public function theShouldBeAHeadingNearTheTopOfThePage($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Then the first column of the results table should contain decreasing numbers
+     */
+    public function theFirstColumnOfTheResultsTableShouldContainDecreasingNumbers()
+    {
+        throw new PendingException();
+    }
 }

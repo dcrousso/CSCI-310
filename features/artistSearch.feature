@@ -28,6 +28,6 @@ Feature: Artist search
 
   Scenario: Artist suggestions drop down appears when input is entered in the search bar
     Given I am on "/index.php"
-    When I enter "a character" in the searchbar "a[]"
+    When I enter "3 characters" in the searchbar "a[]"
     Then A "drop-down menu" should appear
-    And Artist names in that "drop-down menu" should begin with "a character"
+    And Artist names in that "drop-down menu" should begin with the "3 characters"
