@@ -102,6 +102,7 @@ require_once("vendor/autoload.php");
 
 #### Selenium Setup
 ```Shell
+sudo apt-get install default-jre
 java -jar selenium.jar &
 ```
 
