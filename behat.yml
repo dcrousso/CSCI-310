@@ -1,0 +1,6 @@
+default:
+    extensions:
+        Behat\MinkExtension:
+            base_url: http://localhost/index.php
+            goutte: ~
+            selenium2: ~

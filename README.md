@@ -100,6 +100,11 @@ sudo apt-get install phpunit
 require_once("vendor/autoload.php");
 ```
 
+#### Selenium Setup
+```Shell
+java -jar selenium.jar &
+```
+
 #### Running
 ```Shell
 cd /var/www/html/CSCI-310/
