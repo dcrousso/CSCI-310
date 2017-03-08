@@ -5,6 +5,10 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 
+use Behat\Mink\Mink,
+    Behat\Mink\Session,
+    Behat\Mink\Selenium2Driver;
+
 use Behat\MinkExtension\Context\MinkContext;
 
 /**
@@ -21,6 +25,7 @@ class FeatureContext implements MinkContext
      */
     public function __construct()
     {
+      $this->useContext('mink', new Behat\MinkExtension\Context\MinkContext);
     }
 
     /**
