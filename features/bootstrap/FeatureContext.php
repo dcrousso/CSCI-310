@@ -9,12 +9,12 @@ use Behat\Mink\Mink,
     Behat\Mink\Session,
     Behat\Mink\Selenium2Driver;
 
-use Behat\MinkExtension\Context\MinkContext;
+// use Behat\MinkExtension\Context\MinkContext;
 
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements MinkContext
+class FeatureContext extends Behat\MinkExtension\Context\MinkContext
 {
     /**
      * Initializes context.
