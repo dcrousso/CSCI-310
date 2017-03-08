@@ -23,15 +23,8 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 	// Util::splitWords
 
-	public function testSplitWordsWithNULLShouldReturnEmptyArray() {
-		$result = Util::splitWords(NULL);
-
-		$this->assertTrue(is_array($result));
-		$this->assertCount(0, $result);
-	}
-
 	public function testSplitWordsWithNonStringShouldReturnEmptyArray() {
-		$result = Util::splitWords(array());
+		$result = Util::splitWords(NULL);
 
 		$this->assertTrue(is_array($result));
 		$this->assertCount(0, $result);
@@ -86,15 +79,8 @@ class UtilTest extends PHPUnit\Framework\TestCase {
 
 	// Util::generateArtistsQuery
 
-	public function testGenerateArtistsQueryWithNULLShouldReturnEmptyString() {
-		$result = Util::generateArtistsQuery(NULL);
-
-		$this->assertTrue(is_string($result));
-		$this->assertEquals(0, strlen($result));
-	}
-
 	public function testGenerateArtistsQueryWithNonArrayShouldReturnEmptyString() {
-		$result = Util::generateArtistsQuery("");
+		$result = Util::generateArtistsQuery(NULL);
 
 		$this->assertTrue(is_string($result));
 		$this->assertEquals(0, strlen($result));

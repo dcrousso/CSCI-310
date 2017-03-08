@@ -34,9 +34,9 @@ class API {
 			curl_multi_add_handle($multi, $curl);
 
 			return $curl;
-		}, array_filter($artists, function($artist) {
+		}, array_values(array_filter($artists, function($artist) {
 			return is_string($artist) && strlen($artist);
-		}));
+		})));
 
 		// do while loop to execute multi-curl till completion
 		$running = null;
@@ -85,9 +85,9 @@ class API {
 			curl_multi_add_handle($multi, $curl);
 
 			return $curl;
-		}, array_filter($trackIDs, function($trackID) {
-			return is_string($trackID) && strlen($trackID);
-		}));
+		}, array_values(array_filter($trackIDs, function($trackID) {
+			return is_int($trackID);
+		})));
 
 		// do while loop to execute while running
 		$running = null;
