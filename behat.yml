@@ -1,6 +1,10 @@
 default:
     extensions:
         Behat\MinkExtension:
-            base_url: http://localhost/index.php
+            base_url: http://localhost/CSCI-310/
+            browser_name: firefox
+            default_session: selenium2
             goutte: ~
-            selenium2: ~
+            selenium2:
+              capabilities:
+                version: ''

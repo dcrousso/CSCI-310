@@ -13,6 +13,7 @@
         "behat/mink-selenium2-driver": "^1.3",
         "behat/mink-zombie-driver": "^1.4",
         "behat/mink-browserkit-driver": "^1.3",
+        "facebook/webdriver": "~1.0",
         "fiunchinho/phpunit-randomizer": "^3.0"
     }
 }

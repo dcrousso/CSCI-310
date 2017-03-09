@@ -9,14 +9,18 @@ use Behat\Mink\Mink,
     Behat\Mink\Session,
     Behat\Mink\Selenium2Driver;
 
+use Behat\Behat\Hook\Scope\BeforeScenarioScope,
+    Behat\Behat\Hook\Scope\AfterScenarioScope;
+
 /**
  * Defines application features from the specific context.
  */
 class FeatureContext extends Behat\MinkExtension\Context\MinkContext
 {
     protected $baseUrl;
-    protected $webDriver;
-  
+    
+    protected $driver;
+    protected $session;
     /**
      * Initializes context.
      *
@@ -26,7 +30,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function __construct()
     {
-      $this->baseUrl = "localhost/CSCI-310";
+      $this->baseUrl = "localhost/CSCI-310/";
+      $this->driver   = new \Behat\Mink\Driver\Selenium2Driver('firefox');
+      $this->session  = new \Behat\Mink\Session($this->driver);
     }
 
     /**
@@ -34,7 +40,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iEnterInTheSearchBar($arg1, $arg2)
     {
-        throw new PendingException();
+      $this->session->visit($this->baseUrl);     
     }
 
     /**
@@ -244,4 +250,26 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     {
         throw new PendingException();
     }
+
+    /**
+     * @BeforeScenario
+     */
+    public function openWebBrowser(BeforeScenarioScope $event) {
+      $this->session->start(); 
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function closeWebBrowser(AfterScenarioScope $event) {
+      /*
+      if ($this->driver)
+        $this->driver->quit();
+      */
+    }
 }
+
+
+
+
+
