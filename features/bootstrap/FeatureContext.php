@@ -9,6 +9,8 @@ use Behat\Mink\Mink,
     Behat\Mink\Session,
     Behat\Mink\Selenium2Driver;
 
+use Selenium\Client as SeleniumClient;
+
 use Behat\Behat\Hook\Scope\BeforeScenarioScope,
     Behat\Behat\Hook\Scope\AfterScenarioScope;
 
@@ -32,6 +34,10 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     {
       $this->baseUrl = "localhost/CSCI-310/";
       $this->driver   = new \Behat\Mink\Driver\Selenium2Driver('firefox');
+      $capabilites = $this->driver->getDefaultCapabilities();
+        $capabilities['version'] = '52.0';
+        $this->driver->setDesiredCapabilities($capabilities);
+
       $this->session  = new \Behat\Mink\Session($this->driver);
     }
 
@@ -255,7 +261,14 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      * @BeforeScenario
      */
     public function openWebBrowser(BeforeScenarioScope $event) {
-      $this->session->start(); 
+        /*
+        $driver = new \Behat\Mink\Driver\Selenium2Driver('firefox');
+        $capabilites = $driver->getDefaultCapabilities();
+        $capabilities['version'] = '52';
+        $driver->setDesiredCapabilities($capabilities);
+        $this->session  = new \Behat\Mink\Session($this->driver);
+        */
+        $this->session->start(); 
     }
 
     /**
