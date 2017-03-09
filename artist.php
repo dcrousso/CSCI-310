@@ -48,19 +48,19 @@ button.share {
 	</head>
 	<body>
 		<main>
-			<h1><?php echo implode(", ", $a); ?></h1>
+			<h1 id="artist"><?php echo implode(", ", $a); ?></h1>
 			<svg id="wordcloud" width="900px" height="500px"></svg>
 			<form action="artist.php">
 				<?php foreach ($a as $artist) { ?>
 				<input name="a[]" type="hidden" value="<?php echo $artist; ?>">
 				<?php } ?>
 				<div>
-					<input name="a[]" type="search" placeholder="Enter Artist" autofocus>
+					<input id="a[]" name="a[]" type="search" placeholder="Enter Artist" autofocus>
 				</div>
 				<div>
-					<button class="search" disabled>OK</button>
-					<button class="merge" disabled>Merge</button>
-					<button class="share" type="button">Share</button>
+					<button id="search" class="search" disabled>OK</button>
+					<button id="merge" class="merge" disabled>Merge</button>
+					<button id="share" class="share" type="button">Share</button>
 				</div>
 			</form>
 			<?php if ($debug === "true") echo $time . "s\n"; ?>

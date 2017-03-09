@@ -6,5 +6,5 @@ default:
             default_session: selenium2
             goutte: ~
             selenium2:
-              capabilities:
-                version: ''
+              browser: "firefox"
+              capabilities: { "platform": "LINUX", "browser": "firefox", "version": "" }

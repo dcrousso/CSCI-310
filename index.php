@@ -20,7 +20,7 @@ main {
 					<input name="a[]" type="search" placeholder="Enter Artist" autofocus required>
 				</div>
 				<div>
-					<button disabled>Search</button>
+					<button disabled name="search" id="search">Search</button>
 				</div>
 			</form>
 		</main>

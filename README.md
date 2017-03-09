@@ -107,7 +107,15 @@ java -jar selenium.jar &
 ```
 
 #### Running
+### White Box Tests
 ```Shell
 cd /var/www/html/CSCI-310/
 sudo bin/phpunit-randomizer --order rand tests/
+```
+
+### Black Box Tests
+```Shell
+cd /var/www/html/CSCI-310/
+sudo java -jar selenium-server-standalone-2.53.0.jar &
+sudo bin/behat
 ```

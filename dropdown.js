@@ -28,6 +28,7 @@ Array.from(document.querySelectorAll("input[type=\"search\"][name=\"a[]\"]")).fo
 				return;
 
 			let container = input.insertAdjacentElement("afterEnd", document.createElement("div"));
+			container.setAttribute("id", "dropdown");
 			if (!json.length) {
 				container.textContent = "No Results";
 				resolve();

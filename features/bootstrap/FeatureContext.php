@@ -19,10 +19,10 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope,
  */
 class FeatureContext extends Behat\MinkExtension\Context\MinkContext
 {
-    protected $baseUrl;
-    
+
     protected $driver;
     protected $session;
+
     /**
      * Initializes context.
      *
@@ -32,21 +32,21 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function __construct()
     {
-      $this->baseUrl = "localhost/CSCI-310/";
-      $this->driver   = new \Behat\Mink\Driver\Selenium2Driver('firefox');
-      $capabilites = $this->driver->getDefaultCapabilities();
-        $capabilities['version'] = '52.0';
-        $this->driver->setDesiredCapabilities($capabilities);
-
-      $this->session  = new \Behat\Mink\Session($this->driver);
+      $this->driver = new \Behat\Mink\Driver\Selenium2Driver('firefox');
+      $this->session = new \Behat\Mink\Session($this->driver);
     }
 
     /**
-     * @When I enter :arg1 in the search bar :arg2
+     * @BeforeScenario
      */
-    public function iEnterInTheSearchBar($arg1, $arg2)
-    {
-      $this->session->visit($this->baseUrl);     
+    public function openBrowser(BeforeScenarioScope $event) {
+      $this->session->start();
+    }
+    /**
+     * @AfterScenario
+     */
+    public function closeBrowser(AfterScenarioScope $event) {
+      $this->session->stop();
     }
 
     /**
@@ -54,23 +54,48 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iClickTheButton($arg1)
     {
-        throw new PendingException();
+      $button = $this->getSession()->getPage()->find('css', '#' . $arg1);
+
+      if (!$button) {
+        throw new Exception($arg1 . " button could not be found");
+      } else {
+        $button->click();
+      }
+    }
+    /**
+     * @When I click the navigation :arg1 button
+     */
+    public function iClickTheButton2($arg1)
+    {
+      $button = $this->getSession()->getPage()->find('css', '#' . $arg1);
+
+      if (!$button) {
+        throw new Exception($arg1 . " button could not be found");
+      } else {
+        $button->click();
+      }
+    }
+    /**
+     * @Then I am redirected to :arg1 and :arg2 should contain the generated word cloud for :arg3.
+     */
+    public function iAmRedirectedToAndShouldContainTheGeneratedWordCloudFor($arg1, $arg2, $arg3)
+    {
+      if (strpos($this->getSession()->getCurrentUrl(), $arg1) === false)
+        throw new Exception("Currently not on /artist.php!");
+
+      $this->assertSession()->elementExists('css', '#wordcloud');
+
+      if (strpos($this->getSession()->getPage()->find('css', '#artist')->getText(), $arg3) === false)
+        throw new Exception("Incorrect word cloud generated!");
     }
 
     /**
-     * @Then I am redirected to :arg1 and :arg2 should contain the generated word cloud for Drake.
+     * @Given I am on :arg1 for :arg2
      */
-    public function iAmRedirectedToAndShouldContainTheGeneratedWordCloudForDrake($arg1, $arg2)
+    public function iAmOnFor($arg1, $arg2)
     {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given the title above the word cloud is for :arg1
-     */
-    public function theTitleAboveTheWordCloudIsFor($arg1)
-    {
-        throw new PendingException();
+      $url = 'localhost/CSCI-310' . $arg1 . '?a[]=' . $arg2 . '&search=';
+      $this->getSession()->visit($url);
     }
 
     /**
@@ -78,7 +103,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function isRefreshed($arg1)
     {
-        throw new PendingException();
+      if (strpos($this->getSession()->getCurrentUrl(), $arg1) === false)
+        throw new Exception("Currently not on /artist.php!");
     }
 
     /**
@@ -86,7 +112,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function theTitleOfTheWordCloudShouldRead($arg1, $arg2)
     {
-        throw new PendingException();
+      if ($this->getSession()->getPage()->find('css', 'h1')->getText() !== ($arg1 . ', ' . $arg2))
+        throw new Exception("Word Cloud title incorrect!");
     }
 
     /**
@@ -94,7 +121,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function theWordCloudShouldBeUpdated()
     {
-        throw new PendingException();
+      $this->assertSession()->elementExists('css', '#wordcloud');
     }
 
     /**
@@ -102,15 +129,17 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function theTitleOfTheWordCloudShouldRead2($arg1)
     {
-        throw new PendingException();
+      if (strpos($this->getSession()->getPage()->find('css', 'h1')->getText(), $arg1) === false)
+        throw new Exception("Word Cloud title incorrect!");
     }
 
     /**
-     * @Then A :arg1 should appear
+     * @Then A drop-down menu should appear
      */
-    public function aShouldAppear($arg1)
+    public function aShouldAppear()
     {
-        throw new PendingException();
+      // THIS MAY BUG OUT IF API KEYS EXPIRED  
+      $this->assertSession()->elementExists('css', '#dropdown');      
     }
 
     /**
@@ -122,43 +151,36 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     }
 
     /**
-     * @Given I am on :arg1 for a given song :arg2
-     */
-    public function iAmOnForAGivenSong($arg1, $arg2)
-    {
-        throw new PendingException();
-    }
-
-    /**
      * @Then the lyrics for the song should be displayed correctly and formatted correctly
      */
     public function theLyricsForTheSongShouldBeDisplayedCorrectlyAndFormattedCorrectly()
     {
-        throw new PendingException();
+      // THIS MAY BUG OUT DUE TO API KEY EXPIRATION
+      $this->assertSession()->elementExists('css', '#lyrics');
     }
 
     /**
-     * @Given I am on :arg1 for a given word :arg2
+     * @Then the lyrics for the song should be displayed correctly and any occurence of the selected :arg1 should be highlighted
      */
-    public function iAmOnForAGivenWord($arg1, $arg2)
+    public function theLyricsForTheSongShouldBeDisplayedCorrectlyAndAnyOccurenceOfTheSelectedShouldBeHighlighted($arg1)
     {
-        throw new PendingException();
+      // THIS FUNCTION MAY BUG OUT DUE TO API KEY EXPIRATION
+      $occurrences = $this->getSession()->getPage()->findAll('css', '#occurrence');
+      foreach ($occurrences as $occurrence) {
+        if ($occurrence->getText() !== $arg1) {
+          throw new Exception("Word that was not a keyword was highlighted!");
+        }
+      } 
     }
 
     /**
-     * @Then the lyrics for the song should be displayed correcly and any occurence of the selected :arg1 should be highlighted
+     * @Given I specified an artist :arg1
      */
-    public function theLyricsForTheSongShouldBeDisplayedCorreclyAndAnyOccurenceOfTheSelectedShouldBeHighlighted($arg1)
+    public function iSpecifiedAnArtist($arg1)
     {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given I am on :arg1 for a given artist :arg2
-     */
-    public function iAmOnForAGivenArtist($arg1, $arg2)
-    {
-        throw new PendingException();
+      if (strpos($this->getSession()->getCurrentUrl(), ('a[]=' . $arg1) === false)) {
+        throw new Exception("No artist(s) was/were specified!");
+      }
     }
 
     /**
@@ -166,15 +188,19 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iShouldBeOnForTheSelected($arg1, $arg2)
     {
-        throw new PendingException();
+      if (strpos($this->getSession()->getCurrentUrl(), $arg1) === false)
+        throw new Exception("Currently not on " . $arg1 . "!");
+
+      if (strpos($this->getSession()->getCurrentUrl(), $arg2) === false)
+        throw new Exception("Currently not on " . $arg1 . " for the right " . $arg2 . "!");
     }
 
     /**
-     * @Given I am on :arg1 for a given :arg2 and :arg3
+     * @Given I specified a word :arg1 and artist :arg2
      */
-    public function iAmOnForAGivenAnd($arg1, $arg2, $arg3)
+    public function iSpecifiedAWordAndArtist($arg1, $arg2)
     {
-        throw new PendingException();
+      $this->getSession()->visit($this->getSession()->getCurrentUrl() . "?a[]=" . $arg2 . "&w=" . $arg1);
     }
 
     /**
@@ -182,7 +208,9 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function theShouldBeAHeadingNearTheTopOfThePage($arg1)
     {
-        throw new PendingException();
+      if ($this->getSession()->getPage()->find('css', '#keyword')->getText() !== $arg1) {
+        throw new Exception("Incorrect keyword as title!");
+      }
     }
 
     /**
@@ -190,7 +218,12 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function theFirstColumnOfTheResultsTableShouldContainDecreasingNumbers()
     {
-        throw new PendingException();
+      $freqs = $this->getSession()->getPage()->findAll('css', '#song-count');
+
+      for ($i=1; $i < count($freqs) ; $i++) { 
+        if ((int)$freqs[$i]->getText() > (int)$freqs[$i-1]->getText())
+          throw new Exception("Occurences are not descending");
+      }
     }
 
     /**
@@ -198,23 +231,28 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iClickOnAFromTheTable($arg1, $arg2)
     {
-        throw new PendingException();
+      $this->getSession()->getPage()->find('css', '#results #song-title')->click();
     }
 
     /**
-     * @Then I am redirected to :arg1 for the selected :arg2
+     * @Then I am redirected to :arg1
      */
-    public function iAmRedirectedToForTheSelected($arg1, $arg2)
+    public function iAmRedirectedTo($arg1)
     {
-        throw new PendingException();
+        if (strpos($this->getSession()->getCurrentUrl(), $arg1) === false)
+        throw new Exception("Currently not on " . $arg1 . "!");
     }
 
     /**
-     * @Then the artist column in the results table should somehow include the :arg1 as the writer or a collaborator
+     * @Then the artist column in the results table should somehow include the artist :arg1 as the writer or a collaborator
      */
-    public function theArtistColumnInTheResultsTableShouldSomehowIncludeTheAsTheWriterOrACollaborator($arg1)
+    public function theArtistColumnInTheResultsTableShouldSomehowIncludeTheArtistAsTheWriterOrACollaborator2($arg1)
     {
-        throw new PendingException();
+        $artists = $this->getSession()->getPage()->findAll('css', '#artist-name');
+
+        foreach($artists as $artist) {
+          if (strpos($artist->getText(), $arg1) === false) throw new Exception("Artist field incorrect!");
+        }
     }
 
     /**
@@ -222,23 +260,16 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iClickOnTheButtonWithTheInIt($arg1)
     {
-        throw new PendingException();
+      $this->getSession()->getPage()->find('css', '#word-back')->click(); 
     }
 
-    /**
-     * @Then I am redirected to :arg1 for the specified :arg2
-     */
-    public function iAmRedirectedToForTheSpecified($arg1, $arg2)
-    {
-        throw new PendingException();
-    }
 
     /**
      * @Given the word cloud did load
      */
     public function theWordCloudDidLoad()
     {
-        throw new PendingException();
+      $this->assertSession()->elementExists('css', '#wordcloud');
     }
 
     /**
@@ -246,7 +277,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iClickOnAFromTheWordCloud($arg1)
     {
-        throw new PendingException();
+      $this->getSession()->getPage()->find('css', 'a')->click();
     }
 
     /**
@@ -254,35 +285,58 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function aWithFacebookSSharingFunctionalityShouldPopUp($arg1)
     {
+    }
+
+    /**
+     * @When I enter :arg1 in the search bar :arg2
+     */
+    public function iEnterInTheSearchBar($arg1, $arg2)
+    {
         throw new PendingException();
     }
 
+
     /**
-     * @BeforeScenario
+     * @Given I am on :arg1 for a given artist :arg2
      */
-    public function openWebBrowser(BeforeScenarioScope $event) {
-        /*
-        $driver = new \Behat\Mink\Driver\Selenium2Driver('firefox');
-        $capabilites = $driver->getDefaultCapabilities();
-        $capabilities['version'] = '52';
-        $driver->setDesiredCapabilities($capabilities);
-        $this->session  = new \Behat\Mink\Session($this->driver);
-        */
-        $this->session->start(); 
+    public function iAmOnForAGivenArtist($arg1, $arg2)
+    {
+      $this->getSession()->visit('localhost/CSCI-310' . $arg1 . "?a[]=" . $arg2);
     }
 
     /**
-     * @AfterScenario
+     * @When I click on a word :arg1 from the word cloud
      */
-    public function closeWebBrowser(AfterScenarioScope $event) {
-      /*
-      if ($this->driver)
-        $this->driver->quit();
-      */
+    public function iClickOnAWordFromTheWordCloud($arg1)
+    {
+      $this->getSession()->visit($this->getSession()->getCurrentUrl() . '&w=' . $arg1);
+    }
+
+    /**
+     * @Then I should be on :arg1 for the selected word :arg2
+     */
+    public function iShouldBeOnForTheSelectedWord($arg1, $arg2)
+    {
+      if (strpos($this->getSession()->getCurrentUrl(), $arg1) === false)
+        throw new Exception("Currently not on " . $arg1 . "!");
+
+      if (strpos($this->getSession()->getCurrentUrl(), $arg2) === false)
+        throw new Exception("Currently not on " . $arg1 . " for the right " . $arg2 . "!");
+    }
+
+    /**
+     * @Given on artist.php for a given artist :arg1
+     */
+    public function onArtistPhpForAGivenArtist($arg1)
+    {
+      $this->getSession()->visit($this->getSession()->getCurrentUrl() . '?a=' . $arg1);
+    }
+
+    /**
+     * @Given I am on :arg1 for song Love the Way You Lie and keyword right
+     */
+    public function iAmOnForSongLoveTheWayYouLieAndKeywordRight($arg1)
+    {
+      $this->getSession()->visit('http://localhost/CSCI-310/lyrics.php?a[]=Eminem&s=Love the Way You Lie&w=right');
     }
 }
-
-
-
-
-

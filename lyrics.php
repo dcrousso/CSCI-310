@@ -19,7 +19,7 @@ $artistsString = implode(", ", $a);
 // obtain lyrics from aritsts via API.php function calls
 $data = API::getTrackLyricsGet([$id])[0];
 $lyrics = str_replace("\n", "<br>", $data["lyrics"]);
-$lyrics = preg_replace("/\b(" . $w . ")\b/i", "<mark>$1</mark>", $lyrics); 
+$lyrics = preg_replace("/\b(" . $w . ")\b/i", "<mark id=\"occurrence\">$1</mark>", $lyrics); 
 
 $time = microtime(TRUE) - $time;
 
@@ -34,14 +34,14 @@ $time = microtime(TRUE) - $time;
 		<main>
 			<h1><?php echo $s; ?></h1>
 			<h2>by <?php echo $artistsString; ?></h2>
-			<p>
+			<p id="lyrics">
 <?php echo $lyrics; ?>
 			</p>
 			<?php if ($debug === "true") echo $time . "s\n"; ?>
 		</main>
 		<nav>
-			<a href="artist.php?<?php echo $artistsQuery; ?>"><button><?php echo $artistsString; ?></button></a>
-			<a href="word.php?<?php echo $artistsQuery; ?>&w=<?php echo $w; ?>"><button><?php echo $w; ?></button></a>
+			<a id="artist" href="artist.php?<?php echo $artistsQuery; ?>"><button><?php echo $artistsString; ?></button></a>
+			<a id="keyword" href="word.php?<?php echo $artistsQuery; ?>&w=<?php echo $w; ?>"><button><?php echo $w; ?></button></a>
 		</nav>
 		<script src="<?php echo $data["script_tracking_url"]; ?>"></script>
 	</body>

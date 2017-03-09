@@ -56,14 +56,14 @@ $time = microtime(TRUE) - $time;
 	</head>
 	<body>
 		<main>
-			<h1><?php echo $w; ?></h1>
-			<table>
+			<h1 id="keyword"><?php echo $w; ?></h1>
+			<table id="results">
 				<tbody>
 <?php foreach ($songs as $song) { ?>
 					<tr>
-						<td><?php echo $song["occurrence_count"]; ?></td>
-						<td><a href="lyrics.php?a[]=<?php echo $song["artist_name"]; ?>&s=<?php echo $song["track_name"]; ?>&w=<?php echo $word; ?>&id=<?php echo $song["track_id"]; ?>"><?php echo $song["track_name"]; ?></a></td>
-						<td><?php echo $song["artist_name"]; ?></td>
+						<td id="song-count"><?php echo $song["occurrence_count"]; ?></td>
+						<td><a id="song-title" href="lyrics.php?a[]=<?php echo $song["artist_name"]; ?>&s=<?php echo $song["track_name"]; ?>&w=<?php echo $word; ?>&id=<?php echo $song["track_id"]; ?>"><?php echo $song["track_name"]; ?></a></td>
+						<td id="artist-name"><?php echo $song["artist_name"]; ?></td>
 					</tr>
 <?php } ?>
 				</tbody>
@@ -71,7 +71,7 @@ $time = microtime(TRUE) - $time;
 			<?php if ($debug === "true") echo $time . "s\n"; ?>
 		</main>
 		<nav>
-			<a href="artist.php?<?php echo Util::generateArtistsQuery($a); ?>"><button><?php echo implode(", ", $a); ?></button></a>
+			<a id="word-back" href="artist.php?<?php echo Util::generateArtistsQuery($a); ?>"><button><?php echo implode(", ", $a); ?></button></a>
 		</nav>
 	</body>
 </html>
