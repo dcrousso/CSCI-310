@@ -117,5 +117,5 @@ sudo bin/phpunit-randomizer --order rand tests/
 ```Shell
 cd /var/www/html/CSCI-310/
 sudo java -jar selenium-server-standalone-2.53.0.jar &
-sudo bin/behat
+sudo bin/behat --order=random
 ```
