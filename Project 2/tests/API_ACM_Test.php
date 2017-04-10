@@ -2,7 +2,7 @@
 
 require("vendor/autoload.php");
 
-require_once("API_ACM.php");
+require_once("API/ACM.php");
 
 class API_ACM_Test extends PHPUnit\Framework\TestCase {
 	public static function setUpBeforeClass() {

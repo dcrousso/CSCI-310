@@ -19,7 +19,7 @@ class API_IEEE {
 		$json = json_decode(json_encode($xml), TRUE);
 		if (!$json || !isset($json["document"]))
 			return array();
-		
+
 		return array_map(function($item) {
 			return array(
 				"title"      => $item["title"],

@@ -74,7 +74,8 @@ java -jar selenium.jar
 #### White Box Tests
 ```Shell
 cd /var/www/html/CSCI-310/Project\ 2/
-sudo bin/phpunit-randomizer --order rand tests/
+sudo bin/phpunit-randomizer --order rand --coverage-html coverage --whitelist=API/ tests/
+firefox localhost/CSCI-310/Project\ 2/coverage/
 ```
 
 #### Black Box Tests

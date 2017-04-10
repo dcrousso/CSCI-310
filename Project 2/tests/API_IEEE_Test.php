@@ -2,7 +2,7 @@
 
 require("vendor/autoload.php");
 
-require_once("API_IEEE.php");
+require_once("API/IEEE.php");
 
 class API_IEEE_Test extends PHPUnit\Framework\TestCase {
 	public static function setUpBeforeClass() {
