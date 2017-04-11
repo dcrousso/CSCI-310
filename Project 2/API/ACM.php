@@ -12,8 +12,7 @@ class API_ACM {
 		libxml_use_internal_errors(true);
 
 		$document = new DOMDocument();
-		if (!$document->loadHTML($response))
-			return array();
+		$document->loadHTML($response);
 
 		$xpath = new DOMXPath($document);
 

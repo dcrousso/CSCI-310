@@ -59,4 +59,34 @@ class API_IEEE_Test extends PHPUnit\Framework\TestCase {
 
 		$this->assertGreaterThan(0, strlen($result[0]["pdf"]));
 	}
+
+	public function testQueryTextWithValidStringAndNonIntegerCountShouldReturnEmptyArray() {
+		$result = API_IEEE::queryText("PHP", NULL);
+
+		$this->assertTrue(is_array($result));
+		$this->assertCount(0, $result);
+	}
+
+	public function testQueryTextWithValidStringAndInvalidIntegerCountShouldReturnEmptyArray() {
+		$result = API_IEEE::queryText("PHP", 0);
+
+		$this->assertTrue(is_array($result));
+		$this->assertCount(0, $result);
+	}
+
+	public function testQueryTextWithValidStringAndValidIntegerCountShouldReturnValidArrayOfMaximumSizeCount() {
+		$result = API_IEEE::queryText("PHP", 15);
+
+		$this->assertTrue(is_array($result));
+		$this->assertCount(15, $result);
+
+		$this->assertGreaterThan(0, strlen($result[0]["title"]));
+
+		$this->assertGreaterThan(0, count($result[0]["authors"]));
+		$this->assertGreaterThan(0, strlen($result[0]["authors"][0]));
+
+		$this->assertGreaterThan(0, strlen($result[0]["conference"]));
+
+		$this->assertGreaterThan(0, strlen($result[0]["pdf"]));
+	}
 }

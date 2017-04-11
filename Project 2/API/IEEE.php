@@ -7,14 +7,12 @@ class API_IEEE {
 		if (!is_string($query) || !strlen($query))
 			return array();
 
-		if (!is_numeric($count) || $count <= 0)
+		if (!is_numeric($count) || $count < 10)
 			return array();
 
 		$response = file_get_contents(API_IEEE::$URL . "&querytext=" . $query . "&hc=" . $count);
 
 		$xml = simplexml_load_string($response, "SimpleXMLElement", LIBXML_NOCDATA);
-		if (!$xml)
-			return array();
 
 		$json = json_decode(json_encode($xml), TRUE);
 		if (!$json || !isset($json["document"]))
