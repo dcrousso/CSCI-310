@@ -7,23 +7,9 @@ require_once("API/Util.php");
 $q = isset($_GET["q"]) ? $_GET["q"] : "";
 $n = isset($_GET["n"]) ? $_GET["n"] : "10";
 
-$text = "";
-
 $acm = API_ACM::query($q);
-for ($i = 0; $i < min(intval($n), count($acm)); ++$i) {
-	try {
-		$text .= Util::getWords($acm[$i]["pdf"]) . " ";
-	} catch (Exception $e) {}
-}
-
 $ieee = API_IEEE::queryText($q, $n);
-for ($i = 0; $i < min(intval($n), count($ieee)); ++$i) {
-	try {
-		$text .= Util::getWords($ieee[$i]["pdf"]) . " ";
-	} catch (Exception $e) {}
-}
-
-$words = Util::splitWords($text);
+$words = Util::splitWords(Util::getString(array_splice($acm, 0, min(intval($n), count($acm)))) . " " . Util::getString($ieee));
 
 ?>
 <!DOCTYPE html>
@@ -69,7 +55,5 @@ d3.layout.cloud()
 })
 .start();
 		</script>
-		<script src="dropdown.js"></script>
-		<script src="http://connect.facebook.net/en_US/all.js"></script>
 	</body>
 </html>

@@ -24,12 +24,39 @@ class Util {
 		return $words;
 	}
 
-	public static function getWords($url) {
-		if (!is_string($url) || !strlen($url))
+	public static function getString($papers) {
+		if (!is_array($papers) || !count($papers))
 			return "";
 
-		$parser = new \Smalot\PdfParser\Parser();
-		$pdf = $parser->parseFile($url);
-		return $pdf->getText();
+		$multi = curl_multi_init();
+		$curls = array_map(function($item) use (&$multi) {
+			$curl = curl_init($item["pdf"]);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+			curl_multi_add_handle($multi, $curl);
+			return $curl;
+		}, $papers);
+
+		$running = null;
+		do {
+			curl_multi_exec($multi, $running);
+		} while ($running);
+
+		foreach ($curls as $curl)
+			curl_multi_remove_handle($multi, $curl);
+
+		curl_multi_close($multi);
+
+		return array_reduce($curls, function($carry, $curl) {
+			$content = curl_multi_getcontent($curl);
+			if ($content) {
+				try {
+					$parser = new \Smalot\PdfParser\Parser();
+					$pdf = $parser->parseContent($content);
+					$carry .= $pdf->getText() . " ";
+				} catch (Exception $e) {}
+			}
+			return $carry;
+		}, "");
 	}
 }

@@ -77,24 +77,24 @@ class API_Util_Test extends PHPUnit\Framework\TestCase {
 		$this->assertEquals(1, $result["foo"]);
 	}
 
-	// Util::getWords
+	// Util::getString
 
-	public function testGetWordsWithNonStringShouldReturnEmptyString() {
-		$result = Util::getWords(NULL);
-
-		$this->assertTrue(is_string($result));
-		$this->assertEquals(0, strlen($result));
-	}
-
-	public function testGetWordsWithEmptyStringShouldReturnEmptyString() {
-		$result = Util::getWords("");
+	public function testGetStringWithNonArrayShouldReturnEmptyString() {
+		$result = Util::getString(NULL);
 
 		$this->assertTrue(is_string($result));
 		$this->assertEquals(0, strlen($result));
 	}
 
-	public function testGetWordsWithValidStringShouldReturnValidString() {
-		$result = Util::getWords("tests/Lander-1966.pdf");
+	public function testGetStringWithEmptyArrayShouldReturnEmptyString() {
+		$result = Util::getString(array());
+
+		$this->assertTrue(is_string($result));
+		$this->assertEquals(0, strlen($result));
+	}
+
+	public function testGetStringWithValidArrayShouldReturnValidString() {
+		$result = Util::getString(array(array("pdf" => "https://cdn.paperpile.com/blog/files/Lander-1966.pdf")));
 
 		$this->assertTrue(is_string($result));
 		$this->assertGreaterThan(0, strlen($result));
