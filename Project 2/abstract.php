@@ -29,8 +29,8 @@ $n     = isset($_GET["n"])     ? $_GET["n"]     : [];
 	<main>
 		<h1 id="title"> Title of Paper </h1>
 		<h2 id="authors"> Authors of Paper </h2>
-		<a id="conference" href="www.google.com">Conference</a> </br> </br>
-		<a id="download" href="www.google.com">Download Link</a>
+		<a id="conference" href="#">Conference</a> </br> </br>
+		<a id="download" href="#">Download Link</a>
 		<p id="paper">
 			Lorem ipsum dolor sit amet, tale expetendis cu duo. Ut sit magna dicam deleniti. Ludus tollit dissentiet vix an, eum nibh solum inermis in. Te has oblique atomorum. Sonet laboramus at quo, suscipit platonem ius ex.
 
