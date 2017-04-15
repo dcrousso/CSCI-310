@@ -7,9 +7,9 @@ require_once("API/Util.php");
 $q = isset($_GET["q"]) ? $_GET["q"] : "";
 $n = isset($_GET["n"]) ? $_GET["n"] : "10";
 
-//$acm = API_ACM::query($q);
-//$ieee = API_IEEE::queryText($q, $n);
-//$words = Util::splitWords(Util::getString(array_splice($acm, 0, min(intval($n), count($acm)))) . " " . Util::getString($ieee));
+$acm = API_ACM::query($q);
+$ieee = API_IEEE::queryText($q, $n);
+$words = Util::splitWords(Util::getString(array_splice($acm, 0, min(intval($n), count($acm)))) . " " . Util::getString($ieee));
 
 ?>
 <!DOCTYPE html>
