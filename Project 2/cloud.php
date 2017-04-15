@@ -7,9 +7,9 @@ require_once("API/Util.php");
 $q = isset($_GET["q"]) ? $_GET["q"] : "";
 $n = isset($_GET["n"]) ? $_GET["n"] : "10";
 
-$acm = API_ACM::query($q);
-$ieee = API_IEEE::queryText($q, $n);
-$words = Util::splitWords(Util::getString(array_splice($acm, 0, min(intval($n), count($acm)))) . " " . Util::getString($ieee));
+//$acm = API_ACM::query($q);
+//$ieee = API_IEEE::queryText($q, $n);
+//$words = Util::splitWords(Util::getString(array_splice($acm, 0, min(intval($n), count($acm)))) . " " . Util::getString($ieee));
 
 ?>
 <!DOCTYPE html>
@@ -40,8 +40,8 @@ $words = Util::splitWords(Util::getString(array_splice($acm, 0, min(intval($n), 
 			<input id="n[]" name="n[]" type="count" style="width: 100px;" placeholder="Top X Papers">
 		</div>
 		<div>
-			<button id="search" class="search" disabled>Search</button>
-			<button id="merge" class="merge" disabled>Merge</button>
+			<button id="search" class="search">Search</button>
+			<button id="merge" class="merge">Merge</button>
 			<button id="download" class="download" type="button">Download</button>
 		</div>
 	</form>
