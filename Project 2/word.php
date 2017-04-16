@@ -17,27 +17,31 @@ $ieee = API_IEEE::queryText($q, $n);
 	<head>
 		<link rel="stylesheet" href="common.css">
 		<style>
-body {
-	text-align: center;
-}
 		</style>
 	</head>
 	<body>
+		<nav>
+			<a href="cloud.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>"><button><?php echo $q; ?></button></a>
+		</nav>
 		<main>
 			<h1><?php echo $w ?></h1>
+			<progress max="100" value="0"></progress>
 		</main>
 		<script>
 "use strict";
 
 const main = document.querySelector("main");
+const progress = document.querySelector("progress");
 
 const ACM  = <?php echo json_encode(array_splice($acm, 0, min(intval($n), count($acm))), JSON_PRETTY_PRINT); ?>;
 const IEEE = <?php echo json_encode($ieee, JSON_PRETTY_PRINT); ?>;
 
 let requestWords = item => {
-	fetch(`API/Util.php?pdf=${encodeURIComponent(item["pdf"])}`)
+	return fetch(`API/Util.php?pdf=${encodeURIComponent(item["pdf"])}`)
 	.then(response => {
-		response.text()
+		progress.setAttribute("value", parseInt(progress.getAttribute("value")) + (100 / (ACM.length + IEEE.length)));
+
+		return response.text()
 		.then(text => {
 			if (!response.ok)
 				return;
@@ -63,7 +67,6 @@ let requestWords = item => {
 
 			let download = nav.appendChild(document.createElement("a"));
 			download.setAttribute("href", item["pdf"]);
-			download.setAttribute("target", "_blank");
 			download.textContent = "Download";
 
 			let search = nav.appendChild(document.createElement("a"));
@@ -73,8 +76,10 @@ let requestWords = item => {
 		});
 	});
 };
-ACM.forEach(requestWords);
-IEEE.forEach(requestWords);
+Promise.all([].concat(ACM.map(requestWords), IEEE.forEach(requestWords)))
+.then(results => {
+	progress.remove();
+});
 		</script>
 	</body>
 </html>

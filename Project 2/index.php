@@ -4,7 +4,6 @@
 		<link rel="stylesheet" href="common.css">
 		<style>
 body {
-	text-align: center;
 	margin-top: 10%;
 }
 		</style>

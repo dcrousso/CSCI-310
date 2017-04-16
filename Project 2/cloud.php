@@ -16,10 +16,6 @@ $ieee = API_IEEE::queryText($q, $n);
 	<head>
 		<link rel="stylesheet" href="common.css">
 		<style>
-body {
-	text-align: center;
-}
-
 progress + svg {
 	display: none;
 }
