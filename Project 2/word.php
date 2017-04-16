@@ -37,9 +37,16 @@ const IEEE = <?php echo json_encode($ieee, JSON_PRETTY_PRINT); ?>;
 let requestWords = item => {
 	fetch(`API/Util.php?pdf=${encodeURIComponent(item["pdf"])}`)
 	.then(response => {
-		response.json()
-		.then(json => {
-			if (!response.ok || !("<?php echo $w; ?>" in json))
+		response.text()
+		.then(text => {
+			if (!response.ok)
+				return;
+
+			let json = null;
+			try {
+				json = JSON.parse(text);
+			} catch (e) {}
+			if (!json || !("<?php echo $w; ?>" in json))
 				return;
 
 			let section = main.appendChild(document.createElement("section"));

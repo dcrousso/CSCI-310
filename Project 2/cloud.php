@@ -46,8 +46,16 @@ let requestWords = item => {
 	.then(response => {
 		progress.setAttribute("value", parseInt(progress.getAttribute("value")) + (100 / (ACM.length + IEEE.length)));
 
-		return response.json()
-		.then(json => { return response.ok ? json : {}; });
+		return response.text()
+		.then(text => {
+			if (response.ok) {
+				try {
+					return JSON.parse(text);
+				} catch (e) {}
+			}
+
+			return {};
+		});
 	});
 };
 Promise.all([].concat(ACM.map(requestWords), IEEE.map(requestWords)))
