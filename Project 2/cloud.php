@@ -4,8 +4,8 @@ require_once("API/ACM.php");
 require_once("API/IEEE.php");
 require_once("API/Util.php");
 
-$q = isset($_GET["q"]) ? $_GET["q"] : "";
-$n = isset($_GET["n"]) ? $_GET["n"] : "10";
+$q = isset($_GET["q"]) ? urldecode($_GET["q"]) : "";
+$n = isset($_GET["n"]) ? $_GET["n"]            : "10";
 
 $acm = API_ACM::query($q);
 $ieee = API_IEEE::queryText($q, $n);
