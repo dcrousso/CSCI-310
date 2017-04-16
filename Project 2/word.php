@@ -59,7 +59,11 @@ let requestWords = item => {
 
 			section.appendChild(document.createElement("h3")).textContent = item["authors"].join(", ");
 
-			section.appendChild(document.createElement("h4")).textContent = item["conference"];
+			let conference = section.appendChild(document.createElement("h4"));
+
+			let link = conference.appendChild(document.createElement("a"));
+			link.setAttribute("href", `cloud.php?q=${encodeURIComponent(item["conference"])}&n=<?php echo $n; ?>`);
+			link.textContent = item["conference"];
 
 			section.appendChild(document.createElement("p")).textContent = item["abstract"];
 
@@ -68,11 +72,6 @@ let requestWords = item => {
 			let download = nav.appendChild(document.createElement("a"));
 			download.setAttribute("href", item["pdf"]);
 			download.textContent = "Download";
-
-			let search = nav.appendChild(document.createElement("a"));
-			search.setAttribute("href", `cloud.php?q=${encodeURIComponent(item["conference"])}&n=<?php echo $n; ?>`);
-			search.setAttribute("target", "_blank");
-			search.textContent = "Search";
 		});
 	});
 };
