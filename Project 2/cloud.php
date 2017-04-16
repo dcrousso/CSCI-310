@@ -14,73 +14,58 @@ $words = Util::splitWords(Util::getString(array_splice($acm, 0, min(intval($n), 
 ?>
 <!DOCTYPE html>
 <html>
-<head>
-	<link rel="stylesheet" href="common.css">
-	<style>
-		body {
-			text-align: center;
-		}
+	<head>
+		<link rel="stylesheet" href="common.css">
+		<style>
+body {
+	text-align: center;
+}
 
-		#wordcloud {
-			background-color: white;
-		}
-	</style>
-</head>
-<body>
-	<main>
-		<h1><?php echo $q ?></h1>
-		<svg id="wordcloud" width="900px" height="500px"></svg>
-	</main>
-	<form action="cloud.php">
-		<?php foreach ($q as $query) { ?>
-		<input name="q[]" type="hidden" value="<?php echo $query; ?>">
-		<?php } ?>
-		<div>
-			<input id="q[]" name="q[]" type="search" style="width: 500px;" placeholder="Keywords, Authors, Conferences?">
-			<input id="n[]" name="n[]" type="count" style="width: 100px;" placeholder="Top X Papers">
-		</div>
-		<div>
-			<button id="search" class="search">Search</button>
-			<button id="merge" class="merge">Merge</button>
-			<button id="download" class="download" type="button">Download</button>
-		</div>
-	</form>
-
-	<script src="d3.min.js"></script>
-	<script src="d3.layout.cloud.js"></script>
-	<script>
-		"use strict";
-		const WORDS = [
-		<?php $i = 0; foreach ($words as $word => $count) { if ($i++ < 250) { ?>
-			{text: "<?php echo $word; ?>", count: <?php echo $count; ?>}<?php echo (($i === count($words) || $i === 250) ? "" : ",") . "\n"; ?>
-			<?php } } ?>
-			];
-			const cloudContainer = d3.select("#wordcloud");
-			const cloudSize = [parseInt(cloudContainer.attr("width").slice(0, -2)), parseInt(cloudContainer.attr("height").slice(0, -2))];
-			const scale = d3.scaleLog().range([8, 80]).domain([WORDS[WORDS.length - 1].count, WORDS[0].count]);
-			d3.layout.cloud()
-			.size(cloudSize)
-			.words(WORDS)
-			.padding(5)
-			.rotate(() => 0)
-			.fontSize(d => scale(d.count))
-			.on("end", data => {
-				cloudContainer
-				.append("g")
-				.attr("transform", `translate(${cloudSize[0] / 2}, ${cloudSize[1] / 2})`)
-				.selectAll()
-				.data(data)
-				.enter()
-				.append("a")
-				.attr("href", d => `word.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>&w=${d.text}`)
-				.append("text")
+#wordcloud {
+	background-color: white;
+}
+		</style>
+	</head>
+	<body>
+		<main>
+			<h1><?php echo $q ?></h1>
+			<svg id="wordcloud" width="900px" height="500px"></svg>
+		</main>
+		<script src="d3.min.js"></script>
+		<script src="d3.layout.cloud.js"></script>
+		<script>
+"use strict";
+const WORDS = [
+<?php $i = 0; foreach ($words as $word => $count) { if ($i++ < 250) { ?>
+	{text: "<?php echo $word; ?>", count: <?php echo $count; ?>}<?php echo (($i === count($words) || $i === 250) ? "" : ",") . "\n"; ?>
+<?php } } ?>
+];
+const cloudContainer = d3.select("#wordcloud");
+const cloudSize = [parseInt(cloudContainer.attr("width").slice(0, -2)), parseInt(cloudContainer.attr("height").slice(0, -2))];
+const scale = d3.scaleLog().range([8, 80]).domain([WORDS[WORDS.length - 1].count, WORDS[0].count]);
+d3.layout.cloud()
+.size(cloudSize)
+.words(WORDS)
+.padding(5)
+.rotate(() => 0)
+.fontSize(d => scale(d.count))
+.on("end", data => {
+	cloudContainer
+	.append("g")
+		.attr("transform", `translate(${cloudSize[0] / 2}, ${cloudSize[1] / 2})`)
+		.selectAll()
+		.data(data)
+		.enter()
+		.append("a")
+			.attr("href", d => `word.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>&w=${d.text}`)
+			.append("text")
 				.style("font-size", d => `${d.size}px`)
 				.attr("text-anchor", "middle")
 				.attr("transform", d => `translate(${d.x}, ${d.y})`)
 				.attr("fill", () => `hsl(${Math.floor(Math.random() * 360)}, 100%, 50%)`)
 				.text(d => d.text);
-			})
-			.start();
+})
+.start();
 		</script>
 	</body>
-	</html>
+</html>
