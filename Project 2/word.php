@@ -24,7 +24,7 @@ $ieee = API_IEEE::queryText($q, $n);
 			<a href="cloud.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>"><button><?php echo $q; ?></button></a>
 		</nav>
 		<main>
-			<h1><?php echo $w ?></h1>
+			<h1><?php echo $w; ?></h1>
 			<progress max="100" value="0"></progress>
 		</main>
 		<script>
@@ -55,23 +55,34 @@ let requestWords = item => {
 
 			let section = main.appendChild(document.createElement("section"));
 
-			section.appendChild(document.createElement("h2")).textContent = item["title"];
+			let details = section.appendChild(document.createElement("details"));
 
-			section.appendChild(document.createElement("h3")).textContent = item["authors"].join(", ");
+			details.appendChild(document.createElement("summary")).textContent = item["title"];
 
-			let conference = section.appendChild(document.createElement("h4"));
+			details.appendChild(document.createElement("p")).innerHTML = item["abstract"].replace(/<?php echo $w; ?>/gi, "<mark><?php echo $w; ?></mark>");
 
-			let link = conference.appendChild(document.createElement("a"));
-			link.setAttribute("href", `cloud.php?q=${encodeURIComponent(item["conference"])}&n=<?php echo $n; ?>`);
-			link.textContent = item["conference"];
+			let highlighted = details.appendChild(document.createElement("p")).appendChild(document.createElement("a"));
+			highlighted.setAttribute("href", `API/Util.php?pdf=${encodeURIComponent(item["pdf"])}&w=<?php echo $w; ?>`);
+			highlighted.appendChild(document.createElement("button")).textContent = "Highlighted";
 
-			section.appendChild(document.createElement("p")).textContent = item["abstract"];
+			let authors = section.appendChild(document.createElement("p"));
 
-			let nav = section.appendChild(document.createElement("nav"));
+			for (let author of item["authors"]) {
+				if (author !== item["authors"][0])
+					authors.appendChild(document.createTextNode(", "));
 
-			let download = nav.appendChild(document.createElement("a"));
+				let link = authors.appendChild(document.createElement("a"));
+				link.setAttribute("href", `cloud.php?q=${encodeURIComponent(author)}&n=<?php echo $n; ?>`);
+				link.textContent = author;
+			}
+
+			let conference = section.appendChild(document.createElement("p")).appendChild(document.createElement("a"));
+			conference.setAttribute("href", `cloud.php?q=${encodeURIComponent(item["conference"])}&n=<?php echo $n; ?>`);
+			conference.textContent = item["conference"];
+
+			let download = section.appendChild(document.createElement("p")).appendChild(document.createElement("a"));
 			download.setAttribute("href", item["pdf"]);
-			download.textContent = "Download";
+			download.appendChild(document.createElement("button")).textContent = "Download";
 		});
 	});
 };
