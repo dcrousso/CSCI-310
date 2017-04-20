@@ -39,7 +39,7 @@ progress ~ .download {
 		<script>
 "use strict";
 
-const progress = document.querySelector("progress");
+const progress    = document.querySelector("progress");
 const downloadPNG = document.querySelector(".download.png");
 
 const ACM  = <?php echo json_encode(array_splice($acm, 0, min(intval($n), count($acm))), JSON_PRETTY_PRINT); ?>;

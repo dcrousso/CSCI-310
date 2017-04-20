@@ -43,11 +43,11 @@ progress ~ .download {
 		<script>
 "use strict";
 
-const main = document.querySelector("main");
-const progress = document.querySelector("progress");
-const select = document.querySelector("select");
+const main         = document.querySelector("main");
+const progress     = document.querySelector("progress");
+const select       = document.querySelector("select");
 const downloadText = document.querySelector(".download.text");
-const downloadPDF = document.querySelector(".download.pdf");
+const downloadPDF  = document.querySelector(".download.pdf");
 
 function createDownloads(articles) {
 	URL.revokeObjectURL(downloadText.getAttribute("href"));
