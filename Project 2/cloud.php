@@ -16,8 +16,14 @@ $ieee = API_IEEE::queryText($q, $n);
 	<head>
 		<link rel="stylesheet" href="common.css">
 		<style>
-progress + svg {
+progress ~ svg,
+progress ~ .download {
 	display: none;
+}
+
+#wordcloud {
+	display: block;
+	margin: 0 auto;
 }
 		</style>
 	</head>
@@ -26,6 +32,7 @@ progress + svg {
 			<h1><?php echo $q ?></h1>
 			<progress max="100" value="0"></progress>
 			<svg id="wordcloud" width="900px" height="500px"></svg>
+			<a class="download png" href="" download="<?php echo $q; ?>.png"><button>Download</button></a>
 		</main>
 		<script src="d3.min.js"></script>
 		<script src="d3.layout.cloud.js"></script>
@@ -33,6 +40,7 @@ progress + svg {
 "use strict";
 
 const progress = document.querySelector("progress");
+const downloadPNG = document.querySelector(".download.png");
 
 const ACM  = <?php echo json_encode(array_splice($acm, 0, min(intval($n), count($acm))), JSON_PRETTY_PRINT); ?>;
 const IEEE = <?php echo json_encode($ieee, JSON_PRETTY_PRINT); ?>;
@@ -95,6 +103,27 @@ Promise.all([].concat(ACM.map(requestWords), IEEE.map(requestWords)))
 					.attr("transform", d => `translate(${d.x}, ${d.y})`)
 					.attr("fill", () => `hsl(${Math.floor(Math.random() * 360)}, 100%, 50%)`)
 					.text(d => d.text);
+
+		let image = new Image(cloudSize[0], cloudSize[1]);
+		image.addEventListener("load", event => {
+			let canvas = document.createElement("canvas");
+			canvas.setAttribute("width", cloudSize[0]);
+			canvas.setAttribute("height", cloudSize[1]);
+
+			let context = canvas.getContext("2d");
+
+			context.fillStyle = "white";
+			context.fillRect(0, 0, cloudSize[0], cloudSize[1]);
+
+			context.drawImage(image, 0, 0);
+
+			canvas.toBlob(blob => {
+				downloadPNG.setAttribute("href", URL.createObjectURL(blob));
+
+				URL.revokeObjectURL(image.getAttribute("src"));
+			});
+		});
+		image.setAttribute("src", URL.createObjectURL(new Blob([(new XMLSerializer).serializeToString(cloudContainer.node())], {type: "image/svg+xml;charset=utf-8"})));
 	})
 	.start();
 });
