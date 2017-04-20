@@ -17,7 +17,8 @@ $ieee = API_IEEE::queryText($q, $n);
 	<head>
 		<link rel="stylesheet" href="common.css">
 		<style>
-progress + select {
+progress ~ select,
+progress ~ .download {
 	display: none;
 }
 		</style>
@@ -36,6 +37,8 @@ progress + select {
 				<option value="a+">Alphabetical (ascending)</option>
 				<option value="a-">Alphabetical (descending)</option>
 			</select>
+			<a class="download text" href="" download="<?php echo $w; ?>.txt"><button>Text</button></a>
+			<a class="download pdf" href="" download="<?php echo $w; ?>.pdf"><button>PDF</button></a>
 		</main>
 		<script>
 "use strict";
@@ -43,13 +46,24 @@ progress + select {
 const main = document.querySelector("main");
 const progress = document.querySelector("progress");
 const select = document.querySelector("select");
+const downloadText = document.querySelector(".download.text");
+const downloadPDF = document.querySelector(".download.pdf");
+
+function createDownloads(articles) {
+	URL.revokeObjectURL(downloadText.getAttribute("href"));
+
+	let data = articles.map(item => [item["title"], item["authors"].join(", "), item["conference"], item["frequency"]].join("\t") + "\n");
+	let blob = new Blob(data, {type: "text/plain"});
+
+	downloadText.setAttribute("href", URL.createObjectURL(blob));
+}
 
 const ACM  = <?php echo json_encode(array_splice($acm, 0, min(intval($n), count($acm))), JSON_PRETTY_PRINT); ?>;
 const IEEE = <?php echo json_encode($ieee, JSON_PRETTY_PRINT); ?>;
 
 let results = [];
 
-let requestWords = item => {
+function requestWords(item) {
 	return fetch(`API/Util.php?pdf=${encodeURIComponent(item["pdf"])}`)
 	.then(response => {
 		progress.setAttribute("value", parseInt(progress.getAttribute("value")) + (100 / (ACM.length + IEEE.length)));
@@ -105,10 +119,12 @@ let requestWords = item => {
 			results.push(item);
 		});
 	});
-};
+}
 let promise = Promise.all([].concat(ACM.map(requestWords), IEEE.forEach(requestWords)))
-.then(results => {
+.then(result => {
 	progress.remove();
+
+	createDownloads(results);
 });
 
 select.selectedIndex = 0;
@@ -137,6 +153,8 @@ select.addEventListener("change", event => {
 
 		for (let item of copy)
 			main.appendChild(item["element"]);
+
+		createDownloads(copy);
 	});
 });
 		</script>
