@@ -7,6 +7,7 @@ require_once("API/Util.php");
 $q = isset($_GET["q"]) ? urldecode($_GET["q"]) : "";
 $n = isset($_GET["n"]) ? $_GET["n"]            : "10";
 $w = isset($_GET["w"]) ? $_GET["w"]            : "";
+$s = isset($_GET["s"]) ? true                  : false;
 
 $acm = API_ACM::query($q);
 $ieee = API_IEEE::queryText($q, $n);
@@ -16,12 +17,6 @@ $ieee = API_IEEE::queryText($q, $n);
 <html>
 	<head>
 		<link rel="stylesheet" href="common.css">
-		<style>
-progress ~ select,
-progress ~ .download {
-	display: none;
-}
-		</style>
 	</head>
 	<body>
 		<nav>
@@ -39,6 +34,7 @@ progress ~ .download {
 			</select>
 			<a class="download text" href="" download="<?php echo $w; ?>.txt"><button>Text</button></a>
 			<a class="download pdf" href="" download="<?php echo $w; ?>.pdf"><button>PDF</button></a>
+			<a class="subset" href="cloud.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>&s" disabled><button>Subset</button></a>
 		</main>
 		<script>
 "use strict";
@@ -48,6 +44,7 @@ const progress     = document.querySelector("progress");
 const select       = document.querySelector("select");
 const downloadText = document.querySelector(".download.text");
 const downloadPDF  = document.querySelector(".download.pdf");
+const subset       = document.querySelector(".subset");
 
 function createDownloads(articles) {
 	URL.revokeObjectURL(downloadText.getAttribute("href"));
@@ -62,6 +59,10 @@ const ACM  = <?php echo json_encode(array_splice($acm, 0, min(intval($n), count(
 const IEEE = <?php echo json_encode($ieee, JSON_PRETTY_PRINT); ?>;
 
 let results = [];
+
+<?php if ($s) { ?>
+const selected = localStorage.getItem("<?php echo $q; ?>");
+<?php } ?>
 
 function requestWords(item) {
 	return fetch(`API/Util.php?pdf=${encodeURIComponent(item["pdf"])}`)
@@ -80,13 +81,29 @@ function requestWords(item) {
 			if (!("<?php echo $w; ?>" in json) && !/\b<?php echo $w; ?>\b/i.test(item["abstract"]))
 				return;
 
+<?php if ($s) { ?>
+			if (selected && !JSON.parse(selected).includes(item["title"]))
+				return;
+<?php } ?>
+
 			item["frequency"] = Math.max(json["<?php echo $w; ?>"] || 0, (item["abstract"].match(/\b<?php echo $w; ?>\b/gi) || []).length);
 
-			let section = main.appendChild(document.createElement("section"));
+			item["element"] = main.appendChild(document.createElement("section"));
 
-			let details = section.appendChild(document.createElement("details"));
+			let details = item["element"].appendChild(document.createElement("details"));
 
-			details.appendChild(document.createElement("summary")).textContent = item["title"];
+			let title = details.appendChild(document.createElement("summary"));
+
+			item["checkbox"] = title.appendChild(document.createElement("input"));
+			item["checkbox"].setAttribute("type", "checkbox");
+			item["checkbox"].addEventListener("change", event => {
+				if (results.some(result => result["checkbox"].checked))
+					subset.removeAttribute("disabled");
+				else
+					subset.setAttribute("disabled", true);
+			});
+
+			title.appendChild(document.createTextNode(item["title"]));
 
 			details.appendChild(document.createElement("p")).innerHTML = item["abstract"].replace(/\b<?php echo $w; ?>\b/gi, "<mark><?php echo $w; ?></mark>");
 
@@ -94,7 +111,7 @@ function requestWords(item) {
 			highlighted.setAttribute("href", `API/Util.php?pdf=${encodeURIComponent(item["pdf"])}&w=<?php echo $w; ?>`);
 			highlighted.appendChild(document.createElement("button")).textContent = "Highlighted";
 
-			let authors = section.appendChild(document.createElement("p"));
+			let authors = item["element"].appendChild(document.createElement("p"));
 
 			for (let author of item["authors"]) {
 				if (author !== item["authors"][0])
@@ -105,17 +122,16 @@ function requestWords(item) {
 				link.textContent = author;
 			}
 
-			let conference = section.appendChild(document.createElement("p")).appendChild(document.createElement("a"));
+			let conference = item["element"].appendChild(document.createElement("p")).appendChild(document.createElement("a"));
 			conference.setAttribute("href", `cloud.php?q=${encodeURIComponent(item["conference"])}&n=<?php echo $n; ?>`);
 			conference.textContent = item["conference"];
 
-			section.appendChild(document.createElement("p")).textContent = item["frequency"];
+			item["element"].appendChild(document.createElement("p")).textContent = item["frequency"];
 
-			let download = section.appendChild(document.createElement("p")).appendChild(document.createElement("a"));
+			let download = item["element"].appendChild(document.createElement("p")).appendChild(document.createElement("a"));
 			download.setAttribute("href", item["pdf"]);
 			download.appendChild(document.createElement("button")).textContent = "Download";
 
-			item["element"] = section;
 			results.push(item);
 		});
 	});
@@ -156,6 +172,10 @@ select.addEventListener("change", event => {
 
 		createDownloads(copy);
 	});
+});
+
+subset.addEventListener("click", event => {
+	localStorage.setItem("<?php echo $q; ?>", JSON.stringify(results.filter(item => item["checkbox"].checked).map(item => item["title"])));
 });
 		</script>
 	</body>

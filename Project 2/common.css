@@ -14,3 +14,15 @@ button {
 	background-color: hsl(280, 65%, 35%);
 	border: none;
 }
+
+progress ~ svg,
+progress ~ select,
+progress ~ a {
+	display: none;
+}
+
+a[disabled] {
+	opacity: 0.5;
+	filter: grayscale(100%);
+	pointer-events: none;
+}

@@ -6,6 +6,7 @@ require_once("API/Util.php");
 
 $q = isset($_GET["q"]) ? urldecode($_GET["q"]) : "";
 $n = isset($_GET["n"]) ? $_GET["n"]            : "10";
+$s = isset($_GET["s"]) ? true                  : false;
 
 $acm = API_ACM::query($q);
 $ieee = API_IEEE::queryText($q, $n);
@@ -16,11 +17,6 @@ $ieee = API_IEEE::queryText($q, $n);
 	<head>
 		<link rel="stylesheet" href="common.css">
 		<style>
-progress ~ svg,
-progress ~ .download {
-	display: none;
-}
-
 #wordcloud {
 	display: block;
 	margin: 0 auto;
@@ -45,7 +41,16 @@ const downloadPNG = document.querySelector(".download.png");
 const ACM  = <?php echo json_encode(array_splice($acm, 0, min(intval($n), count($acm))), JSON_PRETTY_PRINT); ?>;
 const IEEE = <?php echo json_encode($ieee, JSON_PRETTY_PRINT); ?>;
 
+<?php if ($s) { ?>
+const selected = localStorage.getItem("<?php echo $q; ?>");
+<?php } ?>
+
 let requestWords = item => {
+<?php if ($s) { ?>
+	if (selected && !JSON.parse(selected).includes(item["title"]))
+		return Promise.resolve({});
+<?php } ?>
+
 	return fetch(`API/Util.php?pdf=${encodeURIComponent(item["pdf"])}`)
 	.then(response => {
 		progress.setAttribute("value", parseInt(progress.getAttribute("value")) + (100 / (ACM.length + IEEE.length)));
