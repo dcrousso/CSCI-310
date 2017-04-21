@@ -33,9 +33,10 @@ $ieee = API_IEEE::queryText($q, $n);
 				<option value="a-">Alphabetical (descending)</option>
 			</select>
 			<a class="download text" href="" download="<?php echo $w; ?>.txt"><button>Text</button></a>
-			<a class="download pdf" href="" download="<?php echo $w; ?>.pdf"><button>PDF</button></a>
+			<a class="download pdf" href="#" download="<?php echo $w; ?>.pdf"><button>PDF</button></a>
 			<a class="subset" href="cloud.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>&s" disabled><button>Subset</button></a>
 		</main>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
 		<script>
 "use strict";
 
@@ -46,6 +47,8 @@ const downloadText = document.querySelector(".download.text");
 const downloadPDF  = document.querySelector(".download.pdf");
 const subset       = document.querySelector(".subset");
 
+let pdf = null;
+
 function createDownloads(articles) {
 	URL.revokeObjectURL(downloadText.getAttribute("href"));
 
@@ -53,6 +56,16 @@ function createDownloads(articles) {
 	let blob = new Blob(data, {type: "text/plain"});
 
 	downloadText.setAttribute("href", URL.createObjectURL(blob));
+
+	pdf = new jsPDF;
+	pdf.setFontSize(12);
+	articles.forEach((item, index) => {
+		pdf.text(5, 10 + (index * 28), item["title"]);
+		pdf.text(5, 16 + (index * 28), item["authors"].join(", "));
+		pdf.text(5, 22 + (index * 28), item["conference"]);
+		pdf.text(5, 28 + (index * 28), item["frequency"]);
+	});
+
 }
 
 const ACM  = <?php echo json_encode(array_splice($acm, 0, min(intval($n), count($acm))), JSON_PRETTY_PRINT); ?>;
@@ -86,7 +99,7 @@ function requestWords(item) {
 				return;
 <?php } ?>
 
-			item["frequency"] = Math.max(json["<?php echo $w; ?>"] || 0, (item["abstract"].match(/\b<?php echo $w; ?>\b/gi) || []).length);
+			item["frequency"] = Math.max(json["<?php echo $w; ?>"] || 0, (item["abstract"].match(/\b<?php echo $w; ?>\b/gi) || []).length).toLocaleString();
 
 			item["element"] = main.appendChild(document.createElement("section"));
 
@@ -172,6 +185,12 @@ select.addEventListener("change", event => {
 
 		createDownloads(copy);
 	});
+});
+
+downloadPDF.addEventListener("click", event => {
+	event.preventDefault();
+
+	pdf.save(downloadPDF.getAttribute("download"));
 });
 
 subset.addEventListener("click", event => {
