@@ -65,11 +65,28 @@ function createDownloads(articles) {
 		pdf.text(5, 22 + (index * 28), item["conference"]);
 		pdf.text(5, 28 + (index * 28), item["frequency"]);
 	});
-
 }
 
-const ACM  = <?php echo json_encode(array_splice($acm, 0, min(intval($n), count($acm))), JSON_PRETTY_PRINT); ?>;
-const IEEE = <?php echo json_encode($ieee, JSON_PRETTY_PRINT); ?>;
+const API = {
+	ACM:  <?php echo json_encode(array_splice($acm, 0, min(intval($n), count($acm))), JSON_PRETTY_PRINT); ?>,
+	IEEE: <?php echo json_encode($ieee, JSON_PRETTY_PRINT); ?>,
+};
+
+function parseBibTex(url) {
+	return fetch(url)
+	.then(response => response.text())
+	.then(text => {
+		return new Map(text.split(/\n\n+/).filter(item => item.trim().length).map(item => {
+			let match = item.match(/\n\s+title = {([^}]+)}/);
+			return [match[1], item];
+		}));
+	});
+}
+
+const BIBTEX = {
+	ACM:  parseBibTex("API/ACM.php?q=<?php echo $q; ?>"),
+	IEEE: parseBibTex("API/IEEE.php?q=<?php echo $q; ?>"),
+};
 
 let results = [];
 
@@ -77,10 +94,10 @@ let results = [];
 const selected = localStorage.getItem("<?php echo $q; ?>");
 <?php } ?>
 
-function requestWords(item) {
+function requestWords(item, index, array) {
 	return fetch(`API/Util.php?pdf=${encodeURIComponent(item["pdf"])}`)
 	.then(response => {
-		progress.setAttribute("value", parseInt(progress.getAttribute("value")) + (100 / (ACM.length + IEEE.length)));
+		progress.setAttribute("value", parseInt(progress.getAttribute("value")) + (100 / (API.ACM.length + API.IEEE.length)));
 
 		return response.text()
 		.then(text => {
@@ -141,15 +158,35 @@ function requestWords(item) {
 
 			item["element"].appendChild(document.createElement("p")).textContent = item["frequency"];
 
-			let download = item["element"].appendChild(document.createElement("p")).appendChild(document.createElement("a"));
+			let buttons = item["element"].appendChild(document.createElement("p"));
+
+			let download = buttons.appendChild(document.createElement("a"));
 			download.setAttribute("href", item["pdf"]);
 			download.appendChild(document.createElement("button")).textContent = "Download";
+
+			let bibtex = buttons.appendChild(document.createElement("a"));
+			bibtex.appendChild(document.createElement("button")).textContent = "BibTex";
+			bibtex.setAttribute("download", `${item["title"]}.bib`);
+			bibtex.setAttribute("disabled", true);
+
+			let promise = null;
+			if (array === API.ACM)
+				promise = BIBTEX.ACM;
+			else if (array === API.IEEE)
+				promise = BIBTEX.IEEE;
+
+			if (promise) {
+				promise.then(result => {
+					bibtex.setAttribute("href", URL.createObjectURL(new Blob(result.get(item["title"]), {type: "text/plain"})));
+					bibtex.removeAttribute("disabled");
+				});
+			}
 
 			results.push(item);
 		});
 	});
 }
-let promise = Promise.all([].concat(ACM.map(requestWords), IEEE.forEach(requestWords)))
+let promise = Promise.all([].concat(API.ACM.map(requestWords), API.IEEE.forEach(requestWords)))
 .then(result => {
 	progress.remove();
 
