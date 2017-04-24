@@ -18,17 +18,15 @@ $ieee = API_IEEE::queryText($q, $n);
 	<head>
 		<link rel="stylesheet" href="common.css">
 		<style>
-body {
-	font-family: helvetica;
-}
 section {
-	border-style : solid;
-	border-width : 1px;
 	padding: 10px;
+	border: 1px solid;
 }
 summary {
 	font-size: 20px;
 	text-decoration: underline;
+	outline: none;
+	cursor: pointer;
 }
 		</style>
 	</head>
