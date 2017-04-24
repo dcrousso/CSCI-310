@@ -21,15 +21,39 @@ class API_IEEE {
 		if (!$json || !isset($json["document"]))
 			return array();
 
-		return array_map(function($item) {
+		$multi = curl_multi_init();
+		$curls = array_map(function($item) use (&$multi) {
+			$curl = curl_init($item["pdf"]);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+			curl_multi_add_handle($multi, $curl);
+			return $curl;
+		}, $json["document"]);
+
+		$running = null;
+		do {
+			curl_multi_exec($multi, $running);
+		} while ($running);
+
+		foreach ($curls as $curl)
+			curl_multi_remove_handle($multi, $curl);
+
+		curl_multi_close($multi);
+
+		return array_map(function($curl, $item) {
+			$content = curl_multi_getcontent($curl);
+
+			$pdf = null;
+			preg_match("/<frame src=\"(http:\/\/ieeexplore\.ieee\.org\/[^\"]+)\"[^\>]+>/", $content, $pdf); 
+
 			return array(
 				"title"      => $item["title"],
 				"authors"    => preg_split("/;\s*/", $item["authors"]),
 				"conference" => $item["pubtitle"],
 				"abstract"   => $item["abstract"],
-				"pdf"        => $item["pdf"]
+				"pdf"        => $pdf ? $pdf[1] : $item["pdf"]
 			);
-		},  $json["document"]);
+		}, $curls, $json["document"]);
 	}
 }
 
