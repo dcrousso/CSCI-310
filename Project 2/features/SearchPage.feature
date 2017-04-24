@@ -9,12 +9,8 @@ Feature: Search Page
     And I click search
     Then I am on the word cloud page
     And I should see a loading status bar
-    And if I wait some time, I should see a word cloud image
-
-  Scenario: The search page should have a field for number of papers and the search bar
-    Given I am on the search page
-    Then I should see an input field for number of papers referenced
-    And I should see a search input field
+    And after I wait some time
+    And I should see a word cloud image
 
   Scenario: If the user is typing in the search bar, a search history should appear as a dropdown menu
     Given I am on the search page
