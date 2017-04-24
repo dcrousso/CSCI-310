@@ -5,6 +5,7 @@ body {
 button {
 	display: inline-block;
 	margin-top: 5px;
+	margin-left: 10px;
 	padding: 5px;
 	font-family: helvetica;
 	font-size: 12px;
