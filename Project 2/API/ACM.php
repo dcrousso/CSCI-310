@@ -1,5 +1,8 @@
 <?php
 
+if ($_SERVER["SCRIPT_NAME"] === "/CSCI-310/Project 2/API/ACM.php" && isset($_GET["q"]))
+	echo file_get_contents("http://dl.acm.org/exportformats_search.cfm?query=" . $_GET["q"] . "&expformat=bibtex");
+
 class API_ACM {
 	private static $URL = "http://dl.acm.org/results.cfm?";
 
