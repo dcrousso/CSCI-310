@@ -1,5 +1,8 @@
 <?php
 
+if ($_SERVER["SCRIPT_NAME"] === "/CSCI-310/Project 2/API/IEEE.php" && isset($_GET["id"]))
+	echo str_replace("<br>", "", file_get_contents("http://ieeexplore.ieee.org/xpl/downloadCitations?recordIds=" . $_GET["id"] . "&citations-format=citation-only&download-format=download-bibtex"));
+
 class API_IEEE {
 	private static $URL = "http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?";
 

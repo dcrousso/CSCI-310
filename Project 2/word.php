@@ -65,11 +65,28 @@ function createDownloads(articles) {
 		pdf.text(5, 22 + (index * 28), item["conference"]);
 		pdf.text(5, 28 + (index * 28), item["frequency"]);
 	});
-
 }
 
-const ACM  = <?php echo json_encode(array_splice($acm, 0, min(intval($n), count($acm))), JSON_PRETTY_PRINT); ?>;
-const IEEE = <?php echo json_encode($ieee, JSON_PRETTY_PRINT); ?>;
+const API = {
+	ACM:  <?php echo json_encode(array_splice($acm, 0, min(intval($n), count($acm))), JSON_PRETTY_PRINT); ?>,
+	IEEE: <?php echo json_encode($ieee, JSON_PRETTY_PRINT); ?>,
+};
+
+const BIBTEX = {};
+
+BIBTEX.ACM = fetch("API/ACM.php?q=<?php echo $q; ?>")
+.then(response => response.text())
+.then(text => {
+	return new Map(text.split("@inproceedings").filter(item => item.trim().length).map(item => {
+		let match = item.trim().toLowerCase().match(/\n\s+title = {([^}]+)}/);
+		return [match[1], "@inproceedings" + item.trim()];
+	}));
+});
+
+BIBTEX.IEEE = Promise.resolve(id => {
+	return fetch(`API/IEEE.php?id=${id}`)
+	.then(response => response.text());
+});
 
 let results = [];
 
@@ -77,10 +94,10 @@ let results = [];
 const selected = localStorage.getItem("<?php echo $q; ?>");
 <?php } ?>
 
-function requestWords(item) {
+function requestWords(item, index, array) {
 	return fetch(`API/Util.php?pdf=${encodeURIComponent(item["pdf"])}`)
 	.then(response => {
-		progress.setAttribute("value", parseInt(progress.getAttribute("value")) + (100 / (ACM.length + IEEE.length)));
+		progress.setAttribute("value", parseInt(progress.getAttribute("value")) + (100 / (API.ACM.length + API.IEEE.length)));
 
 		return response.text()
 		.then(text => {
@@ -94,8 +111,11 @@ function requestWords(item) {
 			if (!("<?php echo $w; ?>" in json) && !/\b<?php echo $w; ?>\b/i.test(item["abstract"]))
 				return;
 
+			let title = item["title"];
+			let pdf = item["pdf"];
+
 <?php if ($s) { ?>
-			if (selected && !JSON.parse(selected).includes(item["title"]))
+			if (selected && !JSON.parse(selected).includes(title))
 				return;
 <?php } ?>
 
@@ -105,9 +125,9 @@ function requestWords(item) {
 
 			let details = item["element"].appendChild(document.createElement("details"));
 
-			let title = details.appendChild(document.createElement("summary"));
+			let summary = details.appendChild(document.createElement("summary"));
 
-			item["checkbox"] = title.appendChild(document.createElement("input"));
+			item["checkbox"] = summary.appendChild(document.createElement("input"));
 			item["checkbox"].setAttribute("type", "checkbox");
 			item["checkbox"].addEventListener("change", event => {
 				if (results.some(result => result["checkbox"].checked))
@@ -116,12 +136,12 @@ function requestWords(item) {
 					subset.setAttribute("disabled", true);
 			});
 
-			title.appendChild(document.createTextNode(item["title"]));
+			summary.appendChild(document.createTextNode(title));
 
 			details.appendChild(document.createElement("p")).innerHTML = item["abstract"].replace(/\b<?php echo $w; ?>\b/gi, "<mark><?php echo $w; ?></mark>");
 
 			let highlighted = details.appendChild(document.createElement("p")).appendChild(document.createElement("a"));
-			highlighted.setAttribute("href", `API/Util.php?pdf=${encodeURIComponent(item["pdf"])}&w=<?php echo $w; ?>`);
+			highlighted.setAttribute("href", `API/Util.php?pdf=${encodeURIComponent(pdf)}&w=<?php echo $w; ?>`);
 			highlighted.appendChild(document.createElement("button")).textContent = "Highlighted";
 
 			let authors = item["element"].appendChild(document.createElement("p"));
@@ -141,15 +161,38 @@ function requestWords(item) {
 
 			item["element"].appendChild(document.createElement("p")).textContent = item["frequency"];
 
-			let download = item["element"].appendChild(document.createElement("p")).appendChild(document.createElement("a"));
-			download.setAttribute("href", item["pdf"]);
+			let buttons = item["element"].appendChild(document.createElement("p"));
+
+			let download = buttons.appendChild(document.createElement("a"));
+			download.setAttribute("href", pdf);
 			download.appendChild(document.createElement("button")).textContent = "Download";
+
+			let bibtex = buttons.appendChild(document.createElement("a"));
+			bibtex.appendChild(document.createElement("button")).textContent = "BibTex";
+			bibtex.setAttribute("download", `${title}.bib`);
+			bibtex.setAttribute("disabled", true);
+
+			if (array === API.ACM) {
+				BIBTEX.ACM.then(result => {
+					bibtex.setAttribute("href", URL.createObjectURL(new Blob([result.get(title.toLowerCase()) || ""], {type: "text/plain"})));
+					bibtex.removeAttribute("disabled");
+				});
+			} else if (array === API.IEEE) {
+				BIBTEX.IEEE.then(fetcher => {
+					let match = pdf.match(/arnumber=(\d+)/);
+					fetcher(match[1])
+					.then(text => {
+						bibtex.setAttribute("href", URL.createObjectURL(new Blob([text], {type: "text/plain"})));
+						bibtex.removeAttribute("disabled");
+					});
+				});
+			}
 
 			results.push(item);
 		});
 	});
 }
-let promise = Promise.all([].concat(ACM.map(requestWords), IEEE.forEach(requestWords)))
+let promise = Promise.all([].concat(API.ACM.map(requestWords), API.IEEE.forEach(requestWords)))
 .then(result => {
 	progress.remove();
 
