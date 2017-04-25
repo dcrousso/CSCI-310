@@ -21,58 +21,11 @@ class FeatureContext implements Context
     {
     }
 
-    /**
-     * @Given I am on the paper details page
-     */
-    public function iAmOnThePaperDetailsPage()
-    {
-        throw new PendingException();
-    }
 
     /**
-     * @When I click an author
+     * @Given I am on the :arg1 page
      */
-    public function iClickAnAuthor()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then I am on the word cloud page
-     */
-    public function iAmOnTheWordCloudPage()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @When I click a word
-     */
-    public function iClickAWord()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then I am on the paper listings page
-     */
-    public function iAmOnThePaperListingsPage()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then the author is the same for each paper
-     */
-    public function theAuthorIsTheSameForEachPaper()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Given I am on the search page
-     */
-    public function iAmOnTheSearchPage()
+    public function iAmOnThePage($arg1)
     {
         throw new PendingException();
     }
@@ -86,9 +39,9 @@ class FeatureContext implements Context
     }
 
     /**
-     * @When I click search
+     * @When I click the :arg1 button
      */
-    public function iClickSearch()
+    public function iClickTheButton($arg1)
     {
         throw new PendingException();
     }
@@ -102,25 +55,17 @@ class FeatureContext implements Context
     }
 
     /**
-     * @Then if I wait some time, I should see a word cloud image
+     * @Then after I wait some time
      */
-    public function ifIWaitSomeTimeIShouldSeeAWordCloudImage()
+    public function afterIWaitSomeTime()
     {
         throw new PendingException();
     }
 
     /**
-     * @Then I should see an input field for number of papers referenced
+     * @Then I should see a wordcloud image
      */
-    public function iShouldSeeAnInputFieldForNumberOfPapersReferenced()
-    {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then I should see a search input field
-     */
-    public function iShouldSeeASearchInputField()
+    public function iShouldSeeAWordcloudImage()
     {
         throw new PendingException();
     }
@@ -134,129 +79,129 @@ class FeatureContext implements Context
     }
 
     /**
-     * @When I click a paper's title
+     * @Given I am on the :arg1 page for a given :arg2 and a :arg3 of papers
      */
-    public function iClickAPaperSTitle()
+    public function iAmOnThePageForAGivenAndAOfPapers($arg1, $arg2, $arg3)
     {
         throw new PendingException();
     }
 
     /**
-     * @Then I should see the abstract
+     * @When I click on a :arg1 of boxes" check boxes for each paper
      */
-    public function iShouldSeeTheAbstract()
+    public function iClickOnAOfBoxesCheckBoxesForEachPaper($arg1)
     {
         throw new PendingException();
     }
 
     /**
-     * @Then I should see a download link
+     * @Then after I wait :arg1
      */
-    public function iShouldSeeADownloadLink()
+    public function afterIWait($arg1)
     {
         throw new PendingException();
     }
 
     /**
-     * @Then I should see a download link for each paper
+     * @When I click on an author
      */
-    public function iShouldSeeADownloadLinkForEachPaper()
+    public function iClickOnAnAuthor()
     {
         throw new PendingException();
     }
 
     /**
-     * @Then I should see a bibtext link for each paper
+     * @When I click on the conference :arg1
      */
-    public function iShouldSeeABibtextLinkForEachPaper()
+    public function iClickOnTheConference($arg1)
     {
         throw new PendingException();
     }
 
     /**
-     * @Then I should see an author link for each paper
+     * @Then I am on the wordcloud page for a conference :arg1
      */
-    public function iShouldSeeAnAuthorLinkForEachPaper()
+    public function iAmOnTheWordcloudPageForAConference($arg1)
     {
         throw new PendingException();
     }
 
     /**
-     * @Then I should see a conference name for each paper
+     * @When I select descending frequency from the dropdown menu
      */
-    public function iShouldSeeAConferenceNameForEachPaper()
+    public function iSelectDescendingFrequencyFromTheDropdownMenu()
     {
         throw new PendingException();
     }
 
     /**
-     * @When I click on a number of boxes' check boxes for each paper
+     * @Then all the listings should be sorted in descending frequency
      */
-    public function iClickOnANumberOfBoxesCheckBoxesForEachPaper()
+    public function allTheListingsShouldBeSortedInDescendingFrequency()
     {
         throw new PendingException();
     }
 
     /**
-     * @When I click regenerate word cloud
+     * @When I click on the details of a listing
      */
-    public function iClickRegenerateWordCloud()
+    public function iClickOnTheDetailsOfAListing()
     {
         throw new PendingException();
     }
 
     /**
-     * @Then I should see a word cloud image
+     * @Then I should see a paragraph summary of the paper's abstract
      */
-    public function iShouldSeeAWordCloudImage()
+    public function iShouldSeeAParagraphSummaryOfThePapersAbstract()
     {
         throw new PendingException();
     }
 
     /**
-     * @Given I enter a number of papers
+     * @Then I should have downloaded a :arg1 file
      */
-    public function iEnterANumberOfPapers()
+    public function iShouldHaveDownloadedAFile($arg1)
     {
         throw new PendingException();
     }
 
     /**
-     * @When I click on a word from the word cloud image
+     * @When I click on the :arg1 button
      */
-    public function iClickOnAWordFromTheWordCloudImage()
+    public function iClickOnTheButton($arg1)
     {
         throw new PendingException();
     }
 
     /**
-     * @Then I should see one result
+     * @Then I am on a page that should contain delivery.acm.org or ieee.explore.org
      */
-    public function iShouldSeeOneResult()
+    public function iAmOnAPageThatShouldContainDeliveryAcmOrgOrIeeeExploreOrg()
     {
         throw new PendingException();
     }
 
     /**
-     * @Then all listings' titles should have the word in it
+     * @Given I am on the wordcloud page for a given query and number of papers
      */
-    public function allListingsTitlesShouldHaveTheWordInIt()
+    public function iAmOnTheWordcloudPageForAGivenQueryAndNumberOfPapers()
     {
         throw new PendingException();
     }
 
     /**
-     * @When I click the download word cloud button
+     * @When I click on a :arg1 from the wordcloud
      */
-    public function iClickTheDownloadWordCloudButton()
+    public function iClickOnAFromTheWordcloud($arg1)
     {
         throw new PendingException();
     }
 
     /**
-     * @Then the word cloud should be downloaded
+     * @Then I am on the listings page for that :arg1
      */
-    public function theWordCloudShouldBeDownloaded()
+    public function iAmOnTheListingsPageForThat($arg1)
     {
         throw new PendingException();
     }
