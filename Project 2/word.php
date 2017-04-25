@@ -17,6 +17,18 @@ $ieee = API_IEEE::queryText($q, $n);
 <html>
 	<head>
 		<link rel="stylesheet" href="common.css">
+		<style>
+section {
+	padding: 10px;
+	border: 1px solid;
+}
+summary {
+	font-size: 20px;
+	text-decoration: underline;
+	outline: none;
+	cursor: pointer;
+}
+		</style>
 	</head>
 	<body>
 		<nav>
@@ -83,7 +95,10 @@ BIBTEX.ACM = fetch("API/ACM.php?q=<?php echo $q; ?>")
 	}));
 });
 
-BIBTEX.IEEE = Promise.resolve();
+BIBTEX.IEEE = Promise.resolve(id => {
+	return fetch(`API/IEEE.php?id=${id}`)
+	.then(response => response.text());
+});
 
 let results = [];
 
@@ -175,10 +190,13 @@ function requestWords(item, index, array) {
 					bibtex.removeAttribute("disabled");
 				});
 			} else if (array === API.IEEE) {
-				BIBTEX.IEEE.then(() => {
+				BIBTEX.IEEE.then(fetcher => {
 					let match = pdf.match(/arnumber=(\d+)/);
-					bibtex.setAttribute("href", `http://ieeexplore.ieee.org/xpl/downloadCitations?recordIds=${match[1]}&citations-format=citation-only&download-format=download-bibtex`);
-					bibtex.removeAttribute("disabled");
+					fetcher(match[1])
+					.then(text => {
+						bibtex.setAttribute("href", URL.createObjectURL(new Blob([text], {type: "text/plain"})));
+						bibtex.removeAttribute("disabled");
+					});
 				});
 			}
 
