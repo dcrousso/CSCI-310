@@ -5,11 +5,23 @@ use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
 
+use Behat\Mink\Mink,
+    Behat\Mink\Session,
+    Behat\Mink\Selenium2Driver;
+
+use SeleniumClient as SeleniumClient;
+
+use Behat\Behat\Hook\Scope\BeforeScenarioScope,
+    Behat\Behat\Hook\Scope\AfterScenarioScope;
+
 /**
  * Defines application features from the specific context.
  */
 class FeatureContext implements Context
 {
+    protected $driver;
+    protected $session;
+
     /**
      * Initializes context.
      *

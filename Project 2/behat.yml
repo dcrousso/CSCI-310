@@ -1,0 +1,10 @@
+default:
+  extensions:
+    Behat\MinkExtension:
+      base_url: http://localhost/CSCI-310/project%202/
+      browser_name: firefox
+      default_session: selenium2
+      goutte: ~
+      selenium2:
+        browser: "firefox"
+        capabilities: { "platform": "LINUX", "browser": "firefox", "version": "" }
