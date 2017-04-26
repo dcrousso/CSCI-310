@@ -26,7 +26,7 @@ $ieee = API_IEEE::queryText($q, $n);
 	<body>
 		<main>
 			<h1><?php echo $q ?></h1>
-			<progress max="100" value="0"></progress>
+			<progress id="progress" max="100" value="0"></progress>
 			<svg id="wordcloud" width="900px" height="500px"></svg>
 			<a class="download png" href="" download="<?php echo $q; ?>.png"><button id="download">Download</button></a>
 		</main>
@@ -102,6 +102,7 @@ Promise.all([].concat(ACM.map(requestWords), IEEE.map(requestWords)))
 			.enter()
 			.append("a")
 				.attr("href", d => `word.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>&w=${d.text}`)
+				.attr("id", "wordcloud-link")
 				.append("text")
 					.style("font-size", d => `${d.size}px`)
 					.attr("text-anchor", "middle")

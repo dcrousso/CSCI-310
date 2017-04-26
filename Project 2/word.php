@@ -141,6 +141,7 @@ function requestWords(item, index, array) {
 
 			item["checkbox"] = summary.appendChild(document.createElement("input"));
 			item["checkbox"].setAttribute("type", "checkbox");
+			item["checkbox"].setAttribute("class", "checkbox-test")
 			item["checkbox"].addEventListener("change", event => {
 				if (results.some(result => result["checkbox"].checked))
 					subset.removeAttribute("disabled");

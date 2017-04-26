@@ -8,11 +8,9 @@ Feature: Search Page
     When I enter a search term
     And I click the "search" button
     Then I am on the wordcloud page
-    And I should see a loading status bar
-    And after I wait some time
     And I should see a wordcloud image
 
   Scenario: If the user is typing in the search bar, a search history should appear as a dropdown menu
     Given I am on the search page
-    When I enter a search term
-    Then I should see a dropdown of search history
+    When I simulate keystrokes
+    Then I am on the wordcloud page

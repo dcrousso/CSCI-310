@@ -56,8 +56,19 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iEnterASearchTerm()
     {
-        $search = $this->session->getPage()->find('css', '#search');
+        $search = $this->session->getPage()->find('css', '#searchbar');
         $search->setValue('javascript');
+    }
+
+    /**
+     * @When I simulate keystrokes
+     */
+    public function iSimulateKeystrokes()
+    {
+        $search = $this->session->getPage()->find('css', '#searchbar');
+        $search->focus();
+        
+        $this->session->visit("http://localhost/CSCI-310/Project%202/cloud.php?q=JavaScript&n=10");
     }
 
     /**
@@ -79,7 +90,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iShouldSeeALoadingStatusBar()
     {
-        $bar = $this->session->getPage()->find('css', '#loading');
+        $bar = $this->session->getPage()->find('css', '#progress');
 
         if (!$bar) {
             throw new Exception("Loading bar could not be found!");
@@ -106,28 +117,15 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
         }
     }
 
-    /**
-     * @Then I should see a dropdown of search history
-     */
-    public function iShouldSeeADropdownOfSearchHistory()
-    {
-        throw new PendingException();
-    }
 
     /**
-     * @Given I am on the :arg1 page for a given :arg2 and a :arg3 of papers
+     * @Given I am on the listings page for a given query :arg1, :arg2 number of papers, and keyword :arg3
      */
     public function iAmOnThePageForAGivenAndAOfPapers($arg1, $arg2, $arg3)
     {
-        $url = $this->session->getCurrentURL();
+      $url = "http://localhost/CSCI-310/Project%202/word.php?q=" . $arg1 . "&n=" . $arg2 . "&w=" . $arg3;
 
-        $a1 = strpos($url, $arg1);
-        $a2 = strpos($url, $arg2);
-        $a3 = strpos($url, $arg3);
-
-        if (!$a1 || !$a2 || !$a3) {
-            throw new Exception("Not on the correct page!");
-        }
+      $this->session->visit($url);
     }
 
     /**
@@ -162,7 +160,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     /**
      * @Then I am on the wordcloud page for the selected conference
      */
-    public function iAmOnTheWordcloudPageForTheSelectedConference($arg1)
+    public function iAmOnTheWordcloudPageForTheSelectedConference()
     {
         $url = $this->session->getCurrentUrl();
 
@@ -221,7 +219,7 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     {
         $button = $this->session->getPage()->find('css', '#' . $arg1);
         if (!$button) {
-            throw new Exception("Did not find a " . $arg1 " button!");
+            throw new Exception("Did not find a " . $arg1 . " button!");
         } else {
             $button->click();
         }
@@ -255,7 +253,13 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iClickOnAFromTheWordcloud($arg1)
     {
-        throw new PendingException();
+        $link = $this->session->getPage()->find('css', '#wordcloud-link');
+
+        if (!$link) {
+        	throw new Exception("Word Cloud failed to generate!");
+        } else {
+        	$link->click();
+        }
     }
 
     /**
@@ -265,6 +269,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     {
         $url = $this->session->getCurrentUrl();
         
+        if (!strpos($url, "word.php") || !strpos($url, $arg1))
+        	throw new Exception("Regenerated wordcloud failed!");
     }
 
     /**
@@ -285,10 +291,16 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     }
 
     /**
-     * @When I click on a :arg1 of boxes check boxes for each paper
+     * @When I click on a number of check boxes for each paper
      */
-    public function iClickOnAOfBoxesCheckBoxesForEachPaper($arg1)
+    public function iClickOnAOfBoxesCheckBoxesForEachPaper()
     {
-        throw new PendingException();
+    	$checkbox = $this->session->getPage()->find('css', '.checkbox-test');
+
+    	if (!$checkbox) {
+    		throw new Exception("No checkboxes detected!");
+    	} else {
+    		$checkbox->click();
+    	}
     }
 }
