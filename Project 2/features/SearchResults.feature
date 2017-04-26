@@ -28,7 +28,7 @@ Feature: Search Results
     Given I am on the "listings" page for a given "query" and a "number" of papers
     When I click on the conference "name"
     Then I am on the "wordcloud" page
-    And I am on the wordcloud page for a conference "name"
+    And I am on the wordcloud page for the selected conference
     And after I wait "some time"
     And I should see a wordcloud image
 

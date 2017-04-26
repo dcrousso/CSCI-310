@@ -22,6 +22,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     protected $driver;
     protected $session;
 
+    protected $conference;
+
     /**
      * Initializes context.
      *
@@ -153,16 +155,23 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
     public function iClickOnTheConference($arg1)
     {
         $conference = $this->session->getPage()->find('css', '#conference');
-
+        $this->conference = $conference->getText();
         $conference->click();
     }
 
     /**
-     * @Then I am on the wordcloud page for a conference :arg1
+     * @Then I am on the wordcloud page for the selected conference
      */
-    public function iAmOnTheWordcloudPageForAConference($arg1)
+    public function iAmOnTheWordcloudPageForTheSelectedConference($arg1)
     {
-        throw new PendingException();
+        $url = $this->session->getCurrentUrl();
+
+        $cloud = strpos($url, "cloud.php");
+        $conf = strpos($url, $this->conference);
+
+        if (!$cloud && !$conf) {
+            throw new Exception('I was not on the cloud page for the correct conference');
+        }
     }
 
     /**
@@ -210,7 +219,12 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iClickOnTheButton($arg1)
     {
-        throw new PendingException();
+        $button = $this->session->getPage()->find('css', '#' . $arg1);
+        if (!$button) {
+            throw new Exception("Did not find a " . $arg1 " button!");
+        } else {
+            $button->click();
+        }
     }
 
     /**
@@ -218,7 +232,13 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iAmOnAPageThatShouldContainDeliveryAcmOrgOrIeeeExploreOrg()
     {
-        throw new PendingException();
+        $url = $this->session->getCurrentUrl();
+        $acm = strpos($url, "delivery.acm.org");
+        $ieee = strpos($url, "ieee.explore.org");
+
+        if (!$acm && !$ieee) {
+            throw new Exception('I was not redirected to an ACM/IEEE webpage!');
+        }
     }
 
     /**
@@ -226,7 +246,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iAmOnTheWordcloudPageForAGivenQueryAndNumberOfPapers()
     {
-        throw new PendingException();
+        $url = "http://localhost/CSCI-310/Project%202/cloud.php?q=JavaScript&n=10";
+        $this->session->visit($url);
     }
 
     /**
@@ -242,7 +263,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iAmOnTheListingsPageForThat($arg1)
     {
-        throw new PendingException();
+        $url = $this->session->getCurrentUrl();
+        
     }
 
     /**
@@ -258,7 +280,8 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iAmOnTheWordcloudPage()
     {
-        throw new PendingException();
+        $url = $this->session->getCurrentUrl();
+        if (strpos($url, "cloud.php") === false) throw new Exception('Not on the wordcloud page!');
     }
 
     /**
