@@ -191,7 +191,15 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function allTheListingsShouldBeSortedInDescendingFrequency()
     {
-        throw new PendingException();
+        $frequencies = $this->session->getPage()->find('css', '#frequency');
+
+        if (!$frequencies) {
+            throw new Exception("Invalid amount of frequencies provided!");
+        } else if (count($frequencies) >= 0) {
+            for ($i = 1; $i < count($frequencies); $i++) {
+                if ($frequencies[$i] > $frequencies[$i - 1]) throw new Exception("Not descending!");
+            }
+        }
     }
 
     /**
@@ -207,7 +215,11 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iShouldSeeAParagraphSummaryOfThePapersAbstract()
     {
-        throw new PendingException();
+        $abstract = $this->session->getPage()->find('css', '#abstract');
+
+        if (!$abstract) {
+            throw new Exception("Couldn't find the abstract to a paper!");
+        }
     }
 
     /**

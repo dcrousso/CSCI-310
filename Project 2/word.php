@@ -151,7 +151,10 @@ function requestWords(item, index, array) {
 
 			summary.appendChild(document.createTextNode(title));
 
-			details.appendChild(document.createElement("p")).innerHTML = item["abstract"].replace(/\b<?php echo $w; ?>\b/gi, "<mark><?php echo $w; ?></mark>");
+			let abstract = document.createElement("p");
+			abstract.setAttribute("id", "abstract");
+			abstract.innerHTML = item["abstract"].replace(/\b<?php echo $w; ?>\b/gi, "<mark><?php echo $w; ?></mark>");
+			details.appendChild(abstract);
 
 			let highlighted = details.appendChild(document.createElement("p")).appendChild(document.createElement("a"));
 			highlighted.setAttribute("href", `API/Util.php?pdf=${encodeURIComponent(pdf)}&w=<?php echo $w; ?>`);
@@ -173,8 +176,11 @@ function requestWords(item, index, array) {
 			conference.setAttribute("id", "conference");
 			conference.setAttribute("href", `cloud.php?q=${encodeURIComponent(item["conference"])}&n=<?php echo $n; ?>`);
 			conference.textContent = item["conference"];
-
-			item["element"].appendChild(document.createElement("p")).textContent = item["frequency"];
+			
+			let frequency = document.createElement("p");
+			frequency.setAttribute("id", "frequency");
+			frequency.textContent = item["frequency"];
+			item["element"].appendChild(frequency);
 
 			let buttons = item["element"].appendChild(document.createElement("p"));
 
