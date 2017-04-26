@@ -177,7 +177,13 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iSelectDescendingFrequencyFromTheDropdownMenu()
     {
-        throw new PendingException();
+        $select = $this->session->getPage()->find('css', '#select-sort');
+
+        if (!$select) {
+            throw new Exception("Couldn't find select for sorting filters!");
+        } else {
+            $select->selectOption("f-");
+        }
     }
 
     /**

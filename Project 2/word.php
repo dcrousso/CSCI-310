@@ -37,7 +37,7 @@ summary {
 		<main>
 			<h1><?php echo $w; ?></h1>
 			<progress id="loading" max="100" value="0"></progress>
-			<select>
+			<select id="select-sort">
 				<option value="r" selected>Result Order</option>
 				<option value="f+">Frequency (ascending)</option>
 				<option value="f-">Frequency (descending)</option>
