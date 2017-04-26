@@ -17,7 +17,7 @@ use Behat\Behat\Hook\Scope\BeforeScenarioScope,
 /**
  * Defines application features from the specific context.
  */
-class FeatureContext implements Context
+class FeatureContext extends Behat\MinkExtension\Context\MinkContext
 {
     protected $driver;
     protected $session;
@@ -46,18 +46,7 @@ class FeatureContext implements Context
      * @AfterScenario
      */
     public function closeBrowser(AfterScenarioScope $event) {
-        $this->session->reset();
-    }
-
-    /**
-     * @Given I am on the :arg1 page
-     */
-    public function iAmOnThePage($arg1)
-    {
-        $url = $this->session->getCurrentURL();
-        if (strpos($url, $arg1) === false) {
-            throw new Exception("Not on the correct page!");
-        }
+        $this->session->stop();
     }
 
     /**
@@ -252,6 +241,30 @@ class FeatureContext implements Context
      * @Then I am on the listings page for that :arg1
      */
     public function iAmOnTheListingsPageForThat($arg1)
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @Given I am on the search page
+     */
+    public function iAmOnTheSearchPage()
+    {
+      $this->session->visit('http://localhost/CSCI-310/Project%202');
+    }
+
+    /**
+     * @Then I am on the wordcloud page
+     */
+    public function iAmOnTheWordcloudPage()
+    {
+        throw new PendingException();
+    }
+
+    /**
+     * @When I click on a :arg1 of boxes check boxes for each paper
+     */
+    public function iClickOnAOfBoxesCheckBoxesForEachPaper($arg1)
     {
         throw new PendingException();
     }
