@@ -31,15 +31,33 @@ class FeatureContext implements Context
      */
     public function __construct()
     {
+        $this->driver = new \Behat\Mink\Driver\Selenium2Driver('firefox');
+        $this->session = new \Behat\Mink\Session($this->driver);
     }
 
+    /**
+     * @BeforeScenario
+     */
+    public function openBrowser(BeforeScenarioScope $event) {
+        $this->session->start();
+    }
+
+    /**
+     * @AfterScenario
+     */
+    public function closeBrowser(AfterScenarioScope $event) {
+        $this->session->reset();
+    }
 
     /**
      * @Given I am on the :arg1 page
      */
     public function iAmOnThePage($arg1)
     {
-        throw new PendingException();
+        $url = $this->session->getCurrentURL();
+        if (strpos($url, $arg1) === false) {
+            throw new Exception("Not on the correct page!");
+        }
     }
 
     /**
@@ -47,7 +65,8 @@ class FeatureContext implements Context
      */
     public function iEnterASearchTerm()
     {
-        throw new PendingException();
+        $search = $this->session->getPage()->find('css', '#search');
+        $search->setValue('javascript');
     }
 
     /**
@@ -55,7 +74,13 @@ class FeatureContext implements Context
      */
     public function iClickTheButton($arg1)
     {
-        throw new PendingException();
+        $button = $this->session->getPage()->find('css', '#' . $arg1);
+
+        if (!$button) {
+            throw new Exception($arg1 . " button could not be found!");
+        } else {
+            $button->click();
+        }
     }
 
     /**
@@ -63,7 +88,11 @@ class FeatureContext implements Context
      */
     public function iShouldSeeALoadingStatusBar()
     {
-        throw new PendingException();
+        $bar = $this->session->getPage()->find('css', '#loading');
+
+        if (!$bar) {
+            throw new Exception("Loading bar could not be found!");
+        }
     }
 
     /**
@@ -71,7 +100,7 @@ class FeatureContext implements Context
      */
     public function afterIWaitSomeTime()
     {
-        throw new PendingException();
+        $this->session->wait(30);
     }
 
     /**
@@ -79,7 +108,11 @@ class FeatureContext implements Context
      */
     public function iShouldSeeAWordcloudImage()
     {
-        throw new PendingException();
+        $wordcloud = $this->session->getPage()->find('css', '#wordcloud');
+
+        if (!$wordcloud) {
+            throw new Exception("Wordcloud could not be found!");
+        }
     }
 
     /**
@@ -95,15 +128,15 @@ class FeatureContext implements Context
      */
     public function iAmOnThePageForAGivenAndAOfPapers($arg1, $arg2, $arg3)
     {
-        throw new PendingException();
-    }
+        $url = $this->session->getCurrentURL();
 
-    /**
-     * @When I click on a :arg1 of boxes" check boxes for each paper
-     */
-    public function iClickOnAOfBoxesCheckBoxesForEachPaper($arg1)
-    {
-        throw new PendingException();
+        $a1 = strpos($url, $arg1);
+        $a2 = strpos($url, $arg2);
+        $a3 = strpos($url, $arg3);
+
+        if (!$a1 || !$a2 || !$a3) {
+            throw new Exception("Not on the correct page!");
+        }
     }
 
     /**
@@ -111,7 +144,8 @@ class FeatureContext implements Context
      */
     public function afterIWait($arg1)
     {
-        throw new PendingException();
+        $time = (int)$arg1;
+        $this->session->wait($time);
     }
 
     /**

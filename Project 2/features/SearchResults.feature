@@ -10,7 +10,7 @@ Feature: Search Results
 
   Scenario: The user should be able to regenerate the wordcloud from a subset of papers
     Given I am on the "listings" page for a given "query" and a "number" of papers
-    When I click on a "number" of boxes" check boxes for each paper
+    When I click on a "number" of boxes check boxes for each paper
     And I click the "subset" button
     Then I am on the "wordcloud" page
     And after I wait "some time"

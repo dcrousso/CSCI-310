@@ -32,11 +32,11 @@ summary {
 	</head>
 	<body>
 		<nav>
-			<a href="cloud.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>"><button><?php echo $q; ?></button></a>
+			<a href="cloud.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>"><button id="back"><?php echo $q; ?></button></a>
 		</nav>
 		<main>
 			<h1><?php echo $w; ?></h1>
-			<progress max="100" value="0"></progress>
+			<progress id="loading" max="100" value="0"></progress>
 			<select>
 				<option value="r" selected>Result Order</option>
 				<option value="f+">Frequency (ascending)</option>
@@ -44,9 +44,9 @@ summary {
 				<option value="a+">Alphabetical (ascending)</option>
 				<option value="a-">Alphabetical (descending)</option>
 			</select>
-			<a class="download text" href="" download="<?php echo $w; ?>.txt"><button>Text</button></a>
-			<a class="download pdf" href="#" download="<?php echo $w; ?>.pdf"><button>PDF</button></a>
-			<a class="subset" href="cloud.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>&s" disabled><button>Subset</button></a>
+			<a class="download text" href="" download="<?php echo $w; ?>.txt"><button id="text-download">Text</button></a>
+			<a class="download pdf" href="#" download="<?php echo $w; ?>.pdf"><button id="pdf-download">PDF</button></a>
+			<a class="subset" href="cloud.php?q=<?php echo $q; ?>&n=<?php echo $n; ?>&s" disabled><button id="subset">Subset</button></a>
 		</main>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
 		<script>

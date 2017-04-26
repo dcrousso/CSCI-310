@@ -28,7 +28,7 @@ $ieee = API_IEEE::queryText($q, $n);
 			<h1><?php echo $q ?></h1>
 			<progress max="100" value="0"></progress>
 			<svg id="wordcloud" width="900px" height="500px"></svg>
-			<a class="download png" href="" download="<?php echo $q; ?>.png"><button>Download</button></a>
+			<a class="download png" href="" download="<?php echo $q; ?>.png"><button id="download">Download</button></a>
 		</main>
 		<script src="d3.min.js"></script>
 		<script src="d3.layout.cloud.js"></script>

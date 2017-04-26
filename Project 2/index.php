@@ -12,9 +12,9 @@ body {
 		<main>
 			<img src="Cloudify-logo-w-text.png" width=400>
 			<form action="cloud.php">
-				<input name="q" type="search" placeholder="Search" autofocus required>
+				<input id="search" name="q" type="search" placeholder="Search" autofocus required>
 				<input name="n" type="number" placeholder="Count" min="10" value="10" required>
-				<button>Search</button>
+				<button id="search">Search</button>
 			</form>
 		</main>
 	</body>
