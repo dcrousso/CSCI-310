@@ -163,11 +163,13 @@ function requestWords(item, index, array) {
 					authors.appendChild(document.createTextNode(", "));
 
 				let link = authors.appendChild(document.createElement("a"));
+				link.setAttribute("id", "author");
 				link.setAttribute("href", `cloud.php?q=${encodeURIComponent(author)}&n=<?php echo $n; ?>`);
 				link.textContent = author;
 			}
 
 			let conference = item["element"].appendChild(document.createElement("p")).appendChild(document.createElement("a"));
+			conference.setAttribute("id", "conference");
 			conference.setAttribute("href", `cloud.php?q=${encodeURIComponent(item["conference"])}&n=<?php echo $n; ?>`);
 			conference.textContent = item["conference"];
 

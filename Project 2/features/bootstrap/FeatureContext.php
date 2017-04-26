@@ -153,7 +153,9 @@ class FeatureContext implements Context
      */
     public function iClickOnAnAuthor()
     {
-        throw new PendingException();
+        $author = $this->session->getPage()->find('css', '#author');
+
+        $author->click();
     }
 
     /**
@@ -161,7 +163,9 @@ class FeatureContext implements Context
      */
     public function iClickOnTheConference($arg1)
     {
-        throw new PendingException();
+        $conference = $this->session->getPage()->find('css', '#conference');
+
+        $conference->click();
     }
 
     /**
