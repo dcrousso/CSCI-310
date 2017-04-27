@@ -135,8 +135,9 @@ function requestWords(item, index, array) {
 
 			item["element"] = main.appendChild(document.createElement("section"));
 
-			let details = item["element"].appendChild(document.createElement("details"));
-
+			let docDetails = document.createElement("details");
+			docDetails.setAttribute("id", "document-details");
+			let details = item["element"].appendChild(docDetails);
 			let summary = details.appendChild(document.createElement("summary"));
 
 			item["checkbox"] = summary.appendChild(document.createElement("input"));
@@ -186,6 +187,7 @@ function requestWords(item, index, array) {
 
 			let download = buttons.appendChild(document.createElement("a"));
 			download.setAttribute("href", pdf);
+			download.setAttribute("id", "download");
 			download.appendChild(document.createElement("button")).textContent = "Download";
 
 			let bibtex = buttons.appendChild(document.createElement("a"));
