@@ -207,7 +207,13 @@ class FeatureContext extends Behat\MinkExtension\Context\MinkContext
      */
     public function iClickOnTheDetailsOfAListing()
     {
-        throw new PendingException();
+        $details = $this->session->getPage()->find('css', '#document-details');
+        
+        if (!$details) {
+            throw new Exception("Document details could not be found!");
+        } else {
+            $details->click();
+        }
     }
 
     /**
